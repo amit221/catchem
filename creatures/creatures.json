@@ -658,5 +658,545 @@
       " ╲◆╲╱╲◆╱╲◆╱  ",
       "  ╲╱  ╲╱  ╲╱  "
     ]
+  },
+  {
+    "id": "hobbin",
+    "name": "Hobbin",
+    "theme": "lotr-legends",
+    "rarity": "common",
+    "description": "Carries the weight of the entire monorepo on a chain around its neck.",
+    "art": [
+      "   ╭───╮       ",
+      "   │◕ ◕│       ",
+      "   │ ◡ │       ",
+      "   ╰╮╭╯╭─╮    ",
+      "    ││ │◆│    ",
+      "    └┘ ╰─╯    "
+    ]
+  },
+  {
+    "id": "samroot",
+    "name": "Samroot",
+    "theme": "lotr-legends",
+    "rarity": "common",
+    "description": "Loyal gardener of the source tree. Will never abandon a failing build.",
+    "art": [
+      "   🌱╭───╮     ",
+      "    │◕ ◕│     ",
+      "    │ ◡◡│     ",
+      "   ╱╲▓▓▓╱╲    ",
+      "  ╱~~╲═╱~~╲   ",
+      "  ~~~~╰╯~~~~   "
+    ]
+  },
+  {
+    "id": "legolint",
+    "name": "Legolint",
+    "theme": "lotr-legends",
+    "rarity": "common",
+    "description": "Elven archer that never misses a lint error, even at 10,000 lines.",
+    "art": [
+      "    ╱╲╱╲      ",
+      "   ╱◇◇  ╲     ",
+      "   │ ── │     ",
+      " ──│▓▓▓▓│──── ",
+      "   │ ├┤ │     ",
+      "   └─┘└─┘     "
+    ]
+  },
+  {
+    "id": "gimlock",
+    "name": "Gimlock",
+    "theme": "lotr-legends",
+    "rarity": "uncommon",
+    "description": "Mines deep into your threads and deadlocks them with a single axe swing.",
+    "art": [
+      "  ╔══════╗     ",
+      "  ║╱▓▓▓▓╲║    ",
+      "  ║│◆  ◆│║    ",
+      "  ║│════│║    ",
+      "  ╚╤════╤╝    ",
+      "  ⛏╰────╯     "
+    ]
+  },
+  {
+    "id": "entwine",
+    "name": "Entwine",
+    "theme": "lotr-legends",
+    "rarity": "uncommon",
+    "description": "Takes three sprints to approve a PR. Never makes a hasty merge.",
+    "art": [
+      "  🌿╱╲  ╱╲🌿  ",
+      "   ╱  ╲╱  ╲   ",
+      "   │ ◉  ◉ │   ",
+      "   │  ──  │   ",
+      "   │╱╲╱╲╱╲│   ",
+      "   ├┤├┤├┤├┤   "
+    ]
+  },
+  {
+    "id": "stridex",
+    "name": "Stridex",
+    "theme": "lotr-legends",
+    "rarity": "uncommon",
+    "description": "Ranger who tracks bugs through the wilderness of your stack trace.",
+    "art": [
+      "    ╱══╲      ",
+      "   ╱╱▬▬╲╲     ",
+      "   │◇  ◇│     ",
+      "   │ ╰╯ │     ",
+      "  ╱╲▓▓▓▓╱╲    ",
+      "  └┘╱  ╲└┘    "
+    ]
+  },
+  {
+    "id": "gandaflow",
+    "name": "Gandaflow",
+    "theme": "lotr-legends",
+    "rarity": "rare",
+    "description": "Blocks your merge with a thunderous YOU SHALL NOT PASS CI.",
+    "art": [
+      "   ╱════╲      ",
+      "  ╱ ╱══╲ ╲    ",
+      "  │ │◉◉│ │    ",
+      "  │ │◡◡│ │    ",
+      "  ╰─╲══╱─╯    ",
+      "  🪄 ╱╲╱╲     "
+    ]
+  },
+  {
+    "id": "wraithing",
+    "name": "Wraithing",
+    "theme": "lotr-legends",
+    "rarity": "rare",
+    "description": "Nine ghostly processes haunting your task manager in black robes.",
+    "art": [
+      " ░░╭════╮░░   ",
+      " ░╱ ▬  ▬ ╲░  ",
+      "  │  ◇◇  │   ",
+      "  ╲▓▓▓▓▓▓╱   ",
+      " ░░╲════╱░░   ",
+      " ░░░╲╱╲╱░░░   "
+    ]
+  },
+  {
+    "id": "balrogbug",
+    "name": "Balrogbug",
+    "theme": "lotr-legends",
+    "rarity": "epic",
+    "description": "Fiery demon rising from the deepest layer of your stack trace.",
+    "art": [
+      " ╲╱╲══════╱╲╱ ",
+      " 🔥╱ ◉  ◉ ╲🔥 ",
+      "  │ ╲▼▼▼▼╱ │  ",
+      "  │ ▓▓▓▓▓▓ │  ",
+      "  ╲══╱╲╱╲══╱  ",
+      " 🔥╱╱    ╲╲🔥 "
+    ]
+  },
+  {
+    "id": "shelobyte",
+    "name": "Shelobyte",
+    "theme": "lotr-legends",
+    "rarity": "epic",
+    "description": "Giant spider spinning an inescapable web of circular dependencies.",
+    "art": [
+      " ╲╱╲  ╱╲╱╲╱  ",
+      "  ╲╱╲◉◉╱╲╱   ",
+      "   ╲ ▼▼ ╱    ",
+      "  ╱╲╲▓▓╱╱╲   ",
+      " ╱╱  ╲╱  ╲╲  ",
+      " 🕸️╱╱    ╲╲  "
+    ]
+  },
+  {
+    "id": "saurops",
+    "name": "Saurops",
+    "theme": "lotr-legends",
+    "rarity": "legendary",
+    "description": "The all-seeing eye watches every deploy from its dark monitoring tower.",
+    "art": [
+      "     ╱▲╲      ",
+      "   ╱╱║║║╲╲    ",
+      "  ║ ◉║║║◉ ║   ",
+      "  ║  ╲▼╱  ║   ",
+      "   ╲╲▓▓▓╱╱    ",
+      "  🔥╲════╱🔥  "
+    ]
+  },
+  {
+    "id": "ringbind",
+    "name": "Ringbind",
+    "theme": "lotr-legends",
+    "rarity": "mythic",
+    "description": "One import to rule them all, one require to bind them.",
+    "art": [
+      "     ╭══════╮  ",
+      "    ╱  ╱══╲  ╲ ",
+      "   │  ║ ◆◆ ║  │",
+      "   │  ║ ◆◆ ║  │",
+      "    ╲  ╲══╱  ╱ ",
+      "     ╰══════╯  "
+    ]
+  },
+  {
+    "id": "cyclobyte",
+    "name": "Cyclobyte",
+    "theme": "greek-myths",
+    "rarity": "common",
+    "description": "Scans your entire codebase with one massive unblinking eye.",
+    "art": [
+      "   ╭════╮     ",
+      "  ╱ ╭══╮ ╲    ",
+      " │  │◉◉│  │   ",
+      " │  ╰══╯  │   ",
+      "  ╲ ════ ╱    ",
+      "   ╰┘  └╯     "
+    ]
+  },
+  {
+    "id": "hermeshub",
+    "name": "Hermeshub",
+    "theme": "greek-myths",
+    "rarity": "common",
+    "description": "Delivers pull requests at lightning speed. Half of them to the wrong branch.",
+    "art": [
+      "  ╱╲╱╲╱╲      ",
+      "  │◇  ◇│      ",
+      "  │ ◡◡ │      ",
+      "  ╰╮▓▓╭╯      ",
+      "   │├┤│       ",
+      "   ╱╲╱╲       "
+    ]
+  },
+  {
+    "id": "meduscan",
+    "name": "Meduscan",
+    "theme": "greek-myths",
+    "rarity": "common",
+    "description": "One glance at her code review turns your running processes to stone.",
+    "art": [
+      " ~╲~│~╲~╲│~  ",
+      "  ╲╭════╮╱   ",
+      "  ~│◉  ◉│~   ",
+      "   │ ▼▼ │    ",
+      "   ╰════╯    ",
+      "              "
+    ]
+  },
+  {
+    "id": "centaurge",
+    "name": "Centaurge",
+    "theme": "greek-myths",
+    "rarity": "uncommon",
+    "description": "Half frontend, half backend. Comfortable in neither.",
+    "art": [
+      "    ╭──╮      ",
+      "    │◇◇│      ",
+      "    │──│╱╲    ",
+      "   ╱▓▓▓▓  ╲   ",
+      "  │ ════ │   ",
+      "  └┘└┘ └┘└┘   "
+    ]
+  },
+  {
+    "id": "hydrabug",
+    "name": "Hydrabug",
+    "theme": "greek-myths",
+    "rarity": "uncommon",
+    "description": "Fix one bug, two more spawn in its place.",
+    "art": [
+      " ╭╮  ╭╮  ╭╮  ",
+      " │◉│ │◉│ │◉│ ",
+      " │▼│ │▼│ │▼│ ",
+      " ╰╮╲ ││ ╱╭╯  ",
+      "  │ ▓▓▓▓ │   ",
+      "  ╰══════╯   "
+    ]
+  },
+  {
+    "id": "sirenlog",
+    "name": "Sirenlog",
+    "theme": "greek-myths",
+    "rarity": "uncommon",
+    "description": "Lures junior devs toward beautiful but catastrophically broken APIs.",
+    "art": [
+      "   ╭──╮       ",
+      "   │◕◕│       ",
+      "   │◡◡│       ",
+      "  ╱╲▓▓╱╲      ",
+      " ~~╱══╲~~     ",
+      " ~~~🌊~~~~    "
+    ]
+  },
+  {
+    "id": "poseidrop",
+    "name": "Poseidrop",
+    "theme": "greek-myths",
+    "rarity": "rare",
+    "description": "Floods your database with a single wave of his trident.",
+    "art": [
+      "   ╱╤══╤╲     ",
+      "   │◆  ◆│     ",
+      "   │ ── │     ",
+      "   │▓▓▓▓│     ",
+      "  🌊════🌊    ",
+      "  ~~╱╲╱╲~~   "
+    ]
+  },
+  {
+    "id": "hadeshell",
+    "name": "Hadeshell",
+    "theme": "greek-myths",
+    "rarity": "rare",
+    "description": "Rules the underworld of deprecated packages no one dares visit.",
+    "art": [
+      "  ╱╲    ╱╲    ",
+      " ╱◆◆╲╭╮╱◆◆╲  ",
+      " ╲══╱│◉│╲══╱  ",
+      "    │▼▼│      ",
+      "    │▓▓│      ",
+      "  🔥╰══╯🔥   "
+    ]
+  },
+  {
+    "id": "cerberoute",
+    "name": "Cerberoute",
+    "theme": "greek-myths",
+    "rarity": "epic",
+    "description": "Three-headed route guard. No unauthorized request gets past.",
+    "art": [
+      "╭╮╭──╮╭──╮╭──╮╭╮",
+      "│││◉◉││◉◉││◉◉│││",
+      "╰││◡◡││◡◡││◡◡││╯",
+      " ╰│▓▓││▓▓││▓▓│╯ ",
+      "  ╰╮╭╯╰╮╭╯╰╮╭╯ ",
+      "  └┘  └┘  └┘  "
+    ]
+  },
+  {
+    "id": "atlastack",
+    "name": "Atlastack",
+    "theme": "greek-myths",
+    "rarity": "epic",
+    "description": "Carries your entire infrastructure on its shoulders without complaint.",
+    "art": [
+      "  ╭════════╮   ",
+      "  ╰╮◆◆◆◆╭╯   ",
+      "   │◉  ◉│    ",
+      "   │ ── │    ",
+      "  ╱╲▓▓▓▓╱╲   ",
+      "  └┘╱  ╲└┘   "
+    ]
+  },
+  {
+    "id": "zeushock",
+    "name": "Zeushock",
+    "theme": "greek-myths",
+    "rarity": "legendary",
+    "description": "Strikes your production servers with mass lightning deploys from the cloud.",
+    "art": [
+      "   ╭════╮     ",
+      "   │◆  ◆│     ",
+      "   │╱══╲│     ",
+      "  ╱│▓▓▓▓│╲    ",
+      " ╱ ╰════╯ ╲⚡ ",
+      " └┘      └┘   "
+    ]
+  },
+  {
+    "id": "kronolith",
+    "name": "Kronolith",
+    "theme": "greek-myths",
+    "rarity": "mythic",
+    "description": "Ancient titan that devours your sprint time before it even begins.",
+    "art": [
+      " ✦╱╲    ╱╲✦  ",
+      "  │ ◉  ◉ │   ",
+      "  │ ╲══╱ │   ",
+      "  ╱▓▓▓▓▓▓╲   ",
+      " ╱╱╱╱╱╱╱╱╱╱  ",
+      " ✦══════════✦ "
+    ]
+  },
+  {
+    "id": "scarabyte",
+    "name": "Scarabyte",
+    "theme": "egyptian-myths",
+    "rarity": "common",
+    "description": "Rolls your log files into neat little balls and buries them.",
+    "art": [
+      "   ╭════╮     ",
+      "  ╱ ●══● ╲    ",
+      " ─│ ▓▓▓▓ │─  ",
+      " ─│ ▓▓▓▓ │─  ",
+      " ─│ ▓▓▓▓ │─  ",
+      "  ╲╰════╯╱    "
+    ]
+  },
+  {
+    "id": "anubash",
+    "name": "Anubash",
+    "theme": "egyptian-myths",
+    "rarity": "common",
+    "description": "Judges your dead code and decides what gets garbage collected.",
+    "art": [
+      "  ╱╲    ╱╲    ",
+      " ╱  ╲══╱  ╲   ",
+      " │  ◆  ◆  │  ",
+      " │  ╲══╱   │  ",
+      " ╰╮ ▓▓▓▓ ╭╯  ",
+      "  ╰══════╯    "
+    ]
+  },
+  {
+    "id": "sphinxec",
+    "name": "Sphinxec",
+    "theme": "egyptian-myths",
+    "rarity": "common",
+    "description": "Won't let you merge until you answer its riddle.",
+    "art": [
+      "   ╭════╮     ",
+      "  ╱│◉  ◉│╲    ",
+      "  │ ╲══╱ │    ",
+      " ╱▓▓▓▓▓▓▓▓╲  ",
+      " │ ════════ │ ",
+      " └┘        └┘ "
+    ]
+  },
+  {
+    "id": "bastet",
+    "name": "Bastet",
+    "theme": "egyptian-myths",
+    "rarity": "uncommon",
+    "description": "Purrs when your tests pass. Scratches your face when they don't.",
+    "art": [
+      " ╱╲      ╱╲   ",
+      " │ ╲╭══╮╱ │   ",
+      "   │◕  ◕│     ",
+      "   │ ◡◡ │     ",
+      "   │▓▓▓▓│     ",
+      "   ╰╮╭╮╭╯     "
+    ]
+  },
+  {
+    "id": "horuscan",
+    "name": "Horuscan",
+    "theme": "egyptian-myths",
+    "rarity": "uncommon",
+    "description": "All-seeing falcon eye that watches every line of your diff.",
+    "art": [
+      " ──╭══════╮   ",
+      "   │╭◉◉╮ │── ",
+      "   │╰══╯╲│   ",
+      "   ╰═╲  ╲╯   ",
+      "     ╲╲      ",
+      "      ╲      "
+    ]
+  },
+  {
+    "id": "sobekill",
+    "name": "Sobekill",
+    "theme": "egyptian-myths",
+    "rarity": "uncommon",
+    "description": "Crocodile god lurking in your data streams waiting to snap.",
+    "art": [
+      " ╱══════════╲ ",
+      " │ ◆      ◆ │ ",
+      " │▼▼▼▼▼▼▼▼▼▼│ ",
+      " ╲▼▼▼▼▼▼▼▼▼▼╱ ",
+      "  ╲════════╱   ",
+      "   └┘    └┘    "
+    ]
+  },
+  {
+    "id": "thothlog",
+    "name": "Thothlog",
+    "theme": "egyptian-myths",
+    "rarity": "rare",
+    "description": "Ibis-headed scribe that documents everything you forgot to.",
+    "art": [
+      "      ╱╲      ",
+      "     ╱◉ ╲     ",
+      "    ╱══╱      ",
+      "   ╱──╱       ",
+      "  │▓▓▓▓│      ",
+      "  ╱╲  ╱╲      "
+    ]
+  },
+  {
+    "id": "sethrash",
+    "name": "Sethrash",
+    "theme": "egyptian-myths",
+    "rarity": "rare",
+    "description": "God of chaos. Randomly flips bits in production for fun.",
+    "art": [
+      "  ││      ││  ",
+      "  ╱╲╭════╮╱╲  ",
+      "   │ ◆  ◆ │  ",
+      "   │ ╲▼▼╱ │  ",
+      "   │ ▓▓▓▓ │  ",
+      "   ╰══════╯   "
+    ]
+  },
+  {
+    "id": "pharaobyte",
+    "name": "Pharaobyte",
+    "theme": "egyptian-myths",
+    "rarity": "epic",
+    "description": "Entombed in legacy code, rises when you disturb the ancient module.",
+    "art": [
+      "    ╱══╲      ",
+      "  ╱╱▓▓▓▓╲╲    ",
+      " ║│ ◉  ◉ │║  ",
+      " ║│ ════ │║  ",
+      " ║│ ▓▓▓▓ │║  ",
+      "  ╚══════╝    "
+    ]
+  },
+  {
+    "id": "ammutex",
+    "name": "Ammutex",
+    "theme": "egyptian-myths",
+    "rarity": "epic",
+    "description": "Devours the hearts of failed test suites. No second chances.",
+    "art": [
+      " ╱═══════╲    ",
+      " │◉▼▼▼▼▼▼│   ",
+      " ╲▼▼▼▼▼▼▼╱╲  ",
+      "  ╲═════▓▓▓╲  ",
+      "  │ ▓▓▓▓▓▓ │ ",
+      "  └┘└┘  └┘└┘ "
+    ]
+  },
+  {
+    "id": "raflux",
+    "name": "Raflux",
+    "theme": "egyptian-myths",
+    "rarity": "legendary",
+    "description": "Sun god whose build power peaks at solar noon and crashes at dusk.",
+    "art": [
+      "   ╭◉◉╮      ",
+      "  ╱╱══╲╲     ",
+      " ╱╱    ╲╲    ",
+      " │╲ ▓▓ ╱│    ",
+      " ╲ ╲══╱ ╱    ",
+      " ☀️╲══╱      "
+    ]
+  },
+  {
+    "id": "osirix",
+    "name": "Osirix",
+    "theme": "egyptian-myths",
+    "rarity": "mythic",
+    "description": "Died, was dismembered across twelve microservices, and reassembled.",
+    "art": [
+      "  ╱║║║║╲      ",
+      " ╱╱════╲╲     ",
+      " │ ◉  ◉ │    ",
+      " │ ════ │    ",
+      " ╱▓▓▓▓▓▓╲    ",
+      " ✦╲════╱✦    "
+    ]
   }
 ]
