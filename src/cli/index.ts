@@ -47,8 +47,8 @@ function setup(): void {
   console.log("\n🎉 Setup complete! Creatures will start appearing as you code.");
 }
 
-function collection(): void {
-  const { launchTUI } = require("../tui/app");
+async function collection(): Promise<void> {
+  const { launchTUI } = await import("../tui/app");
   launchTUI();
 }
 
