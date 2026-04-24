@@ -28,7 +28,26 @@ jobs:
 
       - uses: googleapis/release-please-action@v4
         if: ${{ steps.release.outputs.pr }}
+        id: release-after-merge
         with:
           config-file: release-please-config.json
           manifest-file: .release-please-manifest.json
           target-branch: master
+
+      - uses: actions/checkout@v4
+        if: ${{ steps.release.outputs.release_created || steps.release-after-merge.outputs.release_created }}
+
+      - uses: actions/setup-node@v4
+        if: ${{ steps.release.outputs.release_created || steps.release-after-merge.outputs.release_created }}
+        with:
+          node-version: '20'
+          cache: 'npm'
+          registry-url: 'https://registry.npmjs.org'
+
+      - run: npm ci
+        if: ${{ steps.release.outputs.release_created || steps.release-after-merge.outputs.release_created }}
+
+      - run: npm publish
+        if: ${{ steps.release.outputs.release_created || steps.release-after-merge.outputs.release_created }}
+        env:
+          NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
