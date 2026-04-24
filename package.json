@@ -2,6 +2,7 @@
   "name": "catchem",
   "version": "1.0.0",
   "description": "Passive creature collection game — catch creatures as you code",
+  "type": "module",
   "main": "dist/cli/index.js",
   "bin": {
     "catchem": "dist/cli/index.js"
@@ -17,7 +18,8 @@
     "prepublishOnly": "npm run build",
     "test": "node --experimental-vm-modules node_modules/jest/bin/jest.js",
     "test:watch": "node --experimental-vm-modules node_modules/jest/bin/jest.js --watch",
-    "dev": "tsc --watch"
+    "dev": "tsc --watch",
+    "dev:setup": "tsc && node dist/cli/index.js setup && echo '✅ Built + hooks installed. Start coding to catch creatures.'"
   },
   "keywords": [
     "game",
