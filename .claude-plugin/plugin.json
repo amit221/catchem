@@ -1,0 +1,8 @@
+{
+  "name": "catchem",
+  "version": "1.0.0",
+  "description": "Passive creature collection — catch creatures as you code, no interaction needed",
+  "author": { "name": "catchem" },
+  "license": "MIT",
+  "keywords": ["game", "terminal", "creatures", "collection"]
+}
