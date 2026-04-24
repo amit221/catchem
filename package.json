@@ -6,10 +6,15 @@
   "bin": {
     "catchem": "dist/cli/index.js"
   },
+  "files": [
+    "dist/",
+    "scripts/",
+    "creatures/"
+  ],
   "scripts": {
     "build": "tsc",
-    "build:all": "tsc && npm run bundle",
-    "bundle": "tsc",
+    "postinstall": "node dist/cli/index.js setup --auto || true",
+    "prepublishOnly": "npm run build",
     "test": "node --experimental-vm-modules node_modules/jest/bin/jest.js",
     "test:watch": "node --experimental-vm-modules node_modules/jest/bin/jest.js --watch",
     "dev": "tsc --watch"
