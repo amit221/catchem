@@ -97,9 +97,13 @@ function installClaudeCode(root: string, autoUpdate: boolean): void {
 
   fs.writeFileSync(settingsPath, JSON.stringify(settings, null, 2));
 
-  // Write skills
-  const skillsDir = path.join(configDir, "skills");
-  fs.mkdirSync(skillsDir, { recursive: true });
+  // Write skills — must be in subdirectory with SKILL.md filename
+  const skillDir = path.join(configDir, "skills", "catchem-collection");
+  fs.mkdirSync(skillDir, { recursive: true });
+
+  // Remove old flat file if it exists
+  const oldSkillPath = path.join(configDir, "skills", "catchem-collection.md");
+  try { fs.unlinkSync(oldSkillPath); } catch {}
 
   const collectionSkill = `---
 name: catchem-collection
@@ -116,7 +120,7 @@ This launches an interactive terminal UI. Run it with the Bash tool.
 `;
 
   fs.writeFileSync(
-    path.join(skillsDir, "catchem-collection.md"),
+    path.join(skillDir, "SKILL.md"),
     collectionSkill,
   );
 }
