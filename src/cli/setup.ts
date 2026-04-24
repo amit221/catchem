@@ -105,18 +105,31 @@ function installClaudeCode(root: string, autoUpdate: boolean): void {
   const oldSkillPath = path.join(configDir, "skills", "catchem-collection.md");
   try { fs.unlinkSync(oldSkillPath); } catch {}
 
+  const launchScript = path.join(root, "scripts", "launch-collection.mjs");
+  const isWindows = process.platform === "win32";
+  const isMac = process.platform === "darwin";
+
+  let openCmd: string;
+  if (isWindows) {
+    openCmd = `start "CatchEm Collection" cmd /c "node \\"${launchScript}\\" & pause"`;
+  } else if (isMac) {
+    openCmd = `osascript -e 'tell app "Terminal" to do script "node \\"${launchScript}\\""'`;
+  } else {
+    openCmd = `x-terminal-emulator -e "node \\"${launchScript}\\""  2>/dev/null || gnome-terminal -- node "${launchScript}" 2>/dev/null || xterm -e "node \\"${launchScript}\\""`;
+  }
+
   const collectionSkill = `---
 name: catchem-collection
 description: View your CatchEm creature collection, evolution stages, and discovery progress
 ---
 
-Run the following command to open the CatchEm TUI collection viewer:
+Open the CatchEm TUI collection viewer in a new terminal window:
 
 \`\`\`bash
-node "${path.join(root, "scripts", "launch-collection.mjs")}"
+${openCmd}
 \`\`\`
 
-This launches an interactive terminal UI. Run it with the Bash tool.
+This opens a new terminal with an interactive UI where the user can browse their caught creatures. Do NOT run it inside the current Bash tool — it must open in a separate terminal window.
 `;
 
   fs.writeFileSync(
