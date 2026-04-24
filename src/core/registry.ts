@@ -1,9 +1,19 @@
 import path from "path";
+import fs from "fs";
+import { fileURLToPath } from "url";
 import { CreatureDefinition, RARITY_WEIGHTS } from "./types";
 
-const creaturesPath = path.join(__dirname, "../../creatures/creatures.json");
+/* eslint-disable @typescript-eslint/ban-ts-comment */
+// @ts-ignore: __dirname available in CJS; construct equivalent for ESM
+const _dir: string = typeof __dirname !== "undefined"
+  ? __dirname
+  // @ts-ignore
+  : path.dirname(fileURLToPath(import.meta.url));
+/* eslint-enable @typescript-eslint/ban-ts-comment */
+
+const creaturesPath = path.join(_dir, "../../creatures/creatures.json");
 const creatures: CreatureDefinition[] = JSON.parse(
-  require("fs").readFileSync(creaturesPath, "utf8")
+  fs.readFileSync(creaturesPath, "utf8")
 );
 const creatureMap = new Map(creatures.map((c) => [c.id, c]));
 

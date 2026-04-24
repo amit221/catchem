@@ -10,17 +10,24 @@
     "build": "tsc",
     "build:all": "tsc && npm run bundle",
     "bundle": "esbuild src/cli/index.ts --bundle --platform=node --format=cjs --target=node20 --outfile=dist/catchem.js --allow-overwrite",
-    "test": "jest",
-    "test:watch": "jest --watch",
+    "test": "node --experimental-vm-modules node_modules/.bin/jest",
+    "test:watch": "node --experimental-vm-modules node_modules/.bin/jest --watch",
     "dev": "tsc --watch"
   },
-  "keywords": ["game", "terminal", "creatures", "collection", "cli"],
+  "keywords": [
+    "game",
+    "terminal",
+    "creatures",
+    "collection",
+    "cli"
+  ],
   "license": "MIT",
   "devDependencies": {
     "@types/jest": "^29.5.12",
     "@types/node": "^20.14.0",
     "@types/react": "^18.3.0",
     "esbuild": "^0.24.0",
+    "ink-testing-library": "^4.0.0",
     "jest": "^29.7.0",
     "ts-jest": "^29.1.4",
     "ts-node": "^10.9.2",
