@@ -1,0 +1,362 @@
+[
+  {
+    "id": "zappik",
+    "name": "Zappik",
+    "theme": "elemental-beasts",
+    "rarity": "common",
+    "description": "Shorts out your keyboard with a single sneeze.",
+    "art": [
+      "  ╭──────╮  ",
+      "  │◕    ◕│  ",
+      "  │  ──  │  ",
+      " ⚡╰──────╯⚡",
+      "  ╱▬▬▬▬▬▬╲  ",
+      " ⚡  ~~~~  ⚡"
+    ]
+  },
+  {
+    "id": "blazard",
+    "name": "Blazard",
+    "theme": "elemental-beasts",
+    "rarity": "common",
+    "description": "Overheats your CPU just by existing nearby.",
+    "art": [
+      "   ╭────╮   ",
+      "  ╱│◉  ◉│╲  ",
+      " ▓ │ ▬▬ │ ▓ ",
+      "  ╲╰────╯╱  ",
+      "  ╱▓▓▓▓▓▓╲  ",
+      " ★  ~~~~  ★ "
+    ]
+  },
+  {
+    "id": "aquashell",
+    "name": "Aquashell",
+    "theme": "elemental-beasts",
+    "rarity": "uncommon",
+    "description": "Floods your logs with a gentle tidal wave.",
+    "art": [
+      " ╭──────────╮",
+      " │◕        ◕│",
+      " │  ~~~~~~  │",
+      " ╰──────────╯",
+      "╱╱ ▓▓▓▓▓▓ ╲╲",
+      "~~ ~~~~~~ ~~"
+    ]
+  },
+  {
+    "id": "thornbloom",
+    "name": "Thornbloom",
+    "theme": "elemental-beasts",
+    "rarity": "uncommon",
+    "description": "Growing quietly in the roots of your source tree.",
+    "art": [
+      " ★  ╭──╮  ★ ",
+      "╱╲  │◕◕│  ╱╲",
+      "│╲  │ ─ │  ╱│",
+      "╰─╮╰────╯╭─╯",
+      "  ╰──────╯  ",
+      "  ╱▓╱╲▓╱╲  "
+    ]
+  },
+  {
+    "id": "spectrex",
+    "name": "Spectrex",
+    "theme": "elemental-beasts",
+    "rarity": "rare",
+    "description": "Haunts your dead code and refuses to be refactored away.",
+    "art": [
+      "  ░╭──────╮░  ",
+      " ░ │◉    ◉│ ░",
+      "░  │  ──  │  ░",
+      " ░ ╰──────╯ ░",
+      "  ░╱╲░░░╱╲░  ",
+      "   ░░░░░░░░  "
+    ]
+  },
+  {
+    "id": "arcanox",
+    "name": "Arcanox",
+    "theme": "elemental-beasts",
+    "rarity": "epic",
+    "description": "Ancient guardian that has watched over the kernel since boot time.",
+    "art": [
+      "◆╭══════════╮◆",
+      "║│◉  ══  ◉│║",
+      "║│  ◆──◆  │║",
+      "◆╰══════════╯◆",
+      " ╱▓▓▓▓▓▓▓▓╲ ",
+      "◆ ★ ════ ★ ◆"
+    ]
+  },
+  {
+    "id": "bladewing",
+    "name": "Bladewing",
+    "theme": "galactic-warriors",
+    "rarity": "common",
+    "description": "Slices through spaghetti code with elegant precision.",
+    "art": [
+      "  ╭────────╮  ",
+      " ╱│ ◕    ◕│╲ ",
+      "─ │   ──   │ ─",
+      " ╲╰────────╯╱ ",
+      "  ╱▬──────▬╲  ",
+      " ★   ════   ★ "
+    ]
+  },
+  {
+    "id": "rustbot",
+    "name": "Rustbot",
+    "theme": "galactic-warriors",
+    "rarity": "common",
+    "description": "Beeps and boops at every syntax error it encounters.",
+    "art": [
+      " ╔══════════╗ ",
+      " ║●        ●║ ",
+      " ║  ══════  ║ ",
+      " ╚══════════╝ ",
+      " ╱▓▬▬▬▬▬▬▓╲ ",
+      " │  ~~~~~~  │ "
+    ]
+  },
+  {
+    "id": "swampwise",
+    "name": "Swampwise",
+    "theme": "galactic-warriors",
+    "rarity": "uncommon",
+    "description": "Speaks in reversed conditionals, it does. Confusing, this is.",
+    "art": [
+      "   ╭──────╮   ",
+      "  ╱│◉    ◉│╲  ",
+      " │ │  ──  │ │ ",
+      "  ╲╰──────╯╱  ",
+      "   ╱▓▓──▓▓╲   ",
+      "  ★  ~~~~  ★  "
+    ]
+  },
+  {
+    "id": "scrapshot",
+    "name": "Scrapshot",
+    "theme": "galactic-warriors",
+    "rarity": "uncommon",
+    "description": "Hot-patches production at 3am with a crooked grin.",
+    "art": [
+      "  ╭──────────╮ ",
+      "  │◕  ╭─╮  ◕│ ",
+      "  │   │▬│   │ ",
+      "  ╰───╯ ╰───╯ ",
+      " ╱▬▬▬▬▬▬▬▬▬╲ ",
+      " ★  ======  ★ "
+    ]
+  },
+  {
+    "id": "voidhelm",
+    "name": "Voidhelm",
+    "theme": "galactic-warriors",
+    "rarity": "rare",
+    "description": "Force-pushes to main and feels nothing.",
+    "art": [
+      " ╔════════════╗",
+      " ║◉          ◉║",
+      " ║    ════    ║",
+      " ╚════════════╝",
+      "  ╱▓▓▓▓▓▓▓▓╲  ",
+      "  ╱  ══════  ╲ "
+    ]
+  },
+  {
+    "id": "nebulord",
+    "name": "Nebulord",
+    "theme": "galactic-warriors",
+    "rarity": "legendary",
+    "description": "Corrupts all data across every branch in the galaxy.",
+    "art": [
+      "★╔══════════╗★",
+      "║│◉  ██  ◉│║",
+      "║│ ◆════◆ │║",
+      "★╚══════════╝★",
+      "╱▓▓▓▓▓▓▓▓▓▓╲",
+      "★ ◆════════◆ ★"
+    ]
+  },
+  {
+    "id": "thunderox",
+    "name": "Thunderox",
+    "theme": "marvel-heroes",
+    "rarity": "common",
+    "description": "Hammers your build process until it submits.",
+    "art": [
+      "  ╭──────────╮ ",
+      " ╱│◕        ◕│╲",
+      "⚡ │    ──    │ ⚡",
+      " ╲╰──────────╯╱",
+      "  ╱▬▬▬▬▬▬▬▬╲  ",
+      " ⚡  ~~~~~~~~ ⚡"
+    ]
+  },
+  {
+    "id": "ironclash",
+    "name": "Ironclash",
+    "theme": "marvel-heroes",
+    "rarity": "common",
+    "description": "Automates everything, including automating the automation.",
+    "art": [
+      " ╔══════════╗  ",
+      " ║◉   ██  ◉║  ",
+      " ║  ══════  ║  ",
+      " ╚══════════╝  ",
+      " ╱▓▬▬▬▬▬▬▓╲  ",
+      " ║  ══════  ║  "
+    ]
+  },
+  {
+    "id": "frostbow",
+    "name": "Frostbow",
+    "theme": "marvel-heroes",
+    "rarity": "uncommon",
+    "description": "Never misses a target DOM element. Ever.",
+    "art": [
+      "  ╭────────╮   ",
+      " ╱│◕      ◕│╲  ",
+      "─ │  ~~~~  │ ─ ",
+      " ╲╰────────╯╱  ",
+      "  ╱──────────╲ ",
+      "  ◇  ~~~~~~  ◇ "
+    ]
+  },
+  {
+    "id": "shieldark",
+    "name": "Shieldark",
+    "theme": "marvel-heroes",
+    "rarity": "uncommon",
+    "description": "Guards your test coverage with patriotic stubbornness.",
+    "art": [
+      "  ╭──────────╮ ",
+      " ╱│◉        ◉│╲",
+      "█ │   ════   │ █",
+      " ╲╰──────────╯╱",
+      " ╱▓▓▓▓▓▓▓▓▓▓╲ ",
+      " ★   ══════   ★"
+    ]
+  },
+  {
+    "id": "sorceron",
+    "name": "Sorceron",
+    "theme": "marvel-heroes",
+    "rarity": "rare",
+    "description": "Opens portals between branches. Merge conflicts ensue.",
+    "art": [
+      " ◆╭──────────╮◆",
+      "  │◉  ~~~~  ◉│  ",
+      "  │  ◆────◆  │  ",
+      " ◆╰──────────╯◆",
+      "  ╱◇◇◇◇◇◇◇◇╲  ",
+      " ◆  ◆════◆  ◆ "
+    ]
+  },
+  {
+    "id": "cosmojaw",
+    "name": "Cosmojaw",
+    "theme": "marvel-heroes",
+    "rarity": "epic",
+    "description": "Snaps away exactly half your test suite with a smirk.",
+    "art": [
+      "◆╭════════════╮◆",
+      "║│█   ██   █│║",
+      "║│  ◆════◆  │║",
+      "◆╰════════════╯◆",
+      " ╱▓▓▓▓▓▓▓▓▓▓╲ ",
+      "◆ ★ ════════ ★ ◆"
+    ]
+  },
+  {
+    "id": "shadowstep",
+    "name": "Shadowstep",
+    "theme": "legends-arena",
+    "rarity": "common",
+    "description": "Silently deletes your code. You won't notice until prod.",
+    "art": [
+      "  ░╭────────╮░  ",
+      " ░ │◕      ◕│ ░ ",
+      "░  │  ────  │  ░",
+      " ░ ╰────────╯ ░ ",
+      "  ░╱▓▓▓▓▓▓╲░  ",
+      "   ░ ~~~~ ░    "
+    ]
+  },
+  {
+    "id": "hexweaver",
+    "name": "Hexweaver",
+    "theme": "legends-arena",
+    "rarity": "common",
+    "description": "Illuminates your dark mode with blinding radiance.",
+    "art": [
+      " ✦╭──────────╮✦",
+      "  │◕  ~~~~  ◕│  ",
+      "  │  ──────  │  ",
+      " ✦╰──────────╯✦",
+      "  ╱✦✦✦✦✦✦✦✦╲  ",
+      " ✦  ~~~~~~~~  ✦ "
+    ]
+  },
+  {
+    "id": "frostquiver",
+    "name": "Frostquiver",
+    "theme": "legends-arena",
+    "rarity": "uncommon",
+    "description": "Arrows freeze your deploys mid-flight.",
+    "art": [
+      "  ╭──────────╮  ",
+      " ╱│◕  ~~~~  ◕│╲ ",
+      "─ │  ──────  │ ─",
+      " ╲╰──────────╯╱ ",
+      "  ◇──────────◇  ",
+      "  ╱  ~~~~~~  ╲  "
+    ]
+  },
+  {
+    "id": "ironhide",
+    "name": "Ironhide",
+    "theme": "legends-arena",
+    "rarity": "uncommon",
+    "description": "Blocks all pull requests. Immovable. Unmerged.",
+    "art": [
+      " ╔════════════╗ ",
+      " ║█   ████   █║ ",
+      " ║  ════════  ║ ",
+      " ╚════════════╝ ",
+      " ╱▓▓▓▓▓▓▓▓▓▓╲ ",
+      " █  ════════  █ "
+    ]
+  },
+  {
+    "id": "voidmaw",
+    "name": "Voidmaw",
+    "theme": "legends-arena",
+    "rarity": "rare",
+    "description": "Devours your available memory one byte at a time.",
+    "art": [
+      "  ░╭──────────╮░",
+      " ░ │◉        ◉│ ░",
+      "░  │  ██████  │  ░",
+      " ░ ╰──────────╯ ░",
+      "  ░╱▓▓▓▓▓▓▓▓╲░  ",
+      "   ░░░░░░░░░░░░  "
+    ]
+  },
+  {
+    "id": "runeking",
+    "name": "Runeking",
+    "theme": "legends-arena",
+    "rarity": "mythic",
+    "description": "Rewrites reality... and your entire codebase while you sleep.",
+    "art": [
+      "★╔══════════╗★",
+      "║│◉  ◆◆◆  ◉│║",
+      "║│◆ ════ ◆│║",
+      "★╚══════════╝★",
+      "╱▓◆▓◆▓◆▓◆▓╲",
+      "★◆ ════════ ◆★"
+    ]
+  }
+]
