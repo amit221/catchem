@@ -6,16 +6,9 @@ import { fileURLToPath } from "url";
 import { execSync } from "child_process";
 
 function getCatchemRoot(): string {
-  try {
-    // ESM context
-    const __filename = fileURLToPath(import.meta.url);
-    const __dirname = path.dirname(__filename);
-    return path.join(__dirname, "../..");
-  } catch {
-    // CJS context (compiled output)
-    // eslint-disable-next-line @typescript-eslint/no-var-requires, no-undef
-    return path.join((global as any).__dirname ?? __dirname, "../..");
-  }
+  const __filename = fileURLToPath(import.meta.url);
+  const __dirname = path.dirname(__filename);
+  return path.join(__dirname, "../..");
 }
 
 function getTickCommand(root: string): string {
@@ -372,7 +365,7 @@ export async function runSetup(auto: boolean = false): Promise<void> {
 
   // Determine auto-update preference
   let autoUpdate = false;
-  if (!auto) {
+  if (!auto && process.stdin.isTTY) {
     const answer = await askQuestion(
       "Enable auto-updates? CatchEm will check for updates daily. (y/n): ",
     );

@@ -1,7 +1,7 @@
 import fs from "fs";
 import path from "path";
 import os from "os";
-import { GameState, INITIAL_CATCH_RATE } from "./types";
+import { GameState, INITIAL_CATCH_RATE } from "./types.js";
 
 function defaultState(): GameState {
   return {

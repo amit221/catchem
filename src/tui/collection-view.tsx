@@ -1,11 +1,11 @@
 import React, { useState } from "react";
 import { Box, Text, useInput } from "ink";
-import { GameState, CreatureDefinition } from "../core/types";
-import { getAllCreatures } from "../core/registry";
-import { getNextLevelThreshold } from "../core/leveling";
-import { CreatureCard, getRarityColor } from "./creature-card";
-import { ProgressBar } from "./progress-bar";
-import { useAnimation } from "./use-animation";
+import { GameState, CreatureDefinition } from "../core/types.js";
+import { getAllCreatures } from "../core/registry.js";
+import { getNextLevelThreshold } from "../core/leveling.js";
+import { CreatureCard, getRarityColor } from "./creature-card.js";
+import { ProgressBar } from "./progress-bar.js";
+import { useAnimation } from "./use-animation.js";
 
 const VIEWPORT_SIZE = 5;
 

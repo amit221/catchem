@@ -1,7 +1,7 @@
-import { GameState, CatchOptions, CatchResult, INITIAL_CATCH_RATE, BASE_CATCH_RATE, CATCH_RATE_INCREMENT } from "./types";
-import { pickRandomCreature } from "./registry";
-import { getLevel } from "./leveling";
-import { getRandomFlavorText } from "./flavor-text";
+import { GameState, CatchOptions, CatchResult, INITIAL_CATCH_RATE, BASE_CATCH_RATE, CATCH_RATE_INCREMENT } from "./types.js";
+import { pickRandomCreature } from "./registry.js";
+import { getLevel } from "./leveling.js";
+import { getRandomFlavorText } from "./flavor-text.js";
 
 export function tryCatch(
   state: GameState,

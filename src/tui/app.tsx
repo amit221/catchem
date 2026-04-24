@@ -1,7 +1,7 @@
 import React from "react";
 import { render } from "ink";
-import { CollectionView } from "./collection-view";
-import { StateManager } from "../core/state";
+import { CollectionView } from "./collection-view.js";
+import { StateManager } from "../core/state.js";
 
 export function launchTUI(): void {
   const mgr = new StateManager();

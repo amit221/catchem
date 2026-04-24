@@ -19,7 +19,7 @@
     "test": "node --experimental-vm-modules node_modules/jest/bin/jest.js",
     "test:watch": "node --experimental-vm-modules node_modules/jest/bin/jest.js --watch",
     "dev": "tsc --watch",
-    "dev:setup": "tsc && node dist/cli/index.js setup && echo '✅ Built + hooks installed. Start coding to catch creatures.'"
+    "dev:setup": "tsc && node dist/cli/index.js setup"
   },
   "keywords": [
     "game",

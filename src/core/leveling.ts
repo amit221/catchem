@@ -1,4 +1,4 @@
-import { LEVEL_THRESHOLDS, MAX_LEVEL } from "./types";
+import { LEVEL_THRESHOLDS, MAX_LEVEL } from "./types.js";
 
 export function getLevel(catchCount: number): number {
   if (catchCount <= 0) return 0;

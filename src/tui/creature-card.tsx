@@ -1,8 +1,8 @@
 import React from "react";
 import { Box, Text } from "ink";
-import { CreatureDefinition, Rarity, RARITY_LABELS } from "../core/types";
-import { ProgressBar } from "./progress-bar";
-import { useAnimation } from "./use-animation";
+import { CreatureDefinition, Rarity, RARITY_LABELS } from "../core/types.js";
+import { ProgressBar } from "./progress-bar.js";
+import { useAnimation } from "./use-animation.js";
 
 type InkColor = "white" | "green" | "blue" | "magenta" | "yellow" | "red" | "cyan" | "gray";
 

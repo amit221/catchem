@@ -1,6 +1,6 @@
 #!/usr/bin/env node
 
-import { runSetup } from "./setup";
+import { runSetup } from "./setup.js";
 
 const args = process.argv.slice(2);
 const command = args[0];
@@ -18,7 +18,7 @@ Usage:
 }
 
 async function collection(): Promise<void> {
-  const { launchTUI } = await import("../tui/app");
+  const { launchTUI } = await import("../tui/app.js");
   launchTUI();
 }
 

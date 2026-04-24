@@ -1,6 +1,6 @@
-import { CatchResult, RARITY_LABELS, LEVEL_THRESHOLDS } from "./types";
-import { getAllCreatures } from "./registry";
-import { getNextLevelThreshold, getCatchesForNextLevel } from "./leveling";
+import { CatchResult, RARITY_LABELS, LEVEL_THRESHOLDS } from "./types.js";
+import { getAllCreatures } from "./registry.js";
+import { getNextLevelThreshold, getCatchesForNextLevel } from "./leveling.js";
 
 export function formatCatchNotification(result: CatchResult, uniqueCount: number): string {
   const totalCreatures = getAllCreatures().length;
