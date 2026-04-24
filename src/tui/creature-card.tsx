@@ -23,7 +23,7 @@ const RARITY_ICONS: Record<Rarity, string> = {
   mythic: "🟥",
 };
 
-export const CARD_WIDTH = 22;
+export const CARD_WIDTH = 26;
 const ART_LINES = 5;
 
 export function getRarityColor(rarity: Rarity): InkColor {

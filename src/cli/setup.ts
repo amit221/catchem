@@ -111,7 +111,7 @@ function installClaudeCode(root: string, autoUpdate: boolean): void {
 
   let openCmd: string;
   if (isWindows) {
-    openCmd = `cmd.exe /c "start \\"CatchEm Collection\\" node ${launchScript}"`;
+    openCmd = `cmd.exe /c "start /max \\"CatchEm Collection\\" node ${launchScript}"`;
   } else if (isMac) {
     openCmd = `open -a Terminal "${launchScript}"`;
   } else {

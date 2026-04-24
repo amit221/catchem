@@ -55,7 +55,7 @@ describe("CollectionView", () => {
   it("shows scroll indicator when more below", () => {
     const { lastFrame } = render(<CollectionView state={emptyState()} />);
     // With 44 creatures, 3 per row = 15 rows, showing 2 at a time
-    expect(lastFrame()).toContain("▼");
+    expect(lastFrame()).toContain("↓↓↓");
   });
 
   it("shows cards in grid layout (multiple cards per row)", () => {

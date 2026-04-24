@@ -179,7 +179,7 @@ export function CollectionView({ state }: CollectionViewProps): React.ReactEleme
         {visibleRows.map((row, rowIdx) => {
           const actualRowIdx = startRow + rowIdx;
           return (
-            <Box key={actualRowIdx} flexDirection="row">
+            <Box key={actualRowIdx} flexDirection="row" justifyContent="center">
               {row.map((creature, colIdx) => {
                 const creatureGlobalIdx = actualRowIdx * COLS + colIdx;
                 const entry = state.creatures[creature.id];
@@ -208,8 +208,8 @@ export function CollectionView({ state }: CollectionViewProps): React.ReactEleme
 
       {/* Scroll indicator bottom */}
       {hasBelow && (
-        <Box justifyContent="center">
-          <Text color="gray">{"▼ more below"}</Text>
+        <Box justifyContent="center" marginTop={1}>
+          <Text color="cyan" bold>{`  ↓↓↓ Scroll down for more creatures (${totalRows - endRow - 1} more rows) ↓↓↓`}</Text>
         </Box>
       )}
     </Box>
