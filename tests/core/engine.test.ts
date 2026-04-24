@@ -108,4 +108,19 @@ describe("tryCatch", () => {
     tryCatch(state, { rng: () => 0.9 });
     expect(state.currentCatchRate).toBeCloseTo(BASE_CATCH_RATE + 3 * CATCH_RATE_INCREMENT);
   });
+
+  it("treats rng exactly at catch rate as a miss", () => {
+    const state = emptyState();
+    state.currentCatchRate = 0.5;
+    const result = tryCatch(state, { rng: () => 0.5 });
+    expect(result).toBeNull();
+    expect(state.currentCatchRate).toBeCloseTo(0.55);
+  });
+
+  it("works with no options argument", () => {
+    const state = emptyState();
+    // First catch should always succeed (rate = 1.0)
+    const result = tryCatch(state);
+    expect(result).not.toBeNull();
+  });
 });

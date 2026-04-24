@@ -58,4 +58,14 @@ describe("StateManager", () => {
     mgr.save(state);
     expect(fs.existsSync(filePath)).toBe(true);
   });
+
+  it("returns default state for JSON without version field", () => {
+    const filePath = tempStatePath();
+    fs.mkdirSync(path.dirname(filePath), { recursive: true });
+    fs.writeFileSync(filePath, JSON.stringify({ foo: "bar" }));
+    const mgr = new StateManager(filePath);
+    const state = mgr.load();
+    expect(state.version).toBe(1);
+    expect(state.totalCatches).toBe(0);
+  });
 });

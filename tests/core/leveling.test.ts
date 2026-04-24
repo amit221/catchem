@@ -32,6 +32,10 @@ describe("getLevel", () => {
   it("returns 0 for 0 catches", () => {
     expect(getLevel(0)).toBe(0);
   });
+
+  it("returns 0 for negative catches", () => {
+    expect(getLevel(-5)).toBe(0);
+  });
 });
 
 describe("getNextLevelThreshold", () => {
@@ -45,6 +49,10 @@ describe("getNextLevelThreshold", () => {
 
   it("returns null for max level", () => {
     expect(getNextLevelThreshold(13)).toBeNull();
+  });
+
+  it("returns 1 for level 0", () => {
+    expect(getNextLevelThreshold(0)).toBe(1);
   });
 });
 

@@ -62,4 +62,16 @@ describe("formatCatchNotification", () => {
     const output = formatCatchNotification(result, 10);
     expect(output).toContain("was eating your semicolons");
   });
+
+  it("shows MAX LEVEL for max level creature", () => {
+    const result = makeCatchResult({ leveledUp: true, level: 13, catchCount: 9587 });
+    const output = formatCatchNotification(result, 10);
+    expect(output).toContain("MAX LEVEL");
+  });
+
+  it("shows progress bar in normal catch", () => {
+    const result = makeCatchResult({ catchCount: 5, level: 2 });
+    const output = formatCatchNotification(result, 10);
+    expect(output).toContain("█");
+  });
 });

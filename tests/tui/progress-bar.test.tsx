@@ -17,4 +17,14 @@ describe("ProgressBar", () => {
     const { lastFrame } = render(<ProgressBar current={5} total={10} />);
     expect(lastFrame()).toContain("█████░░░░░");
   });
+
+  it("handles total of 0", () => {
+    const { lastFrame } = render(<ProgressBar current={0} total={0} />);
+    expect(lastFrame()).toContain("░░░░░░░░░░");
+  });
+
+  it("clamps when current exceeds total", () => {
+    const { lastFrame } = render(<ProgressBar current={15} total={10} />);
+    expect(lastFrame()).toContain("██████████");
+  });
 });
