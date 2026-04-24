@@ -1,7 +1,9 @@
 import fs from "fs";
 import path from "path";
 import os from "os";
+import readline from "readline";
 import { fileURLToPath } from "url";
+import { execSync } from "child_process";
 
 function getCatchemRoot(): string {
   try {
@@ -16,36 +18,86 @@ function getCatchemRoot(): string {
   }
 }
 
-function installClaudeCode(): void {
+function getTickCommand(root: string): string {
+  return `node "${path.join(root, "scripts", "tick.js")}"`;
+}
+
+function getUpdateCommand(): string {
+  return `node -e "const fs=require('fs'),p=require('path'),os=require('os');const f=p.join(os.homedir(),'.catchem','last-update-check');try{const t=Number(fs.readFileSync(f,'utf8'));if(Date.now()-t<86400000)process.exit(0)}catch{}try{require('child_process').execSync('npm update -g catchem',{stdio:'ignore'});fs.mkdirSync(p.dirname(f),{recursive:true});fs.writeFileSync(f,Date.now().toString())}catch{}"`;
+}
+
+// ---------------------------------------------------------------------------
+// Config persistence
+// ---------------------------------------------------------------------------
+
+function getConfigPath(): string {
+  return path.join(os.homedir(), ".catchem", "config.json");
+}
+
+function loadConfig(): Record<string, unknown> {
+  try {
+    return JSON.parse(fs.readFileSync(getConfigPath(), "utf8"));
+  } catch {
+    return {};
+  }
+}
+
+function saveConfig(config: Record<string, unknown>): void {
+  const dir = path.dirname(getConfigPath());
+  fs.mkdirSync(dir, { recursive: true });
+  fs.writeFileSync(getConfigPath(), JSON.stringify(config, null, 2));
+}
+
+// ---------------------------------------------------------------------------
+// Helper: set hooks on a JSON structure, deduplicating catchem entries
+// ---------------------------------------------------------------------------
+
+function setHooks(
+  obj: any,
+  hooksKey: string,
+  events: Record<string, string>,
+): void {
+  if (!obj[hooksKey]) obj[hooksKey] = {};
+  for (const [event, command] of Object.entries(events)) {
+    if (!obj[hooksKey][event]) obj[hooksKey][event] = [];
+    obj[hooksKey][event] = (obj[hooksKey][event] as any[]).filter(
+      (h: any) => !JSON.stringify(h).includes("catchem"),
+    );
+    obj[hooksKey][event].push({ type: "command", command });
+  }
+}
+
+// ---------------------------------------------------------------------------
+// Platform adapters
+// ---------------------------------------------------------------------------
+
+function installClaudeCode(root: string, autoUpdate: boolean): void {
   const configDir = path.join(os.homedir(), ".claude");
   const settingsPath = path.join(configDir, "settings.json");
-  const root = getCatchemRoot();
 
   let settings: any = {};
   try {
     settings = JSON.parse(fs.readFileSync(settingsPath, "utf8"));
   } catch {}
 
-  if (!settings.hooks) settings.hooks = {};
+  const tick = getTickCommand(root);
 
-  const tickCommand = `node "${path.join(root, "scripts", "tick.js")}"`;
-  const updateCommand = `node -e "const fs=require('fs'),p=require('path'),os=require('os');const f=p.join(os.homedir(),'.catchem','last-update-check');try{const t=Number(fs.readFileSync(f,'utf8'));if(Date.now()-t<86400000)process.exit(0)}catch{}try{require('child_process').execSync('npm update -g catchem',{stdio:'ignore'});fs.mkdirSync(p.dirname(f),{recursive:true});fs.writeFileSync(f,Date.now().toString())}catch{}"`;
+  const events: Record<string, string> = {
+    UserPromptSubmit: tick,
+    PostToolUse: tick,
+    Stop: tick,
+    SessionStart: tick,
+  };
 
-  const hookEvents = ["UserPromptSubmit", "PostToolUse", "Stop"];
-  for (const event of hookEvents) {
-    if (!settings.hooks[event]) settings.hooks[event] = [];
-    settings.hooks[event] = settings.hooks[event].filter(
-      (h: any) => !JSON.stringify(h).includes("catchem")
-    );
-    settings.hooks[event].push({ type: "command", command: tickCommand });
+  setHooks(settings, "hooks", events);
+
+  // Auto-update hook in SessionStart
+  if (autoUpdate) {
+    settings.hooks.SessionStart.push({
+      type: "command",
+      command: getUpdateCommand(),
+    });
   }
-
-  if (!settings.hooks.SessionStart) settings.hooks.SessionStart = [];
-  settings.hooks.SessionStart = settings.hooks.SessionStart.filter(
-    (h: any) => !JSON.stringify(h).includes("catchem")
-  );
-  settings.hooks.SessionStart.push({ type: "command", command: tickCommand });
-  settings.hooks.SessionStart.push({ type: "command", command: updateCommand });
 
   fs.writeFileSync(settingsPath, JSON.stringify(settings, null, 2));
 
@@ -67,26 +119,234 @@ node "${path.join(root, "scripts", "launch-collection.mjs")}"
 This launches an interactive terminal UI. Run it with the Bash tool.
 `;
 
-  fs.writeFileSync(path.join(skillsDir, "catchem-collection.md"), collectionSkill);
+  fs.writeFileSync(
+    path.join(skillsDir, "catchem-collection.md"),
+    collectionSkill,
+  );
 }
+
+function installCursor(root: string, autoUpdate: boolean): void {
+  const hooksDir = path.join(os.homedir(), ".cursor", "hooks");
+  fs.mkdirSync(hooksDir, { recursive: true });
+  const hooksPath = path.join(hooksDir, "hooks.json");
+
+  let config: any = {};
+  try {
+    config = JSON.parse(fs.readFileSync(hooksPath, "utf8"));
+  } catch {}
+
+  const tick = getTickCommand(root);
+
+  const events: Record<string, string> = {
+    postToolUse: tick,
+    stop: tick,
+    sessionStart: tick,
+  };
+
+  setHooks(config, "hooks", events);
+
+  if (autoUpdate) {
+    config.hooks.sessionStart.push({
+      type: "command",
+      command: getUpdateCommand(),
+    });
+  }
+
+  fs.writeFileSync(hooksPath, JSON.stringify(config, null, 2));
+}
+
+function installCopilot(root: string, autoUpdate: boolean): void {
+  const hooksDir = path.join(os.homedir(), ".github", "hooks");
+  fs.mkdirSync(hooksDir, { recursive: true });
+  const hooksPath = path.join(hooksDir, "catchem.json");
+
+  const tick = getTickCommand(root);
+
+  const events: Record<string, string> = {
+    userPromptSubmitted: tick,
+    postToolUse: tick,
+    sessionStart: tick,
+  };
+
+  const config: any = { version: 1 };
+  setHooks(config, "hooks", events);
+
+  if (autoUpdate) {
+    config.hooks.sessionStart.push({
+      type: "command",
+      command: getUpdateCommand(),
+    });
+  }
+
+  fs.writeFileSync(hooksPath, JSON.stringify(config, null, 2));
+}
+
+function installCodex(root: string, autoUpdate: boolean): void {
+  const configDir = path.join(os.homedir(), ".codex");
+  fs.mkdirSync(configDir, { recursive: true });
+  const hooksPath = path.join(configDir, "hooks.json");
+
+  let config: any = {};
+  try {
+    config = JSON.parse(fs.readFileSync(hooksPath, "utf8"));
+  } catch {}
+
+  const tick = getTickCommand(root);
+
+  const events: Record<string, string> = {
+    UserPromptSubmit: tick,
+    PostToolUse: tick,
+    Stop: tick,
+  };
+
+  setHooks(config, "hooks", events);
+
+  if (autoUpdate) {
+    if (!config.hooks.SessionStart) config.hooks.SessionStart = [];
+    config.hooks.SessionStart = (config.hooks.SessionStart as any[]).filter(
+      (h: any) => !JSON.stringify(h).includes("catchem"),
+    );
+    config.hooks.SessionStart.push({
+      type: "command",
+      command: getUpdateCommand(),
+    });
+  }
+
+  fs.writeFileSync(hooksPath, JSON.stringify(config, null, 2));
+}
+
+function installOpenCode(root: string, _autoUpdate: boolean): void {
+  const pluginsDir = path.join(
+    os.homedir(),
+    ".config",
+    "opencode",
+    "plugins",
+  );
+  fs.mkdirSync(pluginsDir, { recursive: true });
+  const pluginPath = path.join(pluginsDir, "catchem.mjs");
+
+  const tick = getTickCommand(root).replace(/\\/g, "\\\\");
+
+  const content = `export default async ({ client }) => ({
+  hooks: {
+    "tool.execute.after": async () => { require('child_process').execSync('${tick}', { stdio: 'inherit' }); },
+    "session.created": async () => { require('child_process').execSync('${tick}', { stdio: 'inherit' }); },
+    "chat.message": async () => { require('child_process').execSync('${tick}', { stdio: 'inherit' }); }
+  }
+});
+`;
+
+  fs.writeFileSync(pluginPath, content);
+}
+
+function installGemini(root: string, autoUpdate: boolean): void {
+  const hooksDir = path.join(os.homedir(), ".gemini", "hooks");
+  fs.mkdirSync(hooksDir, { recursive: true });
+  const hooksPath = path.join(hooksDir, "catchem.json");
+
+  let config: any = {};
+  try {
+    config = JSON.parse(fs.readFileSync(hooksPath, "utf8"));
+  } catch {}
+
+  const tick = getTickCommand(root);
+
+  const events: Record<string, string> = {
+    postToolUse: tick,
+    sessionStart: tick,
+  };
+
+  setHooks(config, "hooks", events);
+
+  if (autoUpdate) {
+    config.hooks.sessionStart.push({
+      type: "command",
+      command: getUpdateCommand(),
+    });
+  }
+
+  fs.writeFileSync(hooksPath, JSON.stringify(config, null, 2));
+}
+
+// ---------------------------------------------------------------------------
+// Platform detection
+// ---------------------------------------------------------------------------
 
 interface DetectedPlatform {
   name: string;
   detected: boolean;
-  install: () => void;
+  install: (root: string, autoUpdate: boolean) => void;
+}
+
+function ghCliExists(): boolean {
+  try {
+    execSync("gh --version", { stdio: "ignore" });
+    return true;
+  } catch {
+    return false;
+  }
 }
 
 function getAllPlatforms(): DetectedPlatform[] {
+  const home = os.homedir();
   return [
     {
       name: "Claude Code",
-      detected: fs.existsSync(path.join(os.homedir(), ".claude")),
+      detected: fs.existsSync(path.join(home, ".claude")),
       install: installClaudeCode,
+    },
+    {
+      name: "Cursor",
+      detected: fs.existsSync(path.join(home, ".cursor")),
+      install: installCursor,
+    },
+    {
+      name: "GitHub Copilot",
+      detected:
+        ghCliExists() ||
+        fs.existsSync(path.join(home, ".config", "github-copilot")),
+      install: installCopilot,
+    },
+    {
+      name: "Codex CLI",
+      detected: fs.existsSync(path.join(home, ".codex")),
+      install: installCodex,
+    },
+    {
+      name: "OpenCode",
+      detected: fs.existsSync(path.join(home, ".config", "opencode")),
+      install: installOpenCode,
+    },
+    {
+      name: "Gemini CLI",
+      detected: fs.existsSync(path.join(home, ".gemini")),
+      install: installGemini,
     },
   ];
 }
 
-export function runSetup(auto: boolean = false): void {
+// ---------------------------------------------------------------------------
+// Interactive prompt helper
+// ---------------------------------------------------------------------------
+
+function askQuestion(question: string): Promise<string> {
+  const rl = readline.createInterface({
+    input: process.stdin,
+    output: process.stdout,
+  });
+  return new Promise((resolve) => {
+    rl.question(question, (answer) => {
+      rl.close();
+      resolve(answer.trim().toLowerCase());
+    });
+  });
+}
+
+// ---------------------------------------------------------------------------
+// Main entry point
+// ---------------------------------------------------------------------------
+
+export async function runSetup(auto: boolean = false): Promise<void> {
   if (!auto) console.log("🎮 CatchEm Setup\n");
 
   const platforms = getAllPlatforms();
@@ -95,7 +355,9 @@ export function runSetup(auto: boolean = false): void {
   if (detected.length === 0) {
     if (!auto) {
       console.log("No supported platforms detected.");
-      console.log("Supported: Claude Code, Cursor, GitHub Copilot, Codex, OpenCode");
+      console.log(
+        "Supported: Claude Code, Cursor, GitHub Copilot, Codex, OpenCode, Gemini CLI",
+      );
     }
     return;
   }
@@ -108,10 +370,29 @@ export function runSetup(auto: boolean = false): void {
     console.log();
   }
 
+  // Determine auto-update preference
+  let autoUpdate = false;
+  if (!auto) {
+    const answer = await askQuestion(
+      "Enable auto-updates? CatchEm will check for updates daily. (y/n): ",
+    );
+    autoUpdate = answer === "y" || answer === "yes";
+  }
+
+  // Persist preference
+  const config = loadConfig();
+  config.autoUpdate = autoUpdate;
+  saveConfig(config);
+
+  const root = getCatchemRoot();
+
   for (const p of detected) {
-    p.install();
+    p.install(root, autoUpdate);
     if (!auto) console.log(`  ✅ ${p.name} — hooks & skills installed`);
   }
 
-  if (!auto) console.log("\n🎉 Setup complete! Creatures will start appearing as you code.");
+  if (!auto)
+    console.log(
+      "\n🎉 Setup complete! Creatures will start appearing as you code.",
+    );
 }

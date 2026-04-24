@@ -24,10 +24,10 @@ async function collection(): Promise<void> {
 
 switch (command) {
   case "setup":
-    runSetup(args.includes("--auto"));
+    void runSetup(args.includes("--auto"));
     break;
   case "collection":
-    collection();
+    void collection();
     break;
   case "help":
   case undefined:
