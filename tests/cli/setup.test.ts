@@ -39,7 +39,7 @@ describe("runSetup", () => {
 
   it("writes collection skill file", async () => {
     await runSetup(true);
-    const skillPath = path.join(tempHome, ".claude", "skills", "catchem-collection.md");
+    const skillPath = path.join(tempHome, ".claude", "skills", "catchem-collection", "SKILL.md");
     expect(fs.existsSync(skillPath)).toBe(true);
     const content = fs.readFileSync(skillPath, "utf8");
     expect(content).toContain("launch-collection.mjs");
