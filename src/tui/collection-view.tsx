@@ -3,11 +3,12 @@ import { Box, Text, useInput } from "ink";
 import { GameState, CreatureDefinition } from "../core/types.js";
 import { getAllCreatures } from "../core/registry.js";
 import { getNextLevelThreshold } from "../core/leveling.js";
-import { CreatureCard, getRarityColor } from "./creature-card.js";
+import { CreatureCard, getRarityColor, CARD_WIDTH } from "./creature-card.js";
 import { ProgressBar } from "./progress-bar.js";
 import { useAnimation } from "./use-animation.js";
 
-const VIEWPORT_SIZE = 5;
+const COLS = 3;
+const VISIBLE_ROWS = 2;
 
 const THEME_LABELS: Record<string, string> = {
   "elemental-beasts": "Elemental Beasts",
@@ -20,33 +21,13 @@ function formatThemeLabel(theme: string): string {
   return THEME_LABELS[theme] ?? theme;
 }
 
-/** Items in the flat list: either a theme header or a creature row */
-type ListItem =
-  | { kind: "theme"; theme: string }
-  | { kind: "creature"; creature: CreatureDefinition; index: number };
-
-function buildList(creatures: CreatureDefinition[]): ListItem[] {
-  const items: ListItem[] = [];
-  let currentTheme = "";
-  let idx = 0;
-  for (const c of creatures) {
-    if (c.theme !== currentTheme) {
-      currentTheme = c.theme;
-      items.push({ kind: "theme", theme: currentTheme });
-    }
-    items.push({ kind: "creature", creature: c, index: idx });
-    idx++;
+/** Chunk an array into groups of n */
+function chunk<T>(arr: T[], n: number): T[][] {
+  const rows: T[][] = [];
+  for (let i = 0; i < arr.length; i += n) {
+    rows.push(arr.slice(i, i + n));
   }
-  return items;
-}
-
-/** Map a creature index to the position of that creature in the flat list */
-function creatureIndexToListPos(list: ListItem[], creatureIdx: number): number {
-  for (let i = 0; i < list.length; i++) {
-    const item = list[i];
-    if (item.kind === "creature" && item.index === creatureIdx) return i;
-  }
-  return 0;
+  return rows;
 }
 
 interface DetailViewProps {
@@ -102,7 +83,11 @@ export function CollectionView({ state }: CollectionViewProps): React.ReactEleme
   const [detailCreature, setDetailCreature] = useState<CreatureDefinition | null>(null);
   const uniqueCount = Object.keys(state.creatures).length;
 
-  const list = buildList(allCreatures);
+  const rows = chunk(allCreatures, COLS);
+  const totalRows = rows.length;
+
+  const selectedRow = Math.floor(selectedIndex / COLS);
+  const selectedCol = selectedIndex % COLS;
 
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   useInput((input: string, key: any) => {
@@ -114,9 +99,29 @@ export function CollectionView({ state }: CollectionViewProps): React.ReactEleme
     }
 
     if (key.upArrow) {
-      setSelectedIndex((prev) => Math.max(0, prev - 1));
+      setSelectedIndex((prev) => {
+        const r = Math.floor(prev / COLS);
+        const c = prev % COLS;
+        if (r <= 0) return prev;
+        const newRow = r - 1;
+        const newIdx = newRow * COLS + Math.min(c, rows[newRow].length - 1);
+        return newIdx;
+      });
     }
     if (key.downArrow) {
+      setSelectedIndex((prev) => {
+        const r = Math.floor(prev / COLS);
+        const c = prev % COLS;
+        if (r >= totalRows - 1) return prev;
+        const newRow = r + 1;
+        const newIdx = newRow * COLS + Math.min(c, rows[newRow].length - 1);
+        return newIdx;
+      });
+    }
+    if (key.leftArrow) {
+      setSelectedIndex((prev) => Math.max(0, prev - 1));
+    }
+    if (key.rightArrow) {
       setSelectedIndex((prev) => Math.min(allCreatures.length - 1, prev + 1));
     }
     if (key.return) {
@@ -135,34 +140,16 @@ export function CollectionView({ state }: CollectionViewProps): React.ReactEleme
     return <DetailView creature={detailCreature} state={state} />;
   }
 
-  // Compute viewport window around selected creature in flat list
-  const selectedListPos = creatureIndexToListPos(list, selectedIndex);
-  const half = Math.floor(VIEWPORT_SIZE / 2);
+  // Compute visible row window: show VISIBLE_ROWS rows centered around selectedRow
+  const halfRows = Math.floor(VISIBLE_ROWS / 2);
+  let startRow = Math.max(0, selectedRow - halfRows);
+  const endRow = Math.min(totalRows - 1, startRow + VISIBLE_ROWS - 1);
+  startRow = Math.max(0, endRow - VISIBLE_ROWS + 1);
 
-  // We need to show VIEWPORT_SIZE creature rows (plus any theme headers in between).
-  // Find creature rows to display centered on selectedIndex.
-  const startCreature = Math.max(0, selectedIndex - half);
-  const endCreature = Math.min(allCreatures.length - 1, startCreature + VIEWPORT_SIZE - 1);
-  const adjustedStart = Math.max(0, endCreature - VIEWPORT_SIZE + 1);
+  const hasAbove = startRow > 0;
+  const hasBelow = endRow < totalRows - 1;
 
-  // Gather the list items in the viewport
-  const viewportItems: ListItem[] = [];
-  const startListPos = creatureIndexToListPos(list, adjustedStart);
-
-  // Include the theme header just before the first visible creature if it exists
-  if (startListPos > 0 && list[startListPos - 1].kind === "theme") {
-    viewportItems.push(list[startListPos - 1]);
-  }
-
-  let seenCreatures = 0;
-  for (let i = startListPos; i < list.length && seenCreatures < VIEWPORT_SIZE; i++) {
-    const item = list[i];
-    viewportItems.push(item);
-    if (item.kind === "creature") seenCreatures++;
-  }
-
-  const hasAbove = adjustedStart > 0;
-  const hasBelow = endCreature < allCreatures.length - 1;
+  const visibleRows = rows.slice(startRow, endRow + 1);
 
   return (
     <Box flexDirection="column" padding={1}>
@@ -177,7 +164,7 @@ export function CollectionView({ state }: CollectionViewProps): React.ReactEleme
       </Box>
 
       <Box marginTop={1}>
-        <Text dimColor>{"↑/↓ navigate · Enter detail · q quit"}</Text>
+        <Text dimColor>{"←/→ select · ↑/↓ scroll rows · Enter detail · q quit"}</Text>
       </Box>
 
       {/* Scroll indicator top */}
@@ -187,34 +174,34 @@ export function CollectionView({ state }: CollectionViewProps): React.ReactEleme
         </Box>
       )}
 
-      {/* Viewport */}
+      {/* Card grid */}
       <Box flexDirection="column" marginTop={hasAbove ? 0 : 1}>
-        {viewportItems.map((item, i) => {
-          if (item.kind === "theme") {
-            const label = formatThemeLabel(item.theme);
-            const line = `── ${label} ${"─".repeat(Math.max(0, 34 - label.length))}`;
-            return (
-              <Text key={`theme-${item.theme}`} dimColor>{line}</Text>
-            );
-          }
-
-          const creature = item.creature;
-          const entry = state.creatures[creature.id];
-          const discovered = !!entry;
-          const level = entry?.level ?? 0;
-          const catchCount = entry?.catchCount ?? 0;
-          const nextThreshold = level > 0 ? getNextLevelThreshold(level) : null;
-
+        {visibleRows.map((row, rowIdx) => {
+          const actualRowIdx = startRow + rowIdx;
           return (
-            <CreatureCard
-              key={creature.id}
-              creature={creature}
-              discovered={discovered}
-              level={level}
-              catchCount={catchCount}
-              nextThreshold={nextThreshold}
-              selected={item.index === selectedIndex}
-            />
+            <Box key={actualRowIdx} flexDirection="row">
+              {row.map((creature, colIdx) => {
+                const creatureGlobalIdx = actualRowIdx * COLS + colIdx;
+                const entry = state.creatures[creature.id];
+                const discovered = !!entry;
+                const level = entry?.level ?? 0;
+                const catchCount = entry?.catchCount ?? 0;
+                const nextThreshold = level > 0 ? getNextLevelThreshold(level) : null;
+
+                return (
+                  <Box key={creature.id} marginRight={colIdx < row.length - 1 ? 1 : 0}>
+                    <CreatureCard
+                      creature={creature}
+                      discovered={discovered}
+                      level={level}
+                      catchCount={catchCount}
+                      nextThreshold={nextThreshold}
+                      selected={creatureGlobalIdx === selectedIndex}
+                    />
+                  </Box>
+                );
+              })}
+            </Box>
           );
         })}
       </Box>

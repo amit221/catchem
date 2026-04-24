@@ -52,28 +52,33 @@ describe("CollectionView", () => {
     expect(lastFrame()).toContain("CatchEm");
   });
 
-  it("shows theme separator", () => {
-    const { lastFrame } = render(<CollectionView state={emptyState()} />);
-    expect(lastFrame()).toContain("Elemental Beasts");
-  });
-
   it("shows scroll indicator when more below", () => {
     const { lastFrame } = render(<CollectionView state={emptyState()} />);
-    // With 44 creatures and viewport of 5, there should be more below
+    // With 44 creatures, 3 per row = 15 rows, showing 2 at a time
     expect(lastFrame()).toContain("▼");
   });
 
-  it("does not render all 44 creatures at once", () => {
+  it("shows cards in grid layout (multiple cards per row)", () => {
     const { lastFrame } = render(<CollectionView state={emptyState()} />);
     const frame = lastFrame()!;
-    // Count undiscovered "???" lines — should be at most VIEWPORT_SIZE (5)
-    // plus 1 for the expanded detail of the selected undiscovered creature
-    const undiscoveredLines = frame.split("\n").filter((l: string) => l.includes("???"));
-    expect(undiscoveredLines.length).toBeLessThanOrEqual(6);
+    // Each row should contain multiple ??? cards side by side
+    // Look for multiple "???" on the same conceptual row
+    const lines = frame.split("\n");
+    // Cards have borders, so we should see multiple │ chars on content lines
+    const borderLines = lines.filter((l: string) => (l.match(/│/g) || []).length >= 2);
+    expect(borderLines.length).toBeGreaterThan(0);
+  });
+
+  it("limits visible cards to 2 rows (6 cards)", () => {
+    const { lastFrame } = render(<CollectionView state={emptyState()} />);
+    const frame = lastFrame()!;
+    // Count undiscovered "???" occurrences — should be at most 6 (2 rows x 3 cols)
+    const undiscoveredMatches = frame.match(/\?\?\?/g) || [];
+    expect(undiscoveredMatches.length).toBeLessThanOrEqual(6);
   });
 
   it("shows navigation instructions", () => {
     const { lastFrame } = render(<CollectionView state={emptyState()} />);
-    expect(lastFrame()).toContain("navigate");
+    expect(lastFrame()).toContain("scroll rows");
   });
 });

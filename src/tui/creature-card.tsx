@@ -24,6 +24,9 @@ const RARITY_ICONS: Record<Rarity, string> = {
   mythic: "🟥",
 };
 
+export const CARD_WIDTH = 22;
+const ART_LINES = 5;
+
 export function getRarityColor(rarity: Rarity): InkColor {
   return RARITY_COLORS[rarity];
 }
@@ -37,101 +40,91 @@ interface CreatureCardProps {
   selected: boolean;
 }
 
-/** Compact one-line summary for unselected creatures */
-function CompactLine({
-  creature,
-  discovered,
-  level,
-  catchCount,
-  selected,
-}: {
-  creature: CreatureDefinition;
-  discovered: boolean;
-  level: number;
-  catchCount: number;
-  selected: boolean;
-}): React.ReactElement {
-  const color = getRarityColor(creature.rarity);
-  const pointer = selected ? "▸ " : "  ";
+function padOrTruncate(s: string, len: number): string {
+  if (s.length > len) return s.slice(0, len);
+  return s + " ".repeat(len - s.length);
+}
 
-  if (!discovered) {
-    return (
-      <Text>
-        <Text dimColor>{pointer}</Text>
-        <Text color="gray">{"???".padEnd(16)}{"░░░░░".padEnd(6)}{"Undiscovered"}</Text>
-      </Text>
-    );
+function UndiscoveredCard({ creature, selected }: { creature: CreatureDefinition; selected: boolean }): React.ReactElement {
+  const borderColor: InkColor = selected ? "cyan" : "gray";
+  const maskedArt = creature.art.map((line) => line.replace(/[^\s]/g, "░"));
+
+  // Normalize art to ART_LINES lines
+  const artLines: string[] = [];
+  for (let i = 0; i < ART_LINES; i++) {
+    artLines.push(maskedArt[i] ?? "");
   }
 
-  const name = creature.name.padEnd(16);
-  const lvl = `Lv.${level}`.padEnd(6);
-  const count = `x${catchCount}`.padEnd(6);
-  const icon = RARITY_ICONS[creature.rarity];
-
   return (
-    <Text>
-      <Text color={selected ? "cyan" : undefined}>{pointer}</Text>
-      <Text bold color={color}>{name}</Text>
-      <Text dimColor>{lvl}</Text>
-      <Text dimColor>{count}</Text>
-      <Text>{icon}</Text>
-    </Text>
+    <Box
+      flexDirection="column"
+      borderStyle={selected ? "double" : "single"}
+      borderColor={borderColor}
+      width={CARD_WIDTH}
+    >
+      <Text color="gray" dimColor>{"???"}</Text>
+      {artLines.map((line, i) => (
+        <Text key={i} color="gray" dimColor>{padOrTruncate(line, CARD_WIDTH - 4)}</Text>
+      ))}
+      <Text color="gray" dimColor>{"Undiscovered"}</Text>
+    </Box>
   );
 }
 
-/** Expanded card shown for the selected creature */
-function ExpandedCard({
+function DiscoveredCard({
   creature,
-  discovered,
   level,
   catchCount,
   nextThreshold,
+  selected,
 }: {
   creature: CreatureDefinition;
-  discovered: boolean;
   level: number;
   catchCount: number;
   nextThreshold: number | null;
+  selected: boolean;
 }): React.ReactElement {
   const frameIndex = useAnimation(creature.frames?.length ?? 1);
   const color = getRarityColor(creature.rarity);
-  const rarityLabel = RARITY_LABELS[creature.rarity];
+  const borderColor: InkColor = selected ? "cyan" : color;
+  const icon = RARITY_ICONS[creature.rarity];
+  const art = creature.frames?.[frameIndex] ?? creature.art;
 
-  if (!discovered) {
-    const maskedArt = creature.art.map((line) => line.replace(/[^\s]/g, "░"));
-    return (
-      <Box flexDirection="column" marginLeft={4}>
-        {maskedArt.map((line, i) => (
-          <Text key={i} color="gray">{line}</Text>
-        ))}
-        <Text color="gray">??? — Undiscovered</Text>
-      </Box>
-    );
+  // Normalize art to ART_LINES lines
+  const artLines: string[] = [];
+  for (let i = 0; i < ART_LINES; i++) {
+    artLines.push(art[i] ?? "");
   }
 
-  const art = creature.frames?.[frameIndex] ?? creature.art;
-  const remaining = nextThreshold ? nextThreshold - catchCount : 0;
+  const innerWidth = CARD_WIDTH - 4;
+  const nameStr = creature.name;
+  const lvlStr = `L${level}`;
+  // Header: "Name     icon Ln"
+  const headerPad = Math.max(0, innerWidth - nameStr.length - lvlStr.length - 3);
+  const headerLine = `${nameStr}${" ".repeat(headerPad)}${icon} ${lvlStr}`;
+
+  // Footer: "xN  progressbar N/M"
+  const countStr = `x${catchCount}`;
+  const barWidth = 6;
+  const total = nextThreshold ?? catchCount;
+  const ratio = total > 0 ? Math.min(1, catchCount / total) : 0;
+  const filled = Math.floor(ratio * barWidth);
+  const bar = "\u2588".repeat(filled) + "\u2591".repeat(barWidth - filled);
+  const fracStr = nextThreshold ? `${catchCount}/${nextThreshold}` : `${catchCount}`;
+  const footerLine = `${countStr} ${bar} ${fracStr}`;
 
   return (
-    <Box flexDirection="column" marginLeft={4}>
-      {art.map((line, i) => (
-        <Text key={i} color={color}>{line}</Text>
+    <Box
+      flexDirection="column"
+      borderStyle={selected ? "double" : "single"}
+      borderColor={borderColor}
+      width={CARD_WIDTH}
+    >
+      <Text bold color={color}>{headerLine}</Text>
+      {artLines.map((line, i) => (
+        <Text key={i} color={color}>{padOrTruncate(line, innerWidth)}</Text>
       ))}
-      <Text bold color={color}>
-        {creature.name}
-      </Text>
-      <Text dimColor>
-        {rarityLabel} · Lv.{level} · x{catchCount}
-      </Text>
-      {nextThreshold && (
-        <>
-          <Text dimColor>Next: {remaining} more catches</Text>
-          <Box>
-            <ProgressBar current={catchCount} total={nextThreshold} />
-            <Text dimColor> {catchCount}/{nextThreshold}</Text>
-          </Box>
-        </>
-      )}
+      <Text dimColor>{footerLine}</Text>
     </Box>
   );
 }
@@ -144,24 +137,17 @@ export function CreatureCard({
   nextThreshold,
   selected,
 }: CreatureCardProps): React.ReactElement {
+  if (!discovered) {
+    return <UndiscoveredCard creature={creature} selected={selected} />;
+  }
+
   return (
-    <Box flexDirection="column">
-      <CompactLine
-        creature={creature}
-        discovered={discovered}
-        level={level}
-        catchCount={catchCount}
-        selected={selected}
-      />
-      {selected && (
-        <ExpandedCard
-          creature={creature}
-          discovered={discovered}
-          level={level}
-          catchCount={catchCount}
-          nextThreshold={nextThreshold}
-        />
-      )}
-    </Box>
+    <DiscoveredCard
+      creature={creature}
+      level={level}
+      catchCount={catchCount}
+      nextThreshold={nextThreshold}
+      selected={selected}
+    />
   );
 }

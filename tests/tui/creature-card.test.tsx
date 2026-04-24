@@ -18,7 +18,7 @@ describe("CreatureCard", () => {
     );
     const frame = lastFrame()!;
     expect(frame).toContain(creature.name);
-    expect(frame).toContain("Lv.3");
+    expect(frame).toContain("L3");
   });
 
   it("renders undiscovered creature as mystery", () => {
@@ -38,7 +38,7 @@ describe("CreatureCard", () => {
     expect(frame).toContain("Undiscovered");
   });
 
-  it("highlights selected creature", () => {
+  it("highlights selected card with double border", () => {
     const creature = getAllCreatures()[0];
     const { lastFrame } = render(
       <CreatureCard
@@ -52,11 +52,11 @@ describe("CreatureCard", () => {
     );
     const frame = lastFrame()!;
     expect(frame).toContain(creature.name);
-    // Selected creature shows pointer
-    expect(frame).toContain("▸");
+    // Double border uses ╔ character
+    expect(frame).toContain("╔");
   });
 
-  it("shows compact one-line summary for unselected creature", () => {
+  it("shows card as bordered box with creature name", () => {
     const creature = getAllCreatures()[0];
     const { lastFrame } = render(
       <CreatureCard
@@ -70,32 +70,11 @@ describe("CreatureCard", () => {
     );
     const frame = lastFrame()!;
     expect(frame).toContain(creature.name);
-    expect(frame).toContain("x5");
-    // Unselected should NOT show art (no expanded card)
-    // Art lines are multiple lines, compact is one line
-    const lines = frame.split("\n").filter((l: string) => l.trim().length > 0);
-    expect(lines.length).toBe(1);
+    // Single border uses ┌ or │
+    expect(frame).toContain("│");
   });
 
-  it("shows expanded card with art for selected creature", () => {
-    const creature = getAllCreatures()[0];
-    const { lastFrame } = render(
-      <CreatureCard
-        creature={creature}
-        discovered={true}
-        level={2}
-        catchCount={5}
-        nextThreshold={7}
-        selected={true}
-      />
-    );
-    const frame = lastFrame()!;
-    // Selected shows expanded art + details (multiple lines)
-    const lines = frame.split("\n").filter((l: string) => l.trim().length > 0);
-    expect(lines.length).toBeGreaterThan(3);
-  });
-
-  it("shows rarity icon in compact line", () => {
+  it("shows rarity icon in card header", () => {
     const creature = getAllCreatures()[0]; // common creature
     const { lastFrame } = render(
       <CreatureCard
@@ -111,7 +90,7 @@ describe("CreatureCard", () => {
     expect(frame).toContain("⬜");
   });
 
-  it("shows progress bar for selected creature with nextThreshold", () => {
+  it("shows catch count and progress bar", () => {
     const creature = getAllCreatures()[0];
     const { lastFrame } = render(
       <CreatureCard
@@ -120,11 +99,46 @@ describe("CreatureCard", () => {
         level={2}
         catchCount={5}
         nextThreshold={7}
-        selected={true}
+        selected={false}
       />
     );
     const frame = lastFrame()!;
+    expect(frame).toContain("x5");
     expect(frame).toContain("5/7");
-    expect(frame).toContain("Next:");
+  });
+
+  it("shows art lines inside the card", () => {
+    const creature = getAllCreatures()[0];
+    const { lastFrame } = render(
+      <CreatureCard
+        creature={creature}
+        discovered={true}
+        level={2}
+        catchCount={5}
+        nextThreshold={7}
+        selected={false}
+      />
+    );
+    const frame = lastFrame()!;
+    // Card should have multiple lines (header + art + footer + borders)
+    const lines = frame.split("\n").filter((l: string) => l.trim().length > 0);
+    expect(lines.length).toBeGreaterThan(3);
+  });
+
+  it("shows dimmed silhouette art for undiscovered", () => {
+    const creature = getAllCreatures()[0];
+    const { lastFrame } = render(
+      <CreatureCard
+        creature={creature}
+        discovered={false}
+        level={0}
+        catchCount={0}
+        nextThreshold={null}
+        selected={false}
+      />
+    );
+    const frame = lastFrame()!;
+    // Undiscovered should have masked art with ░ characters
+    expect(frame).toContain("░");
   });
 });
