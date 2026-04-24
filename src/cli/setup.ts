@@ -45,18 +45,27 @@ function saveConfig(config: Record<string, unknown>): void {
 // Helper: set hooks on a JSON structure, deduplicating catchem entries
 // ---------------------------------------------------------------------------
 
+function cleanOldHooks(obj: any, hooksKey: string): void {
+  if (!obj[hooksKey]) return;
+  for (const event of Object.keys(obj[hooksKey])) {
+    if (!Array.isArray(obj[hooksKey][event])) continue;
+    obj[hooksKey][event] = obj[hooksKey][event].filter(
+      (h: any) => !JSON.stringify(h).includes("catchem"),
+    );
+    if (obj[hooksKey][event].length === 0) delete obj[hooksKey][event];
+  }
+}
+
 function setHooks(
   obj: any,
   hooksKey: string,
   events: Record<string, string>,
   wrapInHooksArray: boolean = false,
 ): void {
+  cleanOldHooks(obj, hooksKey);
   if (!obj[hooksKey]) obj[hooksKey] = {};
   for (const [event, command] of Object.entries(events)) {
     if (!obj[hooksKey][event]) obj[hooksKey][event] = [];
-    obj[hooksKey][event] = (obj[hooksKey][event] as any[]).filter(
-      (h: any) => !JSON.stringify(h).includes("catchem"),
-    );
     const entry = wrapInHooksArray
       ? { hooks: [{ type: "command", command }] }
       : { type: "command", command };
@@ -79,17 +88,13 @@ function installClaudeCode(root: string, autoUpdate: boolean): void {
 
   const tick = getTickCommand(root);
 
-  const events: Record<string, string> = {
-    UserPromptSubmit: tick,
-    PostToolUse: tick,
-    Stop: tick,
-    SessionStart: tick,
-  };
+  const events: Record<string, string> = { UserPromptSubmit: tick };
 
   setHooks(settings, "hooks", events, true);
 
   // Auto-update hook in SessionStart
   if (autoUpdate) {
+    if (!settings.hooks.SessionStart) settings.hooks.SessionStart = [];
     settings.hooks.SessionStart.push({
       hooks: [{ type: "command", command: getUpdateCommand() }],
     });
@@ -139,26 +144,25 @@ This opens a new terminal with an interactive UI where the user can browse their
 }
 
 function installCursor(root: string, autoUpdate: boolean): void {
-  const hooksDir = path.join(os.homedir(), ".cursor", "hooks");
-  fs.mkdirSync(hooksDir, { recursive: true });
-  const hooksPath = path.join(hooksDir, "hooks.json");
+  const hooksPath = path.join(os.homedir(), ".cursor", "hooks.json");
 
   let config: any = {};
   try {
     config = JSON.parse(fs.readFileSync(hooksPath, "utf8"));
   } catch {}
 
+  config.version = 1;
   const tick = getTickCommand(root);
 
-  const events: Record<string, string> = {
-    postToolUse: tick,
-    stop: tick,
-    sessionStart: tick,
-  };
+  const events: Record<string, string> = { stop: tick };
 
   setHooks(config, "hooks", events);
 
   if (autoUpdate) {
+    if (!config.hooks.sessionStart) config.hooks.sessionStart = [];
+    config.hooks.sessionStart = config.hooks.sessionStart.filter(
+      (h: any) => !JSON.stringify(h).includes("catchem"),
+    );
     config.hooks.sessionStart.push({
       type: "command",
       command: getUpdateCommand(),
@@ -168,23 +172,31 @@ function installCursor(root: string, autoUpdate: boolean): void {
   fs.writeFileSync(hooksPath, JSON.stringify(config, null, 2));
 }
 
+// Note: Copilot CLI only supports per-repo hooks (.github/hooks/), not global.
+// We install to CWD's .github/hooks/ — user must re-run setup per project.
 function installCopilot(root: string, autoUpdate: boolean): void {
-  const hooksDir = path.join(os.homedir(), ".github", "hooks");
+  const hooksDir = path.join(process.cwd(), ".github", "hooks");
   fs.mkdirSync(hooksDir, { recursive: true });
   const hooksPath = path.join(hooksDir, "catchem.json");
 
+  let config: any = {};
+  try {
+    config = JSON.parse(fs.readFileSync(hooksPath, "utf8"));
+  } catch {}
+
+  config.version = 1;
   const tick = getTickCommand(root);
 
-  const events: Record<string, string> = {
-    userPromptSubmitted: tick,
-    postToolUse: tick,
-    sessionStart: tick,
-  };
+  // Copilot has no "stop" event — sessionEnd is closest
+  const events: Record<string, string> = { sessionEnd: tick };
 
-  const config: any = { version: 1 };
   setHooks(config, "hooks", events);
 
   if (autoUpdate) {
+    if (!config.hooks.sessionStart) config.hooks.sessionStart = [];
+    config.hooks.sessionStart = config.hooks.sessionStart.filter(
+      (h: any) => !JSON.stringify(h).includes("catchem"),
+    );
     config.hooks.sessionStart.push({
       type: "command",
       command: getUpdateCommand(),
@@ -206,13 +218,9 @@ function installCodex(root: string, autoUpdate: boolean): void {
 
   const tick = getTickCommand(root);
 
-  const events: Record<string, string> = {
-    UserPromptSubmit: tick,
-    PostToolUse: tick,
-    Stop: tick,
-  };
+  const events: Record<string, string> = { Stop: tick };
 
-  setHooks(config, "hooks", events);
+  setHooks(config, "hooks", events, true);
 
   if (autoUpdate) {
     if (!config.hooks.SessionStart) config.hooks.SessionStart = [];
@@ -220,8 +228,7 @@ function installCodex(root: string, autoUpdate: boolean): void {
       (h: any) => !JSON.stringify(h).includes("catchem"),
     );
     config.hooks.SessionStart.push({
-      type: "command",
-      command: getUpdateCommand(),
+      hooks: [{ type: "command", command: getUpdateCommand() }],
     });
   }
 
@@ -240,11 +247,13 @@ function installOpenCode(root: string, _autoUpdate: boolean): void {
 
   const tick = getTickCommand(root).replace(/\\/g, "\\\\");
 
-  const content = `export default async ({ client }) => ({
-  hooks: {
-    "tool.execute.after": async () => { require('child_process').execSync('${tick}', { stdio: 'inherit' }); },
-    "session.created": async () => { require('child_process').execSync('${tick}', { stdio: 'inherit' }); },
-    "chat.message": async () => { require('child_process').execSync('${tick}', { stdio: 'inherit' }); }
+  const content = `import { execSync } from "child_process";
+
+export const CatchEm = async ({ client, $ }) => ({
+  event: async ({ event }) => {
+    if (event.type === "session.end") {
+      execSync('${tick}', { stdio: 'inherit' });
+    }
   }
 });
 `;
@@ -253,32 +262,34 @@ function installOpenCode(root: string, _autoUpdate: boolean): void {
 }
 
 function installGemini(root: string, autoUpdate: boolean): void {
-  const hooksDir = path.join(os.homedir(), ".gemini", "hooks");
-  fs.mkdirSync(hooksDir, { recursive: true });
-  const hooksPath = path.join(hooksDir, "catchem.json");
+  const settingsPath = path.join(os.homedir(), ".gemini", "settings.json");
 
   let config: any = {};
   try {
-    config = JSON.parse(fs.readFileSync(hooksPath, "utf8"));
+    config = JSON.parse(fs.readFileSync(settingsPath, "utf8"));
   } catch {}
 
   const tick = getTickCommand(root);
 
-  const events: Record<string, string> = {
-    postToolUse: tick,
-    sessionStart: tick,
-  };
+  const events: Record<string, string> = { AfterAgent: tick };
 
-  setHooks(config, "hooks", events);
+  setHooks(config, "hooks", events, true);
 
   if (autoUpdate) {
-    config.hooks.sessionStart.push({
-      type: "command",
-      command: getUpdateCommand(),
+    if (!config.hooks.SessionStart) config.hooks.SessionStart = [];
+    config.hooks.SessionStart = (config.hooks.SessionStart as any[]).filter(
+      (h: any) => !JSON.stringify(h).includes("catchem"),
+    );
+    config.hooks.SessionStart.push({
+      hooks: [{ type: "command", command: getUpdateCommand() }],
     });
   }
 
-  fs.writeFileSync(hooksPath, JSON.stringify(config, null, 2));
+  fs.writeFileSync(settingsPath, JSON.stringify(config, null, 2));
+
+  // Clean up old hooks file if it exists
+  const oldHooksPath = path.join(os.homedir(), ".gemini", "hooks", "catchem.json");
+  try { fs.unlinkSync(oldHooksPath); } catch {}
 }
 
 // ---------------------------------------------------------------------------
@@ -314,10 +325,8 @@ function getAllPlatforms(): DetectedPlatform[] {
       install: installCursor,
     },
     {
-      name: "GitHub Copilot",
-      detected:
-        ghCliExists() ||
-        fs.existsSync(path.join(home, ".config", "github-copilot")),
+      name: "GitHub Copilot (per-project)",
+      detected: ghCliExists(),
       install: installCopilot,
     },
     {

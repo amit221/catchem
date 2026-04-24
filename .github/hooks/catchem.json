@@ -1,0 +1,11 @@
+{
+  "version": 1,
+  "hooks": {
+    "sessionEnd": [
+      {
+        "type": "command",
+        "command": "node \"C:\\Users\\97254\\catchem\\scripts\\tick.js\""
+      }
+    ]
+  }
+}

@@ -21,8 +21,7 @@ function formatNewCreature(result: CatchResult, uniqueCount: number, totalCreatu
   const lines = [
     border,
     `🌟 NEW CREATURE DISCOVERED! 🌟`,
-    `✨ ${result.creature.name} ✨`,
-    `${rarityLabel}`,
+    `✨ ${rarityTag(result.creature.rarity)} ${result.creature.name} ✨`,
     border,
     "",
     `[Lv.${result.level}] ${makeProgressBar(result.catchCount, nextThreshold)} ${result.catchCount}/${nextThreshold ?? result.catchCount}`,
@@ -45,7 +44,7 @@ function formatLevelUp(result: CatchResult): string {
   const lines = [
     border,
     `🌟 LEVEL UP! 🌟`,
-    `✨ ${result.creature.name} reached Level ${result.level}! ✨`,
+    `✨ ${rarityTag(result.creature.rarity)} ${result.creature.name} reached Level ${result.level}! ✨`,
     border,
     "",
     `[Lv.${result.level}] ${makeProgressBar(result.catchCount, nextThreshold)} ${result.catchCount}/${nextThreshold ?? result.catchCount}`,
@@ -57,10 +56,19 @@ function formatLevelUp(result: CatchResult): string {
   return lines.join("\n");
 }
 
+function rarityTag(rarity: string): string {
+  const map: Record<string, string> = {
+    common: "⚪", uncommon: "🟢", rare: "🔵",
+    epic: "🟣", legendary: "🟠", mythic: "🔴",
+  };
+  return map[rarity] ?? rarity;
+}
+
 function formatNormalCatch(result: CatchResult): string {
   const nextThreshold = getNextLevelThreshold(result.level);
+  const tag = rarityTag(result.creature.rarity);
   const lines = [
-    `✨ You caught a ${result.creature.name}! (x${result.catchCount})`,
+    `✨ ${tag} You caught a ${result.creature.name}! (x${result.catchCount})`,
     `[Lv.${result.level}] ${makeProgressBar(result.catchCount, nextThreshold)} ${result.catchCount}/${nextThreshold ?? result.catchCount}`,
     ...result.creature.art,
   ];
