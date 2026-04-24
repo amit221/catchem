@@ -32,7 +32,7 @@ describe("formatCatchNotification", () => {
   it("shows discovery count for new creature", () => {
     const result = makeCatchResult({ isNew: true, level: 1, catchCount: 1 });
     const output = formatCatchNotification(result, 5);
-    expect(output).toContain("5/24");
+    expect(output).toContain("5/44");
   });
 
   it("shows LEVEL UP for level-up catch", () => {

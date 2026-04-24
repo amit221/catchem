@@ -358,5 +358,305 @@
       "  ╲ ╰══════╯ ╱ ",
       " ✦╲══════════╱✦"
     ]
+  },
+  {
+    "id": "glaciax",
+    "name": "Glaciax",
+    "theme": "elemental-beasts",
+    "rarity": "common",
+    "description": "Freezes your CI pipeline solid every winter sprint.",
+    "art": [
+      "   ╭──❄️──╮   ",
+      "  ╱ ◇    ◇ ╲  ",
+      "  │ ❄️  ❄️ │  ",
+      "  │  ╰══╯  │  ",
+      "  ╰╮══════╭╯  ",
+      "   ╰──────╯   "
+    ]
+  },
+  {
+    "id": "umbrawl",
+    "name": "Umbrawl",
+    "theme": "elemental-beasts",
+    "rarity": "rare",
+    "description": "Lurks in your node_modules where no one dares to look.",
+    "art": [
+      "  ╭──🌑──╮    ",
+      "  │ 💀💀 │    ",
+      "  │  ╱╲  │    ",
+      "  │ ╱▓▓╲ │    ",
+      "  ╰╮ ☠️ ╭╯    ",
+      "   ╰════╯     "
+    ]
+  },
+  {
+    "id": "ferroclaw",
+    "name": "Ferroclaw",
+    "theme": "elemental-beasts",
+    "rarity": "uncommon",
+    "description": "Rust-proof and type-safe. Will outlast your framework.",
+    "art": [
+      "  ╱╲🛡️╱╲     ",
+      " ╱ ▓▓▓▓ ╲    ",
+      " │ 🛡️🛡️ │   ",
+      " │  ▬▬▬  │   ",
+      "  ╲ ════ ╱   ",
+      "   ╲════╱    "
+    ]
+  },
+  {
+    "id": "mindrill",
+    "name": "Mindrill",
+    "theme": "elemental-beasts",
+    "rarity": "epic",
+    "description": "Reads your intent from the git blame and judges silently.",
+    "art": [
+      "  ╭──🔮──╮    ",
+      "  │ 👁️👁️ │   ",
+      "  │  ╱╲  │    ",
+      "  │ 🔮🔮 │    ",
+      "  ╰╮════╭╯    ",
+      "   ╰════╯     "
+    ]
+  },
+  {
+    "id": "prismalynx",
+    "name": "Prismalynx",
+    "theme": "elemental-beasts",
+    "rarity": "legendary",
+    "description": "Refracts a single bug into seven shimmering new ones.",
+    "art": [
+      "  ╱╲💎✨╱╲    ",
+      " ╱ ✨  💎 ╲   ",
+      " │  ◆  ◆  │   ",
+      " │  ╱══╲  │   ",
+      "  ╲ 💎✨ ╱    ",
+      "   ╲════╱     "
+    ]
+  },
+  {
+    "id": "furrox",
+    "name": "Furrox",
+    "theme": "galactic-warriors",
+    "rarity": "common",
+    "description": "Rips out deprecated APIs with brute force and a growl.",
+    "art": [
+      "  ╭╱╲╱╲╱╲╮    ",
+      "  │ ◕  ◕ │    ",
+      "  │ ╱▓▓╲ │    ",
+      "  │ ▓▓▓▓ │    ",
+      "  ╰╮╱╲╱╲╭╯    ",
+      "   ╰════╯     "
+    ]
+  },
+  {
+    "id": "rebellia",
+    "name": "Rebellia",
+    "theme": "galactic-warriors",
+    "rarity": "uncommon",
+    "description": "Leads the open-source resistance against vendor lock-in.",
+    "art": [
+      "   ╭──⭐──╮   ",
+      "  ╱ ◇    ◇╲   ",
+      "  │  ╰──╯  │  ",
+      "  │ ⭐▓▓⭐ │  ",
+      "  ╰╮══════╭╯  ",
+      "   ╰──────╯   "
+    ]
+  },
+  {
+    "id": "vizorr",
+    "name": "Vizorr",
+    "theme": "galactic-warriors",
+    "rarity": "rare",
+    "description": "Tracks down memory leaks across the galaxy for a price.",
+    "art": [
+      "  ╭════════╮   ",
+      "  │ ▓▓▓▓▓▓ │   ",
+      "  │ ▬▬▬▬▬▬ │   ",
+      "  │ ╱ 🗡️╲  │   ",
+      "  ╰╮▓▓▓▓▓▓╭╯   ",
+      "   ╰══════╯    "
+    ]
+  },
+  {
+    "id": "astrofix",
+    "name": "Astrofix",
+    "theme": "galactic-warriors",
+    "rarity": "common",
+    "description": "Patches things with a cheerful whistle. Mostly correctly.",
+    "art": [
+      "   ╭┤▓▓├╮     ",
+      "   │ 💙 │     ",
+      "  ╭┤════├╮    ",
+      "  │ ◯◯◯◯ │    ",
+      "  │ ├──┤ │    ",
+      "  ╰─┘  └─╯    "
+    ]
+  },
+  {
+    "id": "dunerak",
+    "name": "Dunerak",
+    "theme": "galactic-warriors",
+    "rarity": "epic",
+    "description": "Emerges from the sandbox to swallow entire test suites.",
+    "art": [
+      "  ╱╲╱╲╱╲╱╲╱╲  ",
+      " │  🌀  🌀  │ ",
+      " │  ╱▓▓▓▓╲  │ ",
+      " │ ╱ ▼▼▼▼ ╲ │ ",
+      "  ╲ ╰════╯ ╱  ",
+      "   ╲══════╱   "
+    ]
+  },
+  {
+    "id": "webspinne",
+    "name": "Webspinne",
+    "theme": "marvel-heroes",
+    "rarity": "common",
+    "description": "Swings between microservices on threads of pure websocket.",
+    "art": [
+      "  ╭─🕸️🕸️─╮   ",
+      "  │ ◉  ◉ │    ",
+      "  │  ──  │    ",
+      "  │ 🕸️🕸️ │   ",
+      "  ╰╮╱╲╱╲╭╯    ",
+      "   ╰════╯     "
+    ]
+  },
+  {
+    "id": "gammox",
+    "name": "Gammox",
+    "theme": "marvel-heroes",
+    "rarity": "uncommon",
+    "description": "Gets angrier the more bugs you file. You won't like the refactor.",
+    "art": [
+      "  ╱╲💚💚╱╲    ",
+      " ╱ ▓▓▓▓▓▓ ╲   ",
+      " │ ◆    ◆ │   ",
+      " │  ════  │   ",
+      "  ╲ 💚💚 ╱    ",
+      "   ╲════╱     "
+    ]
+  },
+  {
+    "id": "frostgod",
+    "name": "Frostgod",
+    "theme": "marvel-heroes",
+    "rarity": "rare",
+    "description": "Claims your repo is rightfully his. Submits a hostile fork.",
+    "art": [
+      "  ╭─❄️💙─╮    ",
+      "  │ ◇  ◇ │    ",
+      "  │ ❄️╱╲ │    ",
+      "  │ ╱▓▓╲ │    ",
+      "  ╰╮💙❄️╭╯    ",
+      "   ╰════╯     "
+    ]
+  },
+  {
+    "id": "vibraclaw",
+    "name": "Vibraclaw",
+    "theme": "marvel-heroes",
+    "rarity": "epic",
+    "description": "Prowls through your codebase in stealth mode. Zero console.log.",
+    "art": [
+      "  ╱╲🌑🌑╱╲    ",
+      " ╱ 💜    💜╲  ",
+      " │  ▬    ▬  │ ",
+      " │  ╲════╱  │ ",
+      "  ╲ 💜🌑💜╱   ",
+      "   ╲══════╱   "
+    ]
+  },
+  {
+    "id": "hawksight",
+    "name": "Hawksight",
+    "theme": "marvel-heroes",
+    "rarity": "legendary",
+    "description": "Spots a null pointer from twelve stack frames away.",
+    "art": [
+      "   ╱╲👁️╱╲     ",
+      "  │ 👁️👁️ │   ",
+      "  │  ╱╲  │    ",
+      "  │ ╱▓▓╲ │    ",
+      " ─┤ ════ ├─   ",
+      "  ╰══════╯    "
+    ]
+  },
+  {
+    "id": "bonegrind",
+    "name": "Bonegrind",
+    "theme": "legends-arena",
+    "rarity": "common",
+    "description": "Grinds through legacy code with nothing but spite and bones.",
+    "art": [
+      "  ╭──💀──╮    ",
+      "  │ ☠️☠️ │    ",
+      "  │  ╱╲  │    ",
+      "  │ 🦴🦴 │    ",
+      "  ╰╮════╭╯    ",
+      "   ╰════╯     "
+    ]
+  },
+  {
+    "id": "willowwisp",
+    "name": "Willowwisp",
+    "theme": "legends-arena",
+    "rarity": "uncommon",
+    "description": "Lures junior devs into the enchanted forest of regex.",
+    "art": [
+      "  ╭──🌿──╮    ",
+      "  │ 🌿🌿 │    ",
+      "  │ ◕  ◕ │    ",
+      "  │  ◡◡  │    ",
+      "  ╰╮🌿🌿╭╯    ",
+      "   ╰════╯     "
+    ]
+  },
+  {
+    "id": "cosmowyrm",
+    "name": "Cosmowyrm",
+    "theme": "legends-arena",
+    "rarity": "epic",
+    "description": "Coils around your deployment pipeline and squeezes.",
+    "art": [
+      " ╱╲🌀✨╱╲╱╲   ",
+      " │ ✨  🌀  │  ",
+      " │  ◉  ◉  │   ",
+      " │  ╱══╲  │   ",
+      "  ╲ 🌀✨ ╱    ",
+      "  ╱╲╱╲╱╲╱╲    "
+    ]
+  },
+  {
+    "id": "bloodquill",
+    "name": "Bloodquill",
+    "theme": "legends-arena",
+    "rarity": "rare",
+    "description": "Writes cursed documentation that compiles but misleads.",
+    "art": [
+      "  ╭──❤️──╮    ",
+      "  │ ◆  ◆ │    ",
+      "  │  ╱╲  │    ",
+      "  │ ❤️❤️ │    ",
+      "  ╰╮▓▓▓▓╭╯    ",
+      "   ╰════╯     "
+    ]
+  },
+  {
+    "id": "crystogg",
+    "name": "Crystogg",
+    "theme": "legends-arena",
+    "rarity": "legendary",
+    "description": "Immovable object meets unstoppable deploy. Deploy loses.",
+    "art": [
+      "  ╱════💎═╲    ",
+      " ╱ 💎    💎╲  ",
+      " │  ▬    ▬  │ ",
+      " │  ═════  │  ",
+      "  ╲ 💎💎💎╱   ",
+      "   ╲══════╱   "
+    ]
   }
 ]

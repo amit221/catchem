@@ -1,8 +1,8 @@
 import { getCreature, getAllCreatures, pickRandomCreature } from "../../src/core/registry";
 
 describe("getAllCreatures", () => {
-  it("returns 24 creatures", () => {
-    expect(getAllCreatures()).toHaveLength(24);
+  it("returns 44 creatures", () => {
+    expect(getAllCreatures()).toHaveLength(44);
   });
 
   it("every creature has non-empty art", () => {

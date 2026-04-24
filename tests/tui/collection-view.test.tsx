@@ -34,7 +34,7 @@ function stateWithCatch(): GameState {
 describe("CollectionView", () => {
   it("shows discovery count", () => {
     const { lastFrame } = render(<CollectionView state={stateWithCatch()} />);
-    expect(lastFrame()).toContain("1/24");
+    expect(lastFrame()).toContain("1/44");
   });
 
   it("shows total catches", () => {
@@ -44,6 +44,6 @@ describe("CollectionView", () => {
 
   it("shows 0 discovered for empty state", () => {
     const { lastFrame } = render(<CollectionView state={emptyState()} />);
-    expect(lastFrame()).toContain("0/24");
+    expect(lastFrame()).toContain("0/44");
   });
 });
