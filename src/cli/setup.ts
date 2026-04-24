@@ -1,9 +1,19 @@
 import fs from "fs";
 import path from "path";
 import os from "os";
+import { fileURLToPath } from "url";
 
 function getCatchemRoot(): string {
-  return path.join(__dirname, "../..");
+  try {
+    // ESM context
+    const __filename = fileURLToPath(import.meta.url);
+    const __dirname = path.dirname(__filename);
+    return path.join(__dirname, "../..");
+  } catch {
+    // CJS context (compiled output)
+    // eslint-disable-next-line @typescript-eslint/no-var-requires, no-undef
+    return path.join((global as any).__dirname ?? __dirname, "../..");
+  }
 }
 
 function installClaudeCode(): void {
