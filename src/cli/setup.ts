@@ -49,6 +49,7 @@ function setHooks(
   obj: any,
   hooksKey: string,
   events: Record<string, string>,
+  wrapInHooksArray: boolean = false,
 ): void {
   if (!obj[hooksKey]) obj[hooksKey] = {};
   for (const [event, command] of Object.entries(events)) {
@@ -56,7 +57,10 @@ function setHooks(
     obj[hooksKey][event] = (obj[hooksKey][event] as any[]).filter(
       (h: any) => !JSON.stringify(h).includes("catchem"),
     );
-    obj[hooksKey][event].push({ type: "command", command });
+    const entry = wrapInHooksArray
+      ? { hooks: [{ type: "command", command }] }
+      : { type: "command", command };
+    obj[hooksKey][event].push(entry);
   }
 }
 
@@ -82,13 +86,12 @@ function installClaudeCode(root: string, autoUpdate: boolean): void {
     SessionStart: tick,
   };
 
-  setHooks(settings, "hooks", events);
+  setHooks(settings, "hooks", events, true);
 
   // Auto-update hook in SessionStart
   if (autoUpdate) {
     settings.hooks.SessionStart.push({
-      type: "command",
-      command: getUpdateCommand(),
+      hooks: [{ type: "command", command: getUpdateCommand() }],
     });
   }
 
