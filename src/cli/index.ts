@@ -48,8 +48,8 @@ function setup(): void {
 }
 
 function collection(): void {
-  console.log("TUI collection viewer — coming soon!");
-  console.log("For now, check your state at ~/.catchem/state.json");
+  const { launchTUI } = require("../tui/app");
+  launchTUI();
 }
 
 switch (command) {
