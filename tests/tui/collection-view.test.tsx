@@ -46,4 +46,34 @@ describe("CollectionView", () => {
     const { lastFrame } = render(<CollectionView state={emptyState()} />);
     expect(lastFrame()).toContain("0/44");
   });
+
+  it("shows CatchEm header", () => {
+    const { lastFrame } = render(<CollectionView state={stateWithCatch()} />);
+    expect(lastFrame()).toContain("CatchEm");
+  });
+
+  it("shows theme separator", () => {
+    const { lastFrame } = render(<CollectionView state={emptyState()} />);
+    expect(lastFrame()).toContain("Elemental Beasts");
+  });
+
+  it("shows scroll indicator when more below", () => {
+    const { lastFrame } = render(<CollectionView state={emptyState()} />);
+    // With 44 creatures and viewport of 5, there should be more below
+    expect(lastFrame()).toContain("▼");
+  });
+
+  it("does not render all 44 creatures at once", () => {
+    const { lastFrame } = render(<CollectionView state={emptyState()} />);
+    const frame = lastFrame()!;
+    // Count undiscovered "???" lines — should be at most VIEWPORT_SIZE (5)
+    // plus 1 for the expanded detail of the selected undiscovered creature
+    const undiscoveredLines = frame.split("\n").filter((l: string) => l.includes("???"));
+    expect(undiscoveredLines.length).toBeLessThanOrEqual(6);
+  });
+
+  it("shows navigation instructions", () => {
+    const { lastFrame } = render(<CollectionView state={emptyState()} />);
+    expect(lastFrame()).toContain("navigate");
+  });
 });
