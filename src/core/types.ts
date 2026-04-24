@@ -38,7 +38,6 @@ export interface CatchResult {
   level: number;
   catchCount: number;
   totalCatches: number;
-  flavorText: string;
 }
 
 export interface CatchOptions {

@@ -69,12 +69,12 @@ describe("CollectionView", () => {
     expect(borderLines.length).toBeGreaterThan(0);
   });
 
-  it("limits visible cards to 2 rows (6 cards)", () => {
+  it("limits visible cards to 4 rows (12 cards)", () => {
     const { lastFrame } = render(<CollectionView state={emptyState()} />);
     const frame = lastFrame()!;
-    // Count undiscovered "???" occurrences — should be at most 6 (2 rows x 3 cols)
+    // Count undiscovered "???" occurrences — should be at most 12 (4 rows x 3 cols)
     const undiscoveredMatches = frame.match(/\?\?\?/g) || [];
-    expect(undiscoveredMatches.length).toBeLessThanOrEqual(6);
+    expect(undiscoveredMatches.length).toBeLessThanOrEqual(12);
   });
 
   it("shows navigation instructions", () => {

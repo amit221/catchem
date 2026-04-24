@@ -10,7 +10,6 @@ function makeCatchResult(overrides: Partial<CatchResult> = {}): CatchResult {
     level: 3,
     catchCount: 10,
     totalCatches: 50,
-    flavorText: "was eating your semicolons",
     ...overrides,
   };
 }
@@ -55,12 +54,6 @@ describe("formatCatchNotification", () => {
     for (const line of result.creature.art) {
       expect(output).toContain(line);
     }
-  });
-
-  it("includes flavor text", () => {
-    const result = makeCatchResult({ flavorText: "was eating your semicolons" });
-    const output = formatCatchNotification(result, 10);
-    expect(output).toContain("was eating your semicolons");
   });
 
   it("shows MAX LEVEL for max level creature", () => {

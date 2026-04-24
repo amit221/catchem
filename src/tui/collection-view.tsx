@@ -8,7 +8,7 @@ import { ProgressBar } from "./progress-bar.js";
 import { useAnimation } from "./use-animation.js";
 
 const COLS = 3;
-const VISIBLE_ROWS = 2;
+const VISIBLE_ROWS = 4;
 
 const THEME_LABELS: Record<string, string> = {
   "elemental-beasts": "Elemental Beasts",

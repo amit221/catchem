@@ -2,7 +2,6 @@ import React from "react";
 import { Box, Text } from "ink";
 import { CreatureDefinition, Rarity, RARITY_LABELS } from "../core/types.js";
 import { ProgressBar } from "./progress-bar.js";
-import { useAnimation } from "./use-animation.js";
 
 type InkColor = "white" | "green" | "blue" | "magenta" | "yellow" | "red" | "cyan" | "gray";
 
@@ -84,11 +83,10 @@ function DiscoveredCard({
   nextThreshold: number | null;
   selected: boolean;
 }): React.ReactElement {
-  const frameIndex = useAnimation(creature.frames?.length ?? 1);
   const color = getRarityColor(creature.rarity);
   const borderColor: InkColor = selected ? "cyan" : color;
   const icon = RARITY_ICONS[creature.rarity];
-  const art = creature.frames?.[frameIndex] ?? creature.art;
+  const art = creature.art;
 
   // Normalize art to ART_LINES lines
   const artLines: string[] = [];

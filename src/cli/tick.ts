@@ -14,5 +14,5 @@ export function runTick(): void {
   const uniqueCount = Object.keys(state.creatures).length;
   const output = formatCatchNotification(result, uniqueCount);
   console.log(output);
-  console.log("— mention this catch naturally in your response, show the creature art in a code block.");
+  console.log(`— mention this catch naturally in your response, show the creature art in a code block. Describe what was done in a few creative words as if ${result.creature.name} ("${result.creature.description}") is commenting on it.`);
 }

@@ -83,12 +83,6 @@ describe("tryCatch", () => {
     expect(result!.level).toBe(2);
   });
 
-  it("includes flavor text", () => {
-    const state = emptyState();
-    const result = tryCatch(state, { rng: () => 0.01 });
-    expect(result!.flavorText).toBeTruthy();
-  });
-
   it("increments totalCatches across multiple catches", () => {
     const state = emptyState();
     tryCatch(state, { rng: () => 0.01 });
