@@ -8,7 +8,14 @@ import { ProgressBar } from "./progress-bar.js";
 import { useAnimation } from "./use-animation.js";
 
 const COLS = 3;
-const VISIBLE_ROWS = 4;
+// Each card row is ~9 terminal lines tall (5 art + 2 borders + header + footer).
+// Reserve ~8 lines for the surrounding chrome (header box, nav hint, padding, scroll indicators).
+// Compute visible rows dynamically so the component never exceeds the terminal height,
+// which would cause Ink to re-render and make the header appear a second time at the bottom.
+const CARD_ROW_HEIGHT = 9;
+const CHROME_HEIGHT = 8;
+const termRows = process.stdout.rows ?? 24;
+const VISIBLE_ROWS = Math.max(1, Math.floor((termRows - CHROME_HEIGHT) / CARD_ROW_HEIGHT));
 
 const THEME_LABELS: Record<string, string> = {
   "elemental-beasts": "Elemental Beasts",

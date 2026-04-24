@@ -97,8 +97,10 @@ function DiscoveredCard({
   const innerWidth = CARD_WIDTH - 4;
   const nameStr = creature.name;
   const lvlStr = `L${level}`;
+  // Some rarity icons are wide (2-column) emoji; account for extra terminal column they occupy
+  const iconVisualWidth = icon.length === 2 ? 2 : 1;
   // Header: "Name     icon Ln"
-  const headerPad = Math.max(0, innerWidth - nameStr.length - lvlStr.length - 3);
+  const headerPad = Math.max(0, innerWidth - nameStr.length - lvlStr.length - 1 - iconVisualWidth - 1);
   const headerLine = `${nameStr}${" ".repeat(headerPad)}${icon} ${lvlStr}`;
 
   // Footer: "xN  progressbar N/M"
