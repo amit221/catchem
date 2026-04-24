@@ -105,17 +105,17 @@ function installClaudeCode(root: string, autoUpdate: boolean): void {
   const oldSkillPath = path.join(configDir, "skills", "catchem-collection.md");
   try { fs.unlinkSync(oldSkillPath); } catch {}
 
-  const launchScript = path.join(root, "scripts", "launch-collection.mjs");
+  const launchScript = path.join(root, "scripts", "launch-collection.mjs").replace(/\\/g, "/");
   const isWindows = process.platform === "win32";
   const isMac = process.platform === "darwin";
 
   let openCmd: string;
   if (isWindows) {
-    openCmd = `start "CatchEm Collection" cmd /c "node \\"${launchScript}\\" & pause"`;
+    openCmd = `cmd.exe /c "start \\"CatchEm Collection\\" node ${launchScript}"`;
   } else if (isMac) {
-    openCmd = `osascript -e 'tell app "Terminal" to do script "node \\"${launchScript}\\""'`;
+    openCmd = `open -a Terminal "${launchScript}"`;
   } else {
-    openCmd = `x-terminal-emulator -e "node \\"${launchScript}\\""  2>/dev/null || gnome-terminal -- node "${launchScript}" 2>/dev/null || xterm -e "node \\"${launchScript}\\""`;
+    openCmd = `x-terminal-emulator -e node "${launchScript}" 2>/dev/null || gnome-terminal -- node "${launchScript}" 2>/dev/null || xterm -e "node ${launchScript}"`;
   }
 
   const collectionSkill = `---
