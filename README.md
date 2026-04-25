@@ -10,8 +10,7 @@ A passive creature collection game that runs in the background while you use you
 [![Node.js](https://img.shields.io/badge/node-%3E%3D20-brightgreen)](https://nodejs.org)
 [![npm](https://img.shields.io/npm/v/catchem)](https://www.npmjs.com/package/catchem)
 
-<!-- Replace with actual video URL after uploading to GitHub -->
-<!-- To add the video: drag catchem-showcase.mp4 into a GitHub issue/PR comment, copy the URL, paste here -->
+https://github.com/user-attachments/assets/597036c0-8a17-468e-b2ce-56aa5f556b22
 
 </div>
 
@@ -26,15 +25,21 @@ A passive creature collection game that runs in the background while you use you
 
 That's it. No prompts, no menus, no energy systems. Just code and catch.
 
+## Installation
+
+```bash
+npm install -g catchem
+```
+
+Setup runs automatically after install. To manually set up or reconfigure:
+
+```bash
+catchem setup
+```
+
 ## Passive Catching
 
-At the end of each coding session, there's a chance a creature appears. The **pity timer** ensures you're never unlucky for too long:
-
-- **First ever catch** — guaranteed (100%)
-- **After each catch** — rate resets to 20%
-- **Each miss** — rate increases by 5% until you catch something
-
-Catches appear inline with ASCII art and a flavor comment from the creature:
+At the end of each coding session, there's a chance a creature appears:
 
 ```
 ✨ You caught a Blazard! (x3)
@@ -50,22 +55,18 @@ Catches appear inline with ASCII art and a flavor comment from the creature:
 
 ## Creatures
 
-**91 creatures** across 8 themed collections, each with unique ASCII art and coding-themed personalities.
+**91 creatures** inspired by your favorite characters from:
 
-<div align="center">
-<img src="docs/media/creature-collage.png" alt="CatchEm Creature Collage" width="800">
-</div>
-
-| Theme | Inspiration | Examples |
-|-------|------------|----------|
-| **Elemental Beasts** | Pokemon | Zappik, Blazard, Aquashell, Spectrex, Prismalynx |
-| **Galactic Warriors** | Star Wars | Voidhelm, Nebulord, Furrox, Rebellia, Vizorr |
-| **Marvel Heroes** | Marvel | Thunderox, Ironclash, Cosmojaw, Webspinne, Hawksight |
-| **Greek Myths** | Greek Mythology | Hydrabug, Zeushock, Kronolith, Meduscan, Cerberoute |
-| **Legends Arena** | League of Legends | Runeking, Voidmaw, Cosmowyrm, Crystogg |
-| **LOTR Legends** | Lord of the Rings | Gandaflow, Balrogbug, Ringbind, Saurops |
-| **Egyptian Myths** | Egyptian Mythology | Osirix, Scarabyte, Anubash, Pharaobyte |
-| **Undead Horror** | Horror | Necronode, Lichload, Zombuild, Revenark |
+| Theme | Inspired By |
+|-------|------------|
+| **Elemental Beasts** | Pokemon |
+| **Galactic Warriors** | Star Wars |
+| **Marvel Heroes** | Marvel |
+| **Legends Arena** | League of Legends |
+| **LOTR Legends** | Lord of the Rings |
+| **Greek Myths** | Greek Mythology |
+| **Egyptian Myths** | Egyptian Mythology |
+| **Undead Horror** | Horror |
 
 All creatures are original characters with unique ASCII art and coding-themed descriptions.
 
@@ -82,7 +83,7 @@ All creatures are original characters with unique ASCII art and coding-themed de
 
 ### Leveling
 
-Catch duplicates to level up your creatures. 13 levels with escalating thresholds — from 1 catch for Level 1 to 9,587 for max level.
+Catch duplicates to level up your creatures. 13 levels with escalating thresholds.
 
 ## Collection Viewer
 
@@ -104,28 +105,16 @@ catchem collection
 
 Or use the `/catchem-collection` skill in Claude Code.
 
-## Installation
-
-```bash
-npm install -g catchem
-```
-
-Setup runs automatically after install. To manually set up or reconfigure:
-
-```bash
-catchem setup
-```
-
 ### Supported Platforms
 
-| Platform | Hook Event | Status |
-|----------|-----------|--------|
-| Claude Code | Stop | Supported |
-| Cursor | stop | Supported |
-| GitHub Copilot | sessionEnd | Supported (per-project) |
-| Codex CLI | Stop | Supported |
-| OpenCode | session.end | Supported |
-| Gemini CLI | AfterAgent | Supported |
+| Platform | Status | Tested |
+|----------|--------|--------|
+| Claude Code | Supported | ✅ |
+| Cursor | Supported | ❌ |
+| GitHub Copilot | Supported | ❌ |
+| Codex CLI | Supported | ❌ |
+| OpenCode | Supported | ❌ |
+| Gemini CLI | Supported | ❌ |
 
 ## Commands
 
@@ -135,15 +124,6 @@ catchem setup
 | `catchem setup --auto` | Silent setup (used by postinstall) |
 | `catchem collection` | Open interactive TUI collection viewer |
 | `catchem help` | Show help message |
-
-## Game Data
-
-Your game state is saved at `~/.catchem/state.json`. This includes:
-
-- Caught creatures and their levels
-- Total catch count
-- Pity timer state
-- Session stats
 
 ## Auto-Updates
 
@@ -161,6 +141,6 @@ Found a bug? Have an idea for a new creature or theme? [Open an issue](https://g
 
 [Install](https://www.npmjs.com/package/catchem) | [Issues](https://github.com/amit221/catchem/issues) | [Changelog](https://github.com/amit221/catchem/blob/master/CHANGELOG.md)
 
-<sub>CatchEm — a passive creature collection game for AI-assisted coding</sub>
+If you enjoy CatchEm, give us a ⭐ — it helps more developers discover the project!
 
 </div>
