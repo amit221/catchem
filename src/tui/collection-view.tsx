@@ -6,6 +6,7 @@ import { getNextLevelThreshold } from "../core/leveling.js";
 import { CreatureCard, getRarityColor, CARD_WIDTH } from "./creature-card.js";
 import { ProgressBar } from "./progress-bar.js";
 import { useAnimation } from "./use-animation.js";
+import { patternFill } from "./background.js";
 
 const COLS = 3;
 // Each card row is ~9 terminal lines tall (5 art + 2 borders + header + footer).
@@ -208,6 +209,15 @@ export function CollectionView({ state }: CollectionViewProps): React.ReactEleme
                   </Box>
                 );
               })}
+              {row.length < COLS && Array.from({ length: COLS - row.length }, (_, i) => (
+                <Box key={`empty-${i}`} width={CARD_WIDTH} marginRight={i < COLS - row.length - 1 ? 1 : 0}>
+                  <Box flexDirection="column" borderStyle="single" borderColor="gray" width={CARD_WIDTH}>
+                    {Array.from({ length: CARD_ROW_HEIGHT - 2 }, (_, j) => (
+                      <Text key={j} color="gray" dimColor>{patternFill(CARD_WIDTH - 4, j)}</Text>
+                    ))}
+                  </Box>
+                </Box>
+              ))}
             </Box>
           );
         })}

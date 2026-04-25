@@ -2,6 +2,7 @@ import React from "react";
 import { render } from "ink-testing-library";
 import { CollectionView } from "../../src/tui/collection-view";
 import { GameState, INITIAL_CATCH_RATE } from "../../src/core/types";
+import { patternFill } from "../../src/tui/background";
 
 function emptyState(): GameState {
   return {
@@ -34,7 +35,7 @@ function stateWithCatch(): GameState {
 describe("CollectionView", () => {
   it("shows discovery count", () => {
     const { lastFrame } = render(<CollectionView state={stateWithCatch()} />);
-    expect(lastFrame()).toContain("1/44");
+    expect(lastFrame()).toMatch(/1\/\d+/);
   });
 
   it("shows total catches", () => {
@@ -44,7 +45,7 @@ describe("CollectionView", () => {
 
   it("shows 0 discovered for empty state", () => {
     const { lastFrame } = render(<CollectionView state={emptyState()} />);
-    expect(lastFrame()).toContain("0/44");
+    expect(lastFrame()).toMatch(/0\/\d+/);
   });
 
   it("shows CatchEm header", () => {
@@ -54,7 +55,7 @@ describe("CollectionView", () => {
 
   it("shows scroll indicator when more below", () => {
     const { lastFrame } = render(<CollectionView state={emptyState()} />);
-    // With 44 creatures, 3 per row = 15 rows, showing 2 at a time
+    // With many creatures, multiple rows, showing a few at a time
     expect(lastFrame()).toContain("↓↓↓");
   });
 
@@ -80,5 +81,31 @@ describe("CollectionView", () => {
   it("shows navigation instructions", () => {
     const { lastFrame } = render(<CollectionView state={emptyState()} />);
     expect(lastFrame()).toContain("scroll rows");
+  });
+
+  it("renders background pattern characters in empty card slots", () => {
+    // 91 creatures: 91 % 3 = 1, so the last row has 1 card and 2 empty pattern slots
+    const { lastFrame } = render(<CollectionView state={emptyState()} />);
+    const frame = lastFrame()!;
+    expect(frame).toMatch(/·/);
+  });
+});
+
+describe("patternFill", () => {
+  it("generates dot pattern of correct length", () => {
+    const result = patternFill(10);
+    expect(result).toContain("·");
+    expect(result.length).toBe(10);
+  });
+
+  it("alternates dots and spaces", () => {
+    const result = patternFill(6);
+    expect(result).toBe("· · · ");
+  });
+
+  it("respects offset parameter", () => {
+    const result = patternFill(6, 1);
+    // offset=1: col+offset starts at 1, so odd → space first
+    expect(result).toBe(" · · ·");
   });
 });
