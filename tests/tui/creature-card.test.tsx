@@ -1,6 +1,5 @@
 import React from "react";
 import { render } from "ink-testing-library";
-import stringWidth from "string-width";
 import { CreatureCard, CARD_WIDTH } from "../../src/tui/creature-card";
 import { getAllCreatures } from "../../src/core/registry";
 
