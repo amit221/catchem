@@ -10,6 +10,9 @@ A passive creature collection game that runs in the background while you use you
 [![Node.js](https://img.shields.io/badge/node-%3E%3D20-brightgreen)](https://nodejs.org)
 [![npm](https://img.shields.io/npm/v/catchem)](https://www.npmjs.com/package/catchem)
 
+<!-- Replace with actual video URL after uploading to GitHub -->
+<!-- To add the video: drag catchem-showcase.mp4 into a GitHub issue/PR comment, copy the URL, paste here -->
+
 </div>
 
 ---
@@ -47,18 +50,22 @@ Catches appear inline with ASCII art and a flavor comment from the creature:
 
 ## Creatures
 
-**91 creatures** across 8 themed collections, each with unique ASCII art:
+**91 creatures** across 8 themed collections, each with unique ASCII art and coding-themed personalities.
+
+<div align="center">
+<img src="docs/media/creature-collage.png" alt="CatchEm Creature Collage" width="800">
+</div>
 
 | Theme | Inspiration | Examples |
 |-------|------------|----------|
-| **Elemental Beasts** | Pokemon | Zappik, Blazard, Aquashell, Spectrex, Arcanox |
+| **Elemental Beasts** | Pokemon | Zappik, Blazard, Aquashell, Spectrex, Prismalynx |
 | **Galactic Warriors** | Star Wars | Voidhelm, Nebulord, Furrox, Rebellia, Vizorr |
-| **Marvel Heroes** | Marvel | Thunderox, Ironclash, Webspinne, Gammox, Frostgod |
-| **Legends Arena** | League of Legends | Hexweaver, Voidmaw, Runeking, Bonegrind |
-| **LOTR Legends** | Lord of the Rings | Hermeshub, Sirenlog, Cerberoute, Atlastack |
-| **Greek Myths** | Greek Mythology | Meduscan, Phantis, Stridex, Hadeshell |
-| **Egyptian Myths** | Egyptian Mythology | Scarabyte, Sphinxec, Anubyte, Pyramidon |
-| **Undead Horror** | Horror | Skelecrypt, Bloodquill, Ghoulgrep, Zombuild |
+| **Marvel Heroes** | Marvel | Thunderox, Ironclash, Cosmojaw, Webspinne, Hawksight |
+| **Greek Myths** | Greek Mythology | Hydrabug, Zeushock, Kronolith, Meduscan, Cerberoute |
+| **Legends Arena** | League of Legends | Runeking, Voidmaw, Cosmowyrm, Crystogg |
+| **LOTR Legends** | Lord of the Rings | Gandaflow, Balrogbug, Ringbind, Saurops |
+| **Egyptian Myths** | Egyptian Mythology | Osirix, Scarabyte, Anubash, Pharaobyte |
+| **Undead Horror** | Horror | Necronode, Lichload, Zombuild, Revenark |
 
 All creatures are original characters with unique ASCII art and coding-themed descriptions.
 

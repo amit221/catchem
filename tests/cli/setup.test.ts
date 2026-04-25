@@ -25,14 +25,14 @@ describe("runSetup", () => {
     expect(fs.existsSync(settingsPath)).toBe(true);
     const settings = JSON.parse(fs.readFileSync(settingsPath, "utf8"));
     expect(settings.hooks).toBeDefined();
-    expect(settings.hooks.Stop).toBeDefined();
+    expect(settings.hooks.UserPromptSubmit).toBeDefined();
   });
 
   it("hooks reference tick.js", async () => {
     await runSetup(true);
     const settingsPath = path.join(tempHome, ".claude", "settings.json");
     const settings = JSON.parse(fs.readFileSync(settingsPath, "utf8"));
-    const hookCmd = JSON.stringify(settings.hooks.Stop);
+    const hookCmd = JSON.stringify(settings.hooks.UserPromptSubmit);
     expect(hookCmd).toContain("tick.js");
   });
 
@@ -65,7 +65,7 @@ describe("runSetup", () => {
     await runSetup(true);
     const settingsPath = path.join(tempHome, ".claude", "settings.json");
     const settings = JSON.parse(fs.readFileSync(settingsPath, "utf8"));
-    expect(settings.hooks.Stop.length).toBe(1);
+    expect(settings.hooks.UserPromptSubmit.length).toBe(1);
   });
 
   it("stores autoUpdate preference in config.json", async () => {

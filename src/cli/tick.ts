@@ -16,5 +16,7 @@ export function runTick(): void {
   const output = formatCatchNotification(result, uniqueCount);
   console.log(output);
   const nextThreshold = getNextLevelThreshold(result.level);
-  console.log(`— mention this catch at the END of your response, show the creature art in a code block. Show level (Lv.${result.level}) and progress (${result.catchCount}/${nextThreshold ?? result.catchCount}). Describe what was done in a few creative words as if ${result.creature.name} ("${result.creature.description}") is commenting on it.`);
+  const rarityIcons: Record<string, string> = { common: "⚪", uncommon: "🟢", rare: "🔵", epic: "🟣", legendary: "🟠", mythic: "🔴" };
+  const icon = rarityIcons[result.creature.rarity] ?? "⚪";
+  console.log(`— mention this catch at the END of your response, show the rarity icon ${icon} and creature art in a code block. Show level (Lv.${result.level}) and progress (${result.levelCatches}/${nextThreshold ?? "MAX"}). Describe what was done in a few creative words as if ${result.creature.name} ("${result.creature.description}") is commenting on it.`);
 }

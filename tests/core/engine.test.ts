@@ -19,7 +19,7 @@ describe("tryCatch", () => {
     expect(result!.isNew).toBe(true);
   });
 
-  it("resets catch rate to 20% after successful catch", () => {
+  it("resets catch rate after successful catch", () => {
     const state = emptyState();
     tryCatch(state, { rng: () => 0.01 });
     expect(state.currentCatchRate).toBe(BASE_CATCH_RATE);
@@ -27,14 +27,14 @@ describe("tryCatch", () => {
 
   it("returns null when rng exceeds current catch rate", () => {
     const state = emptyState();
-    state.currentCatchRate = BASE_CATCH_RATE; // 0.2
+    state.currentCatchRate = BASE_CATCH_RATE;
     const result = tryCatch(state, { rng: () => 0.5 });
     expect(result).toBeNull();
   });
 
-  it("increases catch rate by 5% on miss", () => {
+  it("increases catch rate on miss", () => {
     const state = emptyState();
-    state.currentCatchRate = BASE_CATCH_RATE; // 0.2
+    state.currentCatchRate = BASE_CATCH_RATE;
     tryCatch(state, { rng: () => 0.9 }); // miss
     expect(state.currentCatchRate).toBeCloseTo(BASE_CATCH_RATE + CATCH_RATE_INCREMENT);
   });
@@ -108,7 +108,7 @@ describe("tryCatch", () => {
     state.currentCatchRate = 0.5;
     const result = tryCatch(state, { rng: () => 0.5 });
     expect(result).toBeNull();
-    expect(state.currentCatchRate).toBeCloseTo(0.55);
+    expect(state.currentCatchRate).toBeCloseTo(0.5 + CATCH_RATE_INCREMENT);
   });
 
   it("works with no options argument", () => {

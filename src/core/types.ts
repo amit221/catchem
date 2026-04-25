@@ -13,6 +13,7 @@ export interface CreatureDefinition {
 export interface CreatureState {
   name: string;
   catchCount: number;
+  levelCatches: number;
   level: number;
   firstCaught: string;
   lastCaught: string;
@@ -37,6 +38,7 @@ export interface CatchResult {
   leveledUp: boolean;
   level: number;
   catchCount: number;
+  levelCatches: number;
   totalCatches: number;
 }
 
@@ -59,7 +61,7 @@ export const MAX_LEVEL = LEVEL_THRESHOLDS.length;
 
 export const INITIAL_CATCH_RATE = 1.0;
 export const BASE_CATCH_RATE = 0.2;
-export const CATCH_RATE_INCREMENT = 0.10;
+export const CATCH_RATE_INCREMENT = 0.05;
 
 export const RARITY_LABELS: Record<Rarity, string> = {
   common: "⬜ Common",

@@ -1,6 +1,6 @@
-import { CatchResult, RARITY_LABELS, LEVEL_THRESHOLDS } from "./types.js";
+import { CatchResult } from "./types.js";
 import { getAllCreatures } from "./registry.js";
-import { getNextLevelThreshold, getCatchesForNextLevel } from "./leveling.js";
+import { getNextLevelThreshold } from "./leveling.js";
 
 export function formatCatchNotification(result: CatchResult, uniqueCount: number): string {
   const totalCreatures = getAllCreatures().length;
@@ -16,7 +16,6 @@ export function formatCatchNotification(result: CatchResult, uniqueCount: number
 
 function formatNewCreature(result: CatchResult, uniqueCount: number, totalCreatures: number): string {
   const border = "✨🌟✨🌟✨🌟✨🌟✨🌟✨🌟✨";
-  const rarityLabel = RARITY_LABELS[result.creature.rarity];
   const nextThreshold = getNextLevelThreshold(result.level);
   const lines = [
     border,
@@ -24,7 +23,7 @@ function formatNewCreature(result: CatchResult, uniqueCount: number, totalCreatu
     `✨ ${rarityTag(result.creature.rarity)} ${result.creature.name} ✨`,
     border,
     "",
-    `[Lv.${result.level}] ${makeProgressBar(result.catchCount, nextThreshold)} ${result.catchCount}/${nextThreshold ?? result.catchCount}`,
+    formatProgress(result.level, result.levelCatches, nextThreshold),
     ...result.creature.art,
     "",
     `${uniqueCount}/${totalCreatures} discovered`,
@@ -36,7 +35,7 @@ function formatNewCreature(result: CatchResult, uniqueCount: number, totalCreatu
 function formatLevelUp(result: CatchResult): string {
   const border = "🎉✨🎉✨🎉✨🎉✨🎉✨🎉✨🎉";
   const nextThreshold = getNextLevelThreshold(result.level);
-  const remaining = getCatchesForNextLevel(result.level, result.catchCount);
+  const remaining = nextThreshold ? nextThreshold - result.levelCatches : 0;
   const progressLine = nextThreshold
     ? `⭐ Next level: ${remaining} more catches ⭐`
     : "✦ MAX LEVEL ✦";
@@ -47,7 +46,7 @@ function formatLevelUp(result: CatchResult): string {
     `✨ ${rarityTag(result.creature.rarity)} ${result.creature.name} reached Level ${result.level}! ✨`,
     border,
     "",
-    `[Lv.${result.level}] ${makeProgressBar(result.catchCount, nextThreshold)} ${result.catchCount}/${nextThreshold ?? result.catchCount}`,
+    formatProgress(result.level, result.levelCatches, nextThreshold),
     ...result.creature.art,
     "",
     progressLine,
@@ -69,17 +68,19 @@ function formatNormalCatch(result: CatchResult): string {
   const tag = rarityTag(result.creature.rarity);
   const lines = [
     `✨ ${tag} You caught a ${result.creature.name}! (x${result.catchCount})`,
-    `[Lv.${result.level}] ${makeProgressBar(result.catchCount, nextThreshold)} ${result.catchCount}/${nextThreshold ?? result.catchCount}`,
+    formatProgress(result.level, result.levelCatches, nextThreshold),
     ...result.creature.art,
   ];
   return lines.join("\n");
 }
 
-function makeProgressBar(current: number, target: number | null): string {
+function makeProgressBar(levelCatches: number, target: number | null): string {
   if (!target) return "██████████";
-  const idx = (LEVEL_THRESHOLDS as readonly number[]).indexOf(target);
-  const prev = idx > 0 ? LEVEL_THRESHOLDS[idx - 1] : 0;
-  const progress = (current - prev) / (target - prev);
+  const progress = levelCatches / target;
   const filled = Math.min(10, Math.floor(progress * 10));
   return "█".repeat(filled) + "░".repeat(10 - filled);
+}
+
+function formatProgress(level: number, levelCatches: number, nextThreshold: number | null): string {
+  return `[Lv.${level}] ${makeProgressBar(levelCatches, nextThreshold)} ${levelCatches}/${nextThreshold ?? "MAX"}`;
 }

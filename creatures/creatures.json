@@ -1198,5 +1198,170 @@
       " ╱▓▓▓▓▓▓╲    ",
       " ✦╲════╱✦    "
     ]
+  },
+  {
+    "id": "zombuild",
+    "name": "Zombuild",
+    "theme": "undead-horror",
+    "rarity": "common",
+    "description": "Shambles through your codebase, mindlessly rerunning failed builds.",
+    "art": [
+      "   ╭════╮     ",
+      "   │X  ◉│     ",
+      "   │ ▼▼ │     ",
+      " ──╯▓▓▓▓╰──  ",
+      "   │▓▓▓▓│     ",
+      "   └╯  └╯     "
+    ]
+  },
+  {
+    "id": "vampipe",
+    "name": "Vampipe",
+    "theme": "undead-horror",
+    "rarity": "common",
+    "description": "Drains your CI pipeline dry while you sleep.",
+    "art": [
+      " ╱╲╭════╮╱╲  ",
+      " │ │◆  ◆│ │  ",
+      " │ │ ▼▼ │ │  ",
+      " │ ╰╮▓▓╭╯ │  ",
+      " │  │▓▓│  │  ",
+      " ╲  └┘└┘  ╱  "
+    ]
+  },
+  {
+    "id": "ghoulash",
+    "name": "Ghoulash",
+    "theme": "undead-horror",
+    "rarity": "common",
+    "description": "Feeds on abandoned branches no one remembers creating.",
+    "art": [
+      " ░░╭════╮░░   ",
+      "   │◉  ◉│    ",
+      "  ╱▼▼▼▼▼▼╲   ",
+      "  ╲▼▼▼▼▼▼╱   ",
+      "   │▓▓▓▓│    ",
+      " ░░╰┘  └╯░░  "
+    ]
+  },
+  {
+    "id": "werelock",
+    "name": "Werelock",
+    "theme": "undead-horror",
+    "rarity": "uncommon",
+    "description": "Normal dev by day, force-pushes to main under a full moon.",
+    "art": [
+      " ╱╲  ╭══╮  ╱╲ ",
+      "   ╲╱ ◆◆ ╲╱   ",
+      "   │╱════╲│   ",
+      "   │▼▼▼▼▼▼│   ",
+      "   ╰╮▓▓▓▓╭╯   ",
+      "   ╱╲    ╱╲   "
+    ]
+  },
+  {
+    "id": "banshreek",
+    "name": "Banshreek",
+    "theme": "undead-horror",
+    "rarity": "uncommon",
+    "description": "Screams a fatal error so loud your logs shatter.",
+    "art": [
+      " ░░╭════╮░░   ",
+      " ░ │◉  ◉│ ░  ",
+      "   │╱══╲│    ",
+      "   │║◇◇║│    ",
+      "   │╲══╱│    ",
+      " ░░╲╱╲╱╲╱░░  "
+    ]
+  },
+  {
+    "id": "skelecrypt",
+    "name": "Skelecrypt",
+    "theme": "undead-horror",
+    "rarity": "uncommon",
+    "description": "Nothing but bare bones code. No comments, no docs, no mercy.",
+    "art": [
+      "   ╭════╮     ",
+      "   │◯  ◯│     ",
+      "   │ ▽▽ │     ",
+      "   ├╱╲╱╲┤     ",
+      "   │╬╬╬╬│     ",
+      "   └┘  └┘     "
+    ]
+  },
+  {
+    "id": "lichload",
+    "name": "Lichload",
+    "theme": "undead-horror",
+    "rarity": "rare",
+    "description": "Stores its soul in a hidden config file. Kill it and it respawns.",
+    "art": [
+      "  ╱╲╱╲╱╲      ",
+      "  ╭════╮      ",
+      "  │✦  ✦│      ",
+      "  │ ══ │      ",
+      "  │▓▓▓▓│      ",
+      " 🔮╰══╯      "
+    ]
+  },
+  {
+    "id": "mummutex",
+    "name": "Mummutex",
+    "theme": "undead-horror",
+    "rarity": "epic",
+    "description": "Wrapped in layers of legacy code. Unwrap one and the whole thing crumbles.",
+    "art": [
+      " ═╭══════╮═  ",
+      " ═│◉═══◉│═  ",
+      "  │══════│    ",
+      " ═│▓▓▓▓▓▓│═  ",
+      " ═│══════│═  ",
+      "  ╰┘    └╯    "
+    ]
+  },
+  {
+    "id": "demoncore",
+    "name": "Demoncore",
+    "theme": "undead-horror",
+    "rarity": "epic",
+    "description": "Possesses your kernel and speaks in corrupted syscalls.",
+    "art": [
+      " ╱╲╭════╮╱╲  ",
+      "   │◆  ◆│    ",
+      "   │▼▼▼▼│    ",
+      "  ╱│▓▓▓▓│╲   ",
+      " ╱ ╰════╯ ╲  ",
+      " 🔥  ╰╯  🔥  "
+    ]
+  },
+  {
+    "id": "revenark",
+    "name": "Revenark",
+    "theme": "undead-horror",
+    "rarity": "legendary",
+    "description": "Keeps coming back no matter how many times you close the ticket.",
+    "art": [
+      " ╱╲══════╱╲   ",
+      " │ ◉ ✦✦ ◉ │  ",
+      " │╱══════╲│   ",
+      " │▓╱╲▓▓╱╲▓│  ",
+      " ╲══════════╱  ",
+      "  ╲╱╲╱╲╱╲╱   "
+    ]
+  },
+  {
+    "id": "necronode",
+    "name": "Necronode",
+    "theme": "undead-horror",
+    "rarity": "mythic",
+    "description": "Raises dead processes from the grave to do its bidding.",
+    "art": [
+      "    💀         ",
+      "   ╱║╲        ",
+      "  ╱═╬═╲       ",
+      " ╱ ◉║◉ ╲     ",
+      " │▓▓║▓▓▓│     ",
+      " ╲══╩════╱    "
+    ]
   }
 ]

@@ -1,7 +1,7 @@
 {
   "version": 1,
   "hooks": {
-    "sessionEnd": [
+    "userPromptSubmitted": [
       {
         "type": "command",
         "command": "node \"C:\\Users\\97254\\catchem\\scripts\\tick.js\""

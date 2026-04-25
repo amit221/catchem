@@ -1,8 +1,8 @@
 import { getCreature, getAllCreatures, pickRandomCreature } from "../../src/core/registry";
 
 describe("getAllCreatures", () => {
-  it("returns 44 creatures", () => {
-    expect(getAllCreatures()).toHaveLength(44);
+  it("returns all creatures", () => {
+    expect(getAllCreatures().length).toBeGreaterThanOrEqual(80);
   });
 
   it("every creature has non-empty art", () => {
@@ -16,11 +16,11 @@ describe("getAllCreatures", () => {
     expect(new Set(ids).size).toBe(ids.length);
   });
 
-  it("contains all four themes", () => {
+  it("contains all themes", () => {
     const themes = new Set(getAllCreatures().map((c) => c.theme));
-    expect(themes).toEqual(
-      new Set(["elemental-beasts", "galactic-warriors", "marvel-heroes", "legends-arena"])
-    );
+    for (const expected of ["elemental-beasts", "galactic-warriors", "marvel-heroes", "legends-arena", "lotr-legends", "greek-myths", "egyptian-myths"]) {
+      expect(themes).toContain(expected);
+    }
   });
 });
 

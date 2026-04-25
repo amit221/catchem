@@ -12,9 +12,9 @@ const RARITY_COLORS: Record<Rarity, InkColor> = {
   mythic: "red",
 };
 
-const SELECTED_CYCLE: InkColor[] = ["cyan", "cyanBright", "white"];
-const LEGENDARY_CYCLE: InkColor[] = ["yellow", "yellowBright", "white"];
-const MYTHIC_CYCLE: InkColor[] = ["red", "magenta", "redBright"];
+const SELECTED_CYCLE: InkColor[] = ["cyan", "cyanBright", "cyan"];
+const LEGENDARY_CYCLE: InkColor[] = ["yellow", "yellowBright", "yellow"];
+const MYTHIC_CYCLE: InkColor[] = ["red", "redBright", "red"];
 
 export function getBorderColor(rarity: Rarity, selected: boolean, frame: number): InkColor {
   if (selected) {
@@ -35,7 +35,7 @@ export function useBorderColor(rarity: Rarity, selected: boolean): InkColor {
 
   useEffect(() => {
     if (!shouldAnimate) return;
-    const interval = selected ? 300 : 800;
+    const interval = selected ? 600 : 1500;
     const timer = setInterval(() => {
       setFrame((prev) => prev + 1);
     }, interval);

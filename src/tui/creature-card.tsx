@@ -3,7 +3,6 @@ import { Box, Text } from "ink";
 import stringWidth from "string-width";
 import { CreatureDefinition, Rarity, RARITY_LABELS } from "../core/types.js";
 import { ProgressBar } from "./progress-bar.js";
-import { useBorderColor } from "./use-border-color.js";
 
 type InkColor = "white" | "green" | "blue" | "magenta" | "yellow" | "red" | "cyan" | "gray";
 
@@ -112,7 +111,7 @@ function DiscoveredCard({
   selected: boolean;
 }): React.ReactElement {
   const color = getRarityColor(creature.rarity);
-  const borderColor = useBorderColor(creature.rarity, selected);
+  const borderColor: InkColor = selected ? "cyan" : color;
   const icon = RARITY_ICONS[creature.rarity];
   const art = creature.art;
 

@@ -9,6 +9,7 @@ function makeCatchResult(overrides: Partial<CatchResult> = {}): CatchResult {
     leveledUp: false,
     level: 3,
     catchCount: 10,
+    levelCatches: 3,
     totalCatches: 50,
     ...overrides,
   };
@@ -22,16 +23,17 @@ describe("formatCatchNotification", () => {
     expect(output).toContain(result.creature.name);
   });
 
-  it("shows rarity label for new creature", () => {
+  it("shows rarity tag for new creature", () => {
     const result = makeCatchResult({ isNew: true, level: 1, catchCount: 1 });
     const output = formatCatchNotification(result, 5);
-    expect(output).toContain("Common");
+    expect(output).toContain("⚪");
   });
 
   it("shows discovery count for new creature", () => {
     const result = makeCatchResult({ isNew: true, level: 1, catchCount: 1 });
     const output = formatCatchNotification(result, 5);
-    expect(output).toContain("5/44");
+    const totalCreatures = getAllCreatures().length;
+    expect(output).toContain(`5/${totalCreatures}`);
   });
 
   it("shows LEVEL UP for level-up catch", () => {

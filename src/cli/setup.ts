@@ -154,7 +154,7 @@ function installCursor(root: string, autoUpdate: boolean): void {
   config.version = 1;
   const tick = getTickCommand(root);
 
-  const events: Record<string, string> = { stop: tick };
+  const events: Record<string, string> = { beforeSubmitPrompt: tick };
 
   setHooks(config, "hooks", events);
 
@@ -187,8 +187,7 @@ function installCopilot(root: string, autoUpdate: boolean): void {
   config.version = 1;
   const tick = getTickCommand(root);
 
-  // Copilot has no "stop" event — sessionEnd is closest
-  const events: Record<string, string> = { sessionEnd: tick };
+  const events: Record<string, string> = { userPromptSubmitted: tick };
 
   setHooks(config, "hooks", events);
 
@@ -218,7 +217,7 @@ function installCodex(root: string, autoUpdate: boolean): void {
 
   const tick = getTickCommand(root);
 
-  const events: Record<string, string> = { Stop: tick };
+  const events: Record<string, string> = { UserPromptSubmit: tick };
 
   setHooks(config, "hooks", events, true);
 
@@ -251,7 +250,7 @@ function installOpenCode(root: string, _autoUpdate: boolean): void {
 
 export const CatchEm = async ({ client, $ }) => ({
   event: async ({ event }) => {
-    if (event.type === "session.end") {
+    if (event.type === "message.updated") {
       execSync('${tick}', { stdio: 'inherit' });
     }
   }
@@ -271,7 +270,7 @@ function installGemini(root: string, autoUpdate: boolean): void {
 
   const tick = getTickCommand(root);
 
-  const events: Record<string, string> = { AfterAgent: tick };
+  const events: Record<string, string> = { BeforeAgent: tick };
 
   setHooks(config, "hooks", events, true);
 
