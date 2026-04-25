@@ -25,37 +25,42 @@ That's it. No prompts, no menus, no energy systems. Just code and catch.
 
 ## Passive Catching
 
-Every time you submit a prompt, use a tool, or start a session, there's a chance a creature appears. The **pity timer** ensures you're never unlucky for too long:
+At the end of each coding session, there's a chance a creature appears. The **pity timer** ensures you're never unlucky for too long:
 
-- **First ever event** — guaranteed catch (100%)
+- **First ever catch** — guaranteed (100%)
 - **After each catch** — rate resets to 20%
 - **Each miss** — rate increases by 5% until you catch something
 
-Catches appear inline with ASCII art and a coding humor one-liner:
+Catches appear inline with ASCII art and a flavor comment from the creature:
 
 ```
 ✨ You caught a Blazard! (x3)
-[Lv.2] ████░░░░░░ 5/7  "was deploying to production on Friday"
+[Lv.2] ████░░░░░░ 5/7
          ╱╲╱╲
    ╱══╲ ╱╱╱╱
   ╱ ◆◆ ╲╱╱
   ╲ ── ╱═╗
    ╲══╱  ║
     ╚═╝~🔥╝
+"A TOWN?! Finally, somewhere to overheat besides your CPU fan."
 ```
 
 ## Creatures
 
-**44 creatures** across 4 themed collections, each with unique ASCII art and animations:
+**91 creatures** across 8 themed collections, each with unique ASCII art:
 
-| Theme | Inspiration | Creatures |
-|-------|------------|-----------|
-| **Elemental Beasts** | Pokemon | Zappik, Blazard, Aquashell, Spectrex, Arcanox, and more |
-| **Galactic Warriors** | Star Wars | Bladewing, Rustbot, Swampwise, Voidhelm, Nebulord, and more |
-| **Marvel Heroes** | Marvel | Thunderox, Ironclash, Sorceron, Cosmojaw, Hawksight, and more |
-| **Legends Arena** | League of Legends | Shadowstep, Hexweaver, Voidmaw, Runeking, and more |
+| Theme | Inspiration | Examples |
+|-------|------------|----------|
+| **Elemental Beasts** | Pokemon | Zappik, Blazard, Aquashell, Spectrex, Arcanox |
+| **Galactic Warriors** | Star Wars | Voidhelm, Nebulord, Furrox, Rebellia, Vizorr |
+| **Marvel Heroes** | Marvel | Thunderox, Ironclash, Webspinne, Gammox, Frostgod |
+| **Legends Arena** | League of Legends | Hexweaver, Voidmaw, Runeking, Bonegrind |
+| **LOTR Legends** | Lord of the Rings | Hermeshub, Sirenlog, Cerberoute, Atlastack |
+| **Greek Myths** | Greek Mythology | Meduscan, Phantis, Stridex, Hadeshell |
+| **Egyptian Myths** | Egyptian Mythology | Scarabyte, Sphinxec, Anubyte, Pyramidon |
+| **Undead Horror** | Horror | Skelecrypt, Bloodquill, Ghoulgrep, Zombuild |
 
-All creatures are original parody/homage characters with their own names and art.
+All creatures are original characters with unique ASCII art and coding-themed descriptions.
 
 ### Rarity System
 
@@ -76,12 +81,13 @@ Catch duplicates to level up your creatures. 13 levels with escalating threshold
 
 Browse your collection in an interactive terminal UI with:
 
-- Scrollable list with windowed viewport
+- Scrollable 3-column grid with windowed viewport
 - Animated ASCII art (idle blinking, breathing, energy pulses)
-- Rarity-colored creature names
-- Theme section headers
+- Rarity-colored borders and creature names
+- Undiscovered creatures shown as masked silhouettes
 - Detail view with full stats on Enter
 - Level progress bars
+- Discovery counter
 
 Run it with:
 
@@ -103,18 +109,16 @@ Setup runs automatically after install. To manually set up or reconfigure:
 catchem setup
 ```
 
-Setup detects your platform and installs the appropriate hooks:
-
 ### Supported Platforms
 
-| Platform | Status |
-|----------|--------|
-| Claude Code | Supported |
-| Cursor | Supported |
-| GitHub Copilot | Supported |
-| Codex CLI | Supported |
-| OpenCode | Supported |
-| Gemini CLI | Supported |
+| Platform | Hook Event | Status |
+|----------|-----------|--------|
+| Claude Code | Stop | Supported |
+| Cursor | stop | Supported |
+| GitHub Copilot | sessionEnd | Supported (per-project) |
+| Codex CLI | Stop | Supported |
+| OpenCode | session.end | Supported |
+| Gemini CLI | AfterAgent | Supported |
 
 ## Commands
 
