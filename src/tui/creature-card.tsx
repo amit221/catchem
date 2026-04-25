@@ -156,6 +156,7 @@ function DiscoveredCard({
       {artLines.map((line, i) => (
         <Text key={i} color={color}>{visualPadOrTruncate(line, CARD_WIDTH - 2)}</Text>
       ))}
+      <Text>{" "}</Text>
       <Text dimColor>{footerLine}</Text>
     </Box>
   );

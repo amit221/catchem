@@ -142,6 +142,29 @@ describe("CreatureCard", () => {
     expect(frame).toContain("░");
   });
 
+  it("has a blank line between art and footer", () => {
+    const creature = getAllCreatures()[0];
+    const { lastFrame } = render(
+      <CreatureCard
+        creature={creature}
+        discovered={true}
+        level={2}
+        catchCount={5}
+        nextThreshold={7}
+        selected={false}
+      />
+    );
+    const frame = lastFrame()!;
+    const lines = frame.split("\n");
+    // Find the footer line with "x5"
+    const footerIdx = lines.findIndex((l: string) => l.includes("x5"));
+    expect(footerIdx).toBeGreaterThan(0);
+    // The line above the footer should be blank/empty content (just border chars and spaces)
+    const lineAbove = lines[footerIdx - 1];
+    const innerContent = lineAbove.replace(/[│║╟╢┃]/g, "").trim();
+    expect(innerContent).toBe("");
+  });
+
   it("does not overflow card border with emoji art", () => {
     const creature = {
       id: "test-emoji",

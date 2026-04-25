@@ -12,7 +12,7 @@ const COLS = 3;
 // Reserve ~8 lines for the surrounding chrome (header box, nav hint, padding, scroll indicators).
 // Compute visible rows dynamically so the component never exceeds the terminal height,
 // which would cause Ink to re-render and make the header appear a second time at the bottom.
-const CARD_ROW_HEIGHT = 9;
+const CARD_ROW_HEIGHT = 10;
 const CHROME_HEIGHT = 8;
 const termRows = process.stdout.rows ?? 24;
 const VISIBLE_ROWS = Math.max(1, Math.floor((termRows - CHROME_HEIGHT) / CARD_ROW_HEIGHT));
