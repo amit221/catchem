@@ -41,36 +41,38 @@ function joinedOutput(): string {
 }
 
 describe("runTick", () => {
-  it("emits a clear-directive on miss so the previous catch directive doesn't persist", () => {
+  it("emits nothing on miss (no banner, no directive)", () => {
     // currentCatchRate = 0 + default rng = Math.random() ∈ [0,1) ⇒ guaranteed miss
     writeState(0);
 
     runTick();
 
-    // A miss must inject *something* — otherwise the previous turn's
-    // "mention this catch" directive lingers in the conversation history
-    // and Claude keeps mentioning the last creature found.
-    expect(logSpy).toHaveBeenCalled();
-    expect(joinedOutput()).toMatch(/no.*(catch|creature)|disregard|ignore/i);
+    expect(logSpy).not.toHaveBeenCalled();
   });
 
-  it("does not include any creature name or art in the miss output", () => {
-    writeState(0);
-
-    runTick();
-
-    const out = joinedOutput();
-    // Miss output should be a short directive — no creature art / banner.
-    expect(out).not.toContain("NEW CREATURE DISCOVERED");
-    expect(out).not.toContain("LEVEL UP");
-  });
-
-  it("emits the catch directive on a successful catch", () => {
+  it("emits a scope-limited catch directive on success", () => {
     // currentCatchRate = 1 ⇒ guaranteed catch regardless of rng.
     writeState(1);
 
     runTick();
 
-    expect(joinedOutput()).toMatch(/mention this catch/i);
+    const out = joinedOutput();
+    expect(out).toMatch(/mention this catch/i);
+    // Without explicit scope, the directive lingers in conversation history
+    // and Claude replays the same catch on every later prompt (issue #3).
+    // Either phrasing — "this response only" or "do not repeat / subsequent" —
+    // is acceptable; both anchor the directive to the current turn.
+    expect(out).toMatch(/this response only|do not repeat|subsequent response/i);
+  });
+
+  it("still saves state on miss (pity timer must advance)", () => {
+    writeState(0);
+
+    runTick();
+
+    const saved = JSON.parse(
+      fs.readFileSync(path.join(tempHome, ".catchem", "state.json"), "utf8"),
+    );
+    expect(saved.currentCatchRate).toBeGreaterThan(0);
   });
 });
