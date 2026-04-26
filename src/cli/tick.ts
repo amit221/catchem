@@ -10,7 +10,13 @@ export function runTick(): void {
   const result = tryCatch(state);
   mgr.save(state); // save on both hit and miss (pity timer)
 
-  if (!result) return; // miss — silent
+  if (!result) {
+    // The catch directive printed below on a hit lingers in the conversation
+    // history. Without an override, Claude keeps mentioning the last-caught
+    // creature on every subsequent turn. Emit a counter-directive on miss.
+    console.log("— no creature caught this turn. Do not mention any creature in your response, and disregard any catch directive from earlier turns.");
+    return;
+  }
 
   const uniqueCount = Object.keys(state.creatures).length;
   const output = formatCatchNotification(result, uniqueCount);
