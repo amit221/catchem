@@ -1,5 +1,14 @@
 # Changelog
 
+## [1.1.1](https://github.com/amit221/catchem/compare/v1.1.0...v1.1.1) (2026-04-26)
+
+
+### Bug Fixes
+
+* clear catch directive on miss to prevent stuck-creature replay ([#3](https://github.com/amit221/catchem/issues/3)) ([f319b9e](https://github.com/amit221/catchem/commit/f319b9effdbceaaf9039bcb713dcc4e1d53e1d16))
+* clear catch directive on miss to stop stuck-creature replay ([1bd8408](https://github.com/amit221/catchem/commit/1bd840882ffac342936ad16c01d7f9641f68cbe1))
+* scope catch directive to current turn instead of emitting on miss ([487ff3c](https://github.com/amit221/catchem/commit/487ff3c5a4eb420cf0d890a3eac5977479268fc0)), closes [#3](https://github.com/amit221/catchem/issues/3)
+
 ## [1.1.0](https://github.com/amit221/catchem/compare/v1.0.0...v1.1.0) (2026-04-25)
 
 
