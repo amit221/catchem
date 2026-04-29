@@ -19,7 +19,9 @@ function defaultState(): GameState {
 export const DEFAULT_STATE_PATH = path.join(os.homedir(), ".catchem", "state.json");
 
 export class StateManager {
-  constructor(private filePath: string = DEFAULT_STATE_PATH) {}
+  constructor(
+    private filePath: string = path.join(os.homedir(), ".catchem", "state.json"),
+  ) {}
 
   load(): GameState {
     try {
