@@ -41,7 +41,7 @@ Convert the concept art into a pixel art sprite using PixelLab's `create_object`
 
 **Config:**
 - Tool: `create_object` (freeform, no body template constraints)
-- Directions: 1 (static front-facing)
+- Directions: 8 (reference_image_base64 requires 8-direction mode; also useful for town where creatures walk around)
 - Size: 64px
 - View: `side` (front-facing camera angle in PixelLab's terminology)
 - Reference image: concept art from step 2, passed as base64
