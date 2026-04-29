@@ -1,5 +1,12 @@
 # Changelog
 
+## [1.2.0](https://github.com/amit221/catchem/compare/v1.1.1...v1.2.0) (2026-04-29)
+
+
+### Features
+
+* update creature mechanics and notifications ([9ea1f71](https://github.com/amit221/catchem/commit/9ea1f716314d5cae42d089c3829e5a5589ab31b4))
+
 ## [1.1.1](https://github.com/amit221/catchem/compare/v1.1.0...v1.1.1) (2026-04-26)
 
 
