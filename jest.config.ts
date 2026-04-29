@@ -3,13 +3,14 @@ import type { Config } from "jest";
 const config: Config = {
   preset: "ts-jest/presets/default-esm",
   testEnvironment: "node",
-  roots: ["<rootDir>/tests"],
+  roots: ["<rootDir>/tests", "<rootDir>/scripts/tests"],
   testMatch: ["**/*.test.ts", "**/*.test.tsx"],
   collectCoverageFrom: ["src/**/*.ts", "src/**/*.tsx", "!src/cli/index.ts"],
   extensionsToTreatAsEsm: [".ts", ".tsx"],
   transform: {
     "^.+\\.tsx?$": ["ts-jest", {
       useESM: true,
+      diagnostics: false,
       tsconfig: {
         moduleResolution: "bundler",
         module: "esnext",
