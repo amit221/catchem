@@ -2,9 +2,9 @@
 
 # CatchEm
 
-**Catch creatures as you code. No interaction needed.**
+**Catch Bytlings while you code.**
 
-A passive creature collection game that runs in the background while you use your favorite AI coding assistant. Creatures appear automatically — just keep coding.
+Every coding session has a chance to spawn a Bytling. No buttons, no menus — just code and they come to you.
 
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
 [![Node.js](https://img.shields.io/badge/node-%3E%3D20-brightgreen)](https://nodejs.org)
@@ -20,7 +20,7 @@ https://github.com/user-attachments/assets/597036c0-8a17-468e-b2ce-56aa5f556b22
 
 1. **Install** — `npm install -g catchem`
 2. **Setup** — `catchem setup` detects your platform and installs hooks
-3. **Code** — creatures appear passively as you work
+3. **Code** — Bytlings appear passively as you work
 4. **Collect** — browse your collection with an interactive terminal UI
 
 That's it. No prompts, no menus, no energy systems. Just code and catch.
@@ -39,7 +39,7 @@ catchem setup
 
 ## Passive Catching
 
-At the end of each coding session, there's a chance a creature appears:
+At the end of each coding session, there's a chance a Bytling appears:
 
 ```
 ✨ You caught a Blazard! (x3)
@@ -53,9 +53,9 @@ At the end of each coding session, there's a chance a creature appears:
 "A TOWN?! Finally, somewhere to overheat besides your CPU fan."
 ```
 
-## Creatures
+## Bytlings
 
-**91 creatures** inspired by your favorite characters from:
+**91 Bytlings** inspired by your favorite characters from:
 
 | Theme | Inspired By |
 |-------|------------|
@@ -68,7 +68,7 @@ At the end of each coding session, there's a chance a creature appears:
 | **Egyptian Myths** | Egyptian Mythology |
 | **Undead Horror** | Horror |
 
-All creatures are original characters with unique ASCII art and coding-themed descriptions.
+All Bytlings are original characters with unique ASCII art and coding-themed descriptions.
 
 ### Rarity System
 
@@ -83,7 +83,7 @@ All creatures are original characters with unique ASCII art and coding-themed de
 
 ### Leveling
 
-Catch duplicates to level up your creatures. 13 levels with escalating thresholds.
+Catch duplicates to level up your Bytlings. 13 levels with escalating thresholds.
 
 ## Collection Viewer
 
@@ -91,8 +91,8 @@ Browse your collection in an interactive terminal UI with:
 
 - Scrollable 3-column grid with windowed viewport
 - Animated ASCII art (idle blinking, breathing, energy pulses)
-- Rarity-colored borders and creature names
-- Undiscovered creatures shown as masked silhouettes
+- Rarity-colored borders and Bytling names
+- Undiscovered Bytlings shown as masked silhouettes
 - Detail view with full stats on Enter
 - Level progress bars
 - Discovery counter
@@ -131,13 +131,13 @@ During setup, you can opt in to daily auto-updates. When enabled, a background c
 
 ## Contributing
 
-Found a bug? Have an idea for a new creature or theme? [Open an issue](https://github.com/amit221/catchem/issues).
+Found a bug? Have an idea for a new Bytling or theme? [Open an issue](https://github.com/amit221/catchem/issues).
 
 ---
 
 <div align="center">
 
-**Start catching creatures today.**
+**Start catching Bytlings today.**
 
 [Install](https://www.npmjs.com/package/catchem) | [Issues](https://github.com/amit221/catchem/issues) | [Changelog](https://github.com/amit221/catchem/blob/master/CHANGELOG.md)
 
