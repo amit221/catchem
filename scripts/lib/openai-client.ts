@@ -15,16 +15,11 @@ function getClient(): OpenAI {
 
 function buildPrompt(creature: Creature): string {
   const asciiArt = creature.art.join("\n");
-  return `Here is the ASCII art of a creature called "${creature.name}":
+  return `Draw this character as hand-drawn concept art on a white background:
 
 ${asciiArt}
 
-${creature.description}
-
-Create a front-facing concept art image of this creature.
-Make it look like it was hand drawn.
-The style should be suitable as a reference for pixel art conversion.
-White or transparent background.`;
+The character is called ${creature.name}. Front-facing view.`;
 }
 
 export async function generateConceptArt(
