@@ -1,6 +1,6 @@
 #!/usr/bin/env node
 
-import { runSetup } from "./setup.js";
+import { runSetup, runUninstall } from "./setup.js";
 
 const args = process.argv.slice(2);
 const command = args[0];
@@ -12,6 +12,7 @@ CatchEm - Passive Creature Collection Game
 Usage:
   catchem setup            Set up hooks for your coding platform
   catchem setup --auto     Silent auto-setup (used by postinstall)
+  catchem uninstall        Remove all hooks & skills from every platform
   catchem collection       View your creature collection (TUI)
   catchem help             Show this help message
 `);
@@ -25,6 +26,9 @@ async function collection(): Promise<void> {
 switch (command) {
   case "setup":
     void runSetup(args.includes("--auto"));
+    break;
+  case "uninstall":
+    void runUninstall();
     break;
   case "collection":
     void collection();

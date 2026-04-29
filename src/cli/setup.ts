@@ -118,7 +118,7 @@ function installClaudeCode(root: string, autoUpdate: boolean): void {
   if (isWindows) {
     openCmd = `cmd.exe /c "start /max \\"CatchEm Collection\\" node ${launchScript}"`;
   } else if (isMac) {
-    openCmd = `open -a Terminal "${launchScript}"`;
+    openCmd = `osascript -e 'tell application "Terminal" to do script "node ${launchScript}"'`;
   } else {
     openCmd = `x-terminal-emulator -e node "${launchScript}" 2>/dev/null || gnome-terminal -- node "${launchScript}" 2>/dev/null || xterm -e "node ${launchScript}"`;
   }
@@ -292,13 +292,91 @@ function installGemini(root: string, autoUpdate: boolean): void {
 }
 
 // ---------------------------------------------------------------------------
+// Platform uninstall adapters
+// ---------------------------------------------------------------------------
+
+function uninstallClaudeCode(): void {
+  const configDir = path.join(os.homedir(), ".claude");
+  const settingsPath = path.join(configDir, "settings.json");
+
+  try {
+    const settings = JSON.parse(fs.readFileSync(settingsPath, "utf8"));
+    cleanOldHooks(settings, "hooks");
+    if (settings.hooks && Object.keys(settings.hooks).length === 0) {
+      delete settings.hooks;
+    }
+    fs.writeFileSync(settingsPath, JSON.stringify(settings, null, 2));
+  } catch {}
+
+  // Remove skills
+  const skillDir = path.join(configDir, "skills", "catchem-collection");
+  try { fs.rmSync(skillDir, { recursive: true }); } catch {}
+  // Remove old flat file too
+  const oldSkillPath = path.join(configDir, "skills", "catchem-collection.md");
+  try { fs.unlinkSync(oldSkillPath); } catch {}
+}
+
+function uninstallCursor(): void {
+  const hooksPath = path.join(os.homedir(), ".cursor", "hooks.json");
+  try {
+    const config = JSON.parse(fs.readFileSync(hooksPath, "utf8"));
+    cleanOldHooks(config, "hooks");
+    if (config.hooks && Object.keys(config.hooks).length === 0) {
+      delete config.hooks;
+    }
+    fs.writeFileSync(hooksPath, JSON.stringify(config, null, 2));
+  } catch {}
+}
+
+function uninstallCopilot(): void {
+  const hooksPath = path.join(process.cwd(), ".github", "hooks", "catchem.json");
+  try { fs.unlinkSync(hooksPath); } catch {}
+}
+
+function uninstallCodex(): void {
+  const hooksPath = path.join(os.homedir(), ".codex", "hooks.json");
+  try {
+    const config = JSON.parse(fs.readFileSync(hooksPath, "utf8"));
+    cleanOldHooks(config, "hooks");
+    if (config.hooks && Object.keys(config.hooks).length === 0) {
+      delete config.hooks;
+    }
+    fs.writeFileSync(hooksPath, JSON.stringify(config, null, 2));
+  } catch {}
+}
+
+function uninstallOpenCode(): void {
+  const pluginPath = path.join(
+    os.homedir(), ".config", "opencode", "plugins", "catchem.mjs",
+  );
+  try { fs.unlinkSync(pluginPath); } catch {}
+}
+
+function uninstallGemini(): void {
+  const settingsPath = path.join(os.homedir(), ".gemini", "settings.json");
+  try {
+    const config = JSON.parse(fs.readFileSync(settingsPath, "utf8"));
+    cleanOldHooks(config, "hooks");
+    if (config.hooks && Object.keys(config.hooks).length === 0) {
+      delete config.hooks;
+    }
+    fs.writeFileSync(settingsPath, JSON.stringify(config, null, 2));
+  } catch {}
+  // Clean up old hooks file
+  const oldHooksPath = path.join(os.homedir(), ".gemini", "hooks", "catchem.json");
+  try { fs.unlinkSync(oldHooksPath); } catch {}
+}
+
+// ---------------------------------------------------------------------------
 // Platform detection
 // ---------------------------------------------------------------------------
 
 interface DetectedPlatform {
   name: string;
+  id: string;
   detected: boolean;
   install: (root: string, autoUpdate: boolean) => void;
+  uninstall: () => void;
 }
 
 function ghCliExists(): boolean {
@@ -315,33 +393,45 @@ function getAllPlatforms(): DetectedPlatform[] {
   return [
     {
       name: "Claude Code",
+      id: "claude-code",
       detected: fs.existsSync(path.join(home, ".claude")),
       install: installClaudeCode,
+      uninstall: uninstallClaudeCode,
     },
     {
       name: "Cursor",
+      id: "cursor",
       detected: fs.existsSync(path.join(home, ".cursor")),
       install: installCursor,
+      uninstall: uninstallCursor,
     },
     {
       name: "GitHub Copilot (per-project)",
+      id: "copilot",
       detected: ghCliExists(),
       install: installCopilot,
+      uninstall: uninstallCopilot,
     },
     {
       name: "Codex CLI",
+      id: "codex",
       detected: fs.existsSync(path.join(home, ".codex")),
       install: installCodex,
+      uninstall: uninstallCodex,
     },
     {
       name: "OpenCode",
+      id: "opencode",
       detected: fs.existsSync(path.join(home, ".config", "opencode")),
       install: installOpenCode,
+      uninstall: uninstallOpenCode,
     },
     {
       name: "Gemini CLI",
+      id: "gemini",
       detected: fs.existsSync(path.join(home, ".gemini")),
       install: installGemini,
+      uninstall: uninstallGemini,
     },
   ];
 }
@@ -383,37 +473,113 @@ export async function runSetup(auto: boolean = false): Promise<void> {
     return;
   }
 
-  if (!auto) {
-    console.log("Detected platforms:");
-    for (const p of detected) {
-      console.log(`  ✓ ${p.name}`);
+  const config = loadConfig();
+  const enabledPlatforms: string[] = (config.enabledPlatforms as string[]) || [];
+
+  // Auto mode: install all detected (or previously enabled) platforms silently
+  if (auto) {
+    const root = getCatchemRoot();
+    const autoUpdate = (config.autoUpdate as boolean) || false;
+    if (enabledPlatforms.length === 0) {
+      config.enabledPlatforms = detected.map((p) => p.id);
     }
-    console.log();
+    config.autoUpdate = autoUpdate;
+    saveConfig(config);
+    for (const p of detected) {
+      if (enabledPlatforms.length === 0 || enabledPlatforms.includes(p.id)) {
+        p.install(root, autoUpdate);
+      }
+    }
+    return;
+  }
+
+  // Interactive mode: let user choose which platforms to enable/disable
+  console.log("Detected platforms:");
+  for (let i = 0; i < detected.length; i++) {
+    const p = detected[i];
+    const enabled = enabledPlatforms.length === 0 || enabledPlatforms.includes(p.id);
+    const status = enabled ? "enabled" : "disabled";
+    console.log(`  ${i + 1}. ${p.name} [${status}]`);
+  }
+  console.log();
+
+  if (process.stdin.isTTY) {
+    console.log("Enter platform numbers to toggle (e.g. 1,3), or press Enter to keep current:");
+    const answer = await askQuestion("> ");
+
+    if (answer) {
+      const toggleNums = answer.split(/[\s,]+/).map(Number).filter((n) => n >= 1 && n <= detected.length);
+      // Start from current state (default all enabled if first run)
+      const currentEnabled = new Set<string>(
+        enabledPlatforms.length === 0 ? detected.map((p) => p.id) : enabledPlatforms,
+      );
+      for (const num of toggleNums) {
+        const id = detected[num - 1].id;
+        if (currentEnabled.has(id)) {
+          currentEnabled.delete(id);
+        } else {
+          currentEnabled.add(id);
+        }
+      }
+      config.enabledPlatforms = [...currentEnabled];
+    } else if (enabledPlatforms.length === 0) {
+      // First run, no toggle — enable all detected
+      config.enabledPlatforms = detected.map((p) => p.id);
+    }
+  } else if (enabledPlatforms.length === 0) {
+    config.enabledPlatforms = detected.map((p) => p.id);
   }
 
   // Determine auto-update preference
-  let autoUpdate = false;
-  if (!auto && process.stdin.isTTY) {
+  let autoUpdate = (config.autoUpdate as boolean) || false;
+  if (process.stdin.isTTY) {
     const answer = await askQuestion(
       "Enable auto-updates? CatchEm will check for updates daily. (y/n): ",
     );
     autoUpdate = answer === "y" || answer === "yes";
   }
 
-  // Persist preference
-  const config = loadConfig();
   config.autoUpdate = autoUpdate;
   saveConfig(config);
 
   const root = getCatchemRoot();
+  const finalEnabled = new Set<string>(config.enabledPlatforms as string[]);
 
   for (const p of detected) {
-    p.install(root, autoUpdate);
-    if (!auto) console.log(`  ✅ ${p.name} — hooks & skills installed`);
+    if (finalEnabled.has(p.id)) {
+      p.install(root, autoUpdate);
+      console.log(`  ✅ ${p.name} — hooks & skills installed`);
+    } else {
+      p.uninstall();
+      console.log(`  ❌ ${p.name} — hooks & skills removed`);
+    }
   }
 
-  if (!auto)
-    console.log(
-      "\n🎉 Setup complete! Creatures will start appearing as you code.",
-    );
+  console.log(
+    "\n🎉 Setup complete! Creatures will start appearing on enabled platforms.",
+  );
+}
+
+// ---------------------------------------------------------------------------
+// Uninstall — remove all hooks and skills from every platform
+// ---------------------------------------------------------------------------
+
+export async function runUninstall(): Promise<void> {
+  console.log("🗑️  CatchEm Uninstall\n");
+
+  const platforms = getAllPlatforms();
+  const detected = platforms.filter((p) => p.detected);
+
+  for (const p of detected) {
+    p.uninstall();
+    console.log(`  ✅ ${p.name} — hooks & skills removed`);
+  }
+
+  // Clear enabled platforms from config but keep other settings
+  const config = loadConfig();
+  delete config.enabledPlatforms;
+  saveConfig(config);
+
+  console.log("\n🎉 CatchEm has been uninstalled from all platforms.");
+  console.log("Your creature collection in ~/.catchem/state.json is preserved.");
 }

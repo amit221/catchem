@@ -4,3 +4,5 @@ dist/
 .superpowers/
 .playwright-mcp/
 marketing-assets/
+tools/
+.worktrees/
