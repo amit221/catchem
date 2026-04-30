@@ -14,6 +14,7 @@ Usage:
   catchem setup --auto     Silent auto-setup (used by postinstall)
   catchem uninstall        Remove all hooks & skills from every platform
   catchem collection       View your creature collection (TUI)
+  catchem achievements     View achievements and progress
   catchem help             Show this help message
 `);
 }
@@ -21,6 +22,11 @@ Usage:
 async function collection(): Promise<void> {
   const { launchTUI } = await import("../tui/app.js");
   launchTUI();
+}
+
+async function achievements(): Promise<void> {
+  const { showAchievements } = await import("./achievements.js");
+  showAchievements();
 }
 
 switch (command) {
@@ -32,6 +38,9 @@ switch (command) {
     break;
   case "collection":
     void collection();
+    break;
+  case "achievements":
+    void achievements();
     break;
   case "help":
   case undefined:
