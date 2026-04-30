@@ -87,7 +87,7 @@ export function runTick(toolName?: string): void {
         const child = spawn(
           "gh",
           ["gist", "edit", config.gist.gistId, "--add", tmpFile],
-          { detached: true, stdio: "ignore" },
+          { detached: true, stdio: "ignore", windowsHide: true },
         );
         child.unref();
       }
