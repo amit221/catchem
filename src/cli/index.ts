@@ -15,6 +15,7 @@ Usage:
   catchem uninstall        Remove all hooks & skills from every platform
   catchem collection       View your creature collection (TUI)
   catchem achievements     View achievements and progress
+  catchem viewer           Open collection in browser
   catchem help             Show this help message
 `);
 }
@@ -29,6 +30,11 @@ async function achievements(): Promise<void> {
   showAchievements();
 }
 
+async function viewer(): Promise<void> {
+  const { openViewer } = await import("./viewer.js");
+  openViewer();
+}
+
 switch (command) {
   case "setup":
     void runSetup(args.includes("--auto"));
@@ -41,6 +47,9 @@ switch (command) {
     break;
   case "achievements":
     void achievements();
+    break;
+  case "viewer":
+    void viewer();
     break;
   case "help":
   case undefined:
