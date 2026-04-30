@@ -613,6 +613,22 @@ export async function runSetup(auto: boolean = false): Promise<void> {
       if (gistId) {
         config.gist = { enabled: true, gistId, username: ghUsername };
         console.log(`  ✅ Gist sync enabled — https://gist.github.com/${gistId}`);
+
+        // Offer profile badge
+        if (process.stdin.isTTY) {
+          const profileAnswer = await askQuestion(
+            `Add CatchEm badge to your GitHub profile README? (Y/n): `,
+          );
+          const enableProfile = profileAnswer === "" || profileAnswer === "y" || profileAnswer === "yes";
+          (config as any).profileBadge = enableProfile;
+          if (enableProfile) {
+            const { syncProfileReadme } = await import("../social/gist.js");
+            const mgr = await import("../core/state.js").then((m) => new m.StateManager());
+            const state = mgr.load();
+            const ok = syncProfileReadme(state, gistId, ghUsername);
+            console.log(ok ? `  ✅ Profile badge added to github.com/${ghUsername}` : `  ⚠️  Could not update profile README`);
+          }
+        }
       } else {
         console.log("  ⚠️  Gist sync: could not create gist. Skipping.");
       }

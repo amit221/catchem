@@ -226,3 +226,81 @@ export function syncGist(
   const md = generateGistMarkdown(state, username);
   return updateGist(gistId, md, "catchem-collection.md");
 }
+
+export function generateProfileBadge(state: GameState, gistId: string, username: string): string {
+  const creatures = getAllCreatures();
+  const discovered = Object.keys(state.creatures).length;
+  const totalCreatures = creatures.length;
+  const rarityOrder = ["mythic", "legendary", "epic", "rare", "uncommon", "common"];
+
+  const rarest = Object.entries(state.creatures)
+    .map(([id, cs]) => ({ id, ...cs, def: getCreature(id) }))
+    .filter((c) => c.def)
+    .sort((a, b) => rarityOrder.indexOf(a.def!.rarity) - rarityOrder.indexOf(b.def!.rarity))[0];
+
+  const gistUrl = `https://gist.github.com/${username}/${gistId}`;
+  let badge = `<!-- catchem-start -->\n`;
+
+  if (rarest?.def) {
+    const icon = RARITY_ICONS[rarest.def.rarity] ?? "⚪";
+    badge += `🎮 **${discovered}/${totalCreatures} Bytlings** · `;
+    badge += `<img src="${IMG_BASE}/${rarest.id}.png" width="20" align="center"> `;
+    badge += `**${rarest.def.name}** ${icon} ${rarest.def.rarity} · `;
+    badge += `[View Collection](${gistUrl})\n`;
+  } else {
+    badge += `🎮 **CatchEm** — [Start catching Bytlings](https://github.com/amit221/catchem)\n`;
+  }
+
+  badge += `<!-- catchem-end -->`;
+  return badge;
+}
+
+export function syncProfileReadme(state: GameState, gistId: string, username: string): boolean {
+  try {
+    // Check if profile repo exists
+    const repoCheck = execSync(`gh api repos/${username}/${username} --jq .name`, {
+      encoding: "utf8", stdio: ["pipe", "pipe", "pipe"], timeout: 10000,
+    }).trim();
+    if (!repoCheck) return false;
+
+    // Get current README content
+    let readme = "";
+    try {
+      readme = execSync(`gh api repos/${username}/${username}/contents/README.md --jq .content`, {
+        encoding: "utf8", stdio: ["pipe", "pipe", "pipe"], timeout: 10000,
+      }).trim();
+      readme = Buffer.from(readme, "base64").toString("utf8");
+    } catch {
+      return false; // No README
+    }
+
+    const badge = generateProfileBadge(state, gistId, username);
+
+    // Replace existing badge or skip if not present
+    if (readme.includes("<!-- catchem-start -->")) {
+      readme = readme.replace(
+        /<!-- catchem-start -->[\s\S]*?<!-- catchem-end -->/,
+        badge,
+      );
+    } else {
+      // First time — append to end
+      readme = readme.trimEnd() + "\n\n" + badge + "\n";
+    }
+
+    // Get current SHA for the update
+    const sha = execSync(`gh api repos/${username}/${username}/contents/README.md --jq .sha`, {
+      encoding: "utf8", stdio: ["pipe", "pipe", "pipe"], timeout: 10000,
+    }).trim();
+
+    const contentB64 = Buffer.from(readme).toString("base64");
+    const body = JSON.stringify({ message: "Update CatchEm badge", content: contentB64, sha });
+
+    execSync(`gh api repos/${username}/${username}/contents/README.md -X PUT --input -`, {
+      input: body, stdio: ["pipe", "pipe", "pipe"], timeout: 15000,
+    });
+
+    return true;
+  } catch {
+    return false;
+  }
+}
