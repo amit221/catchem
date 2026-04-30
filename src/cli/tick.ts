@@ -4,7 +4,6 @@ import { formatCatchNotification, formatAchievementUnlock } from "../core/notifi
 import { getNextLevelThreshold } from "../core/leveling.js";
 import { updateTracking, TrackingInput } from "../core/achievement-tracker.js";
 import { checkAchievements, applyUnlocks } from "../core/achievements.js";
-import { isGitRepo, getCommitCount, getRepoId, getHeadSha, getCommitStats } from "../core/git.js";
 
 export function runTick(toolName?: string): void {
   const mgr = new StateManager();
@@ -19,23 +18,6 @@ export function runTick(toolName?: string): void {
     trackingInput.toolName = toolName;
   }
 
-  // Git data (if available)
-  if (isGitRepo()) {
-    try {
-      const repoId = getRepoId();
-      if (repoId) {
-        const stats = getCommitStats();
-        trackingInput.git = {
-          commitCount: getCommitCount(),
-          fixCommits: stats.fixCommits,
-          refactorCommits: stats.refactorCommits,
-          biggestDiff: stats.biggestDiff,
-          repoId,
-        };
-      }
-    } catch { /* git unavailable — skip */ }
-  }
-
   // Update tracking stats
   updateTracking(state.achievementTracking, trackingInput);
 
@@ -47,7 +29,6 @@ export function runTick(toolName?: string): void {
     state.catchHistory.push({
       creatureId: result.creature.id,
       timestamp: now.toISOString(),
-      commitSha: isGitRepo() ? (getHeadSha() ?? undefined) : undefined,
     });
     if (state.catchHistory.length > 500) {
       state.catchHistory = state.catchHistory.slice(-500);

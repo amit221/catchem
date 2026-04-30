@@ -1,5 +1,7 @@
 import { StateManager } from "../core/state.js";
-import { loadAchievementDefinitions } from "../core/achievements.js";
+import { loadAchievementDefinitions, checkAchievements, applyUnlocks } from "../core/achievements.js";
+import { updateTracking } from "../core/achievement-tracker.js";
+import { isGitRepo, getCommitCount, getRepoId, getCommitStats } from "../core/git.js";
 
 const CATEGORY_LABELS: Record<string, string> = {
   "early-game": "Early Game",
@@ -18,6 +20,38 @@ const CATEGORY_LABELS: Record<string, string> = {
 export function showAchievements(): void {
   const mgr = new StateManager();
   const state = mgr.load();
+
+  // Update git stats on demand
+  if (isGitRepo()) {
+    try {
+      const repoId = getRepoId();
+      if (repoId) {
+        const stats = getCommitStats();
+        const today = new Date();
+        const todayStr = `${today.getFullYear()}-${String(today.getMonth() + 1).padStart(2, "0")}-${String(today.getDate()).padStart(2, "0")}`;
+        updateTracking(state.achievementTracking, {
+          today: todayStr,
+          git: {
+            commitCount: getCommitCount(),
+            fixCommits: stats.fixCommits,
+            refactorCommits: stats.refactorCommits,
+            biggestDiff: stats.biggestDiff,
+            repoId,
+          },
+        });
+        // Check if any new achievements unlocked
+        const newAchievements = checkAchievements(state, today);
+        if (newAchievements.length > 0) {
+          applyUnlocks(state, newAchievements);
+          mgr.save(state);
+          for (const a of newAchievements) {
+            console.log(`🏆 Achievement Unlocked: ${a.name}!`);
+          }
+        }
+      }
+    } catch { /* git unavailable */ }
+  }
+
   const defs = loadAchievementDefinitions();
 
   const unlocked = Object.keys(state.achievements).length;
