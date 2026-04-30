@@ -1,0 +1,220 @@
+import { execSync } from "child_process";
+import fs from "fs";
+import path from "path";
+import os from "os";
+import { GameState } from "../core/types.js";
+import { getAllCreatures, getCreature } from "../core/registry.js";
+
+export function isGhAvailable(): boolean {
+  try {
+    execSync("gh auth status", { stdio: "pipe", timeout: 5000 });
+    return true;
+  } catch {
+    return false;
+  }
+}
+
+export function getGhUsername(): string | null {
+  try {
+    return (
+      execSync("gh api user --jq .login", {
+        encoding: "utf8",
+        stdio: ["pipe", "pipe", "pipe"],
+        timeout: 10000,
+      }).trim() || null
+    );
+  } catch {
+    return null;
+  }
+}
+
+export function createGist(
+  content: string,
+  filename: string,
+  description: string,
+): string | null {
+  try {
+    const tmpFile = path.join(os.tmpdir(), filename);
+    fs.writeFileSync(tmpFile, content, "utf8");
+    const result = execSync(
+      `gh gist create "${tmpFile}" --desc "${description}" --public`,
+      {
+        encoding: "utf8",
+        stdio: ["pipe", "pipe", "pipe"],
+        timeout: 15000,
+      },
+    ).trim();
+    try {
+      fs.unlinkSync(tmpFile);
+    } catch {}
+    // Result is the gist URL
+    const match = result.match(/gist\.github\.com\/([a-f0-9]+)/);
+    return match ? match[1] : result;
+  } catch {
+    return null;
+  }
+}
+
+export function updateGist(
+  gistId: string,
+  content: string,
+  filename: string,
+): boolean {
+  try {
+    const tmpFile = path.join(os.tmpdir(), filename);
+    fs.writeFileSync(tmpFile, content, "utf8");
+    execSync(`gh gist edit ${gistId} --add "${tmpFile}"`, {
+      stdio: ["pipe", "pipe", "pipe"],
+      timeout: 15000,
+    });
+    try {
+      fs.unlinkSync(tmpFile);
+    } catch {}
+    return true;
+  } catch {
+    return false;
+  }
+}
+
+export function fetchGist(gistId: string): string | null {
+  try {
+    return execSync(
+      `gh api gists/${gistId} --jq '.files | to_entries[0].value.content'`,
+      {
+        encoding: "utf8",
+        stdio: ["pipe", "pipe", "pipe"],
+        timeout: 10000,
+      },
+    ).trim();
+  } catch {
+    return null;
+  }
+}
+
+// Search for a user's catchem gist by description
+export function findUserGist(username: string): string | null {
+  try {
+    const result = execSync(
+      `gh api "users/${username}/gists" --jq '[.[] | select(.description | test("catchem"; "i"))][0].id'`,
+      {
+        encoding: "utf8",
+        stdio: ["pipe", "pipe", "pipe"],
+        timeout: 10000,
+      },
+    ).trim();
+    return result && result !== "null" ? result : null;
+  } catch {
+    return null;
+  }
+}
+
+const RARITY_ICONS: Record<string, string> = {
+  common: "⚪",
+  uncommon: "🟢",
+  rare: "🔵",
+  epic: "🟣",
+  legendary: "🟠",
+  mythic: "🔴",
+};
+
+const THEME_LABELS: Record<string, string> = {
+  "elemental-beasts": "Elemental",
+  "galactic-warriors": "Galactic",
+  "marvel-heroes": "Marvel",
+  "legends-arena": "Legends",
+  "lotr-legends": "LOTR",
+  "greek-myths": "Greek",
+  "egyptian-myths": "Egyptian",
+  "undead-horror": "Undead",
+};
+
+export function generateGistMarkdown(state: GameState, username: string): string {
+  const creatures = getAllCreatures();
+  const totalCreatures = creatures.length;
+  const discovered = Object.keys(state.creatures).length;
+  const achievementCount = Object.keys(state.achievements).length;
+
+  // Find rarest catches for showcase
+  const caughtCreatures = Object.entries(state.creatures)
+    .map(([id, cs]) => ({ id, ...cs, def: getCreature(id) }))
+    .filter((c) => c.def)
+    .sort((a, b) => {
+      const rarityOrder = ["mythic", "legendary", "epic", "rare", "uncommon", "common"];
+      return (
+        rarityOrder.indexOf(a.def!.rarity) - rarityOrder.indexOf(b.def!.rarity)
+      );
+    });
+
+  const rarestCatches = caughtCreatures.slice(0, 5);
+
+  let md = `# 🎮 ${username}'s CatchEm Collection\n\n`;
+  md += `**${discovered}/${totalCreatures} Discovered** · `;
+  md += `**${state.totalCatches.toLocaleString()} Total Catches** · `;
+  md += `**${state.achievementTracking.streakDays} Day Streak** · `;
+  md += `**${achievementCount} Achievements**\n\n`;
+
+  if (rarestCatches.length > 0) {
+    md += `## ✨ Rarest Catches\n\n`;
+    md += `| Bytling | Rarity | Level | Catches |\n`;
+    md += `|---------|--------|-------|---------|\n`;
+    for (const c of rarestCatches) {
+      const icon = RARITY_ICONS[c.def!.rarity] ?? "⚪";
+      md += `| ${icon} **${c.def!.name}** | ${c.def!.rarity} | Lv.${c.level} | x${c.catchCount} |\n`;
+    }
+    md += `\n`;
+  }
+
+  md += `## 📦 Collection\n\n`;
+  md += `| Bytling | Theme | Rarity | Level | Catches |\n`;
+  md += `|---------|-------|--------|-------|---------|\n`;
+  for (const c of caughtCreatures) {
+    const icon = RARITY_ICONS[c.def!.rarity] ?? "⚪";
+    const theme = THEME_LABELS[c.def!.theme] ?? c.def!.theme;
+    md += `| ${icon} ${c.def!.name} | ${theme} | ${c.def!.rarity} | Lv.${c.level} | x${c.catchCount} |\n`;
+  }
+
+  md += `\n---\n*Generated by [CatchEm](https://github.com/amit221/catchem) — Catch Bytlings while you code*\n`;
+
+  return md;
+}
+
+export function generateGistJson(state: GameState, username: string): string {
+  const discovered = Object.keys(state.creatures).length;
+  return JSON.stringify(
+    {
+      version: 1,
+      player: username,
+      lastUpdated: new Date().toISOString(),
+      stats: {
+        totalCatches: state.totalCatches,
+        uniqueDiscovered: discovered,
+        longestStreak: state.achievementTracking.longestStreak,
+        firstSession: state.stats.firstSession,
+      },
+      creatures: Object.fromEntries(
+        Object.entries(state.creatures).map(([id, c]) => [
+          id,
+          {
+            level: c.level,
+            catchCount: c.catchCount,
+            rarity: getCreature(id)?.rarity ?? "common",
+            firstCaught: c.firstCaught,
+          },
+        ]),
+      ),
+      achievements: state.achievements,
+      unlockedBytlings: state.unlockedBytlings,
+    },
+    null,
+    2,
+  );
+}
+
+export function syncGist(
+  state: GameState,
+  gistId: string,
+  username: string,
+): boolean {
+  const md = generateGistMarkdown(state, username);
+  return updateGist(gistId, md, "catchem-collection.md");
+}

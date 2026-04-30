@@ -4,6 +4,13 @@ import os from "os";
 import readline from "readline";
 import { fileURLToPath } from "url";
 import { execSync } from "child_process";
+import {
+  isGhAvailable,
+  getGhUsername,
+  findUserGist,
+  createGist,
+  generateGistMarkdown,
+} from "../social/gist.js";
 
 function getCatchemRoot(): string {
   const __filename = fileURLToPath(import.meta.url);
@@ -487,6 +494,30 @@ export async function runSetup(auto: boolean = false): Promise<void> {
       config.enabledPlatforms = detected.map((p) => p.id);
     }
     config.autoUpdate = autoUpdate;
+
+    // Auto gist sync: enable if gh is available and not yet configured
+    if (isGhAvailable() && !(config.gist as any)?.gistId) {
+      const ghUsername = getGhUsername();
+      if (ghUsername) {
+        const existingId = findUserGist(ghUsername);
+        if (existingId) {
+          config.gist = { enabled: true, gistId: existingId, username: ghUsername };
+        } else {
+          const mgr = await import("../core/state.js").then((m) => new m.StateManager());
+          const state = mgr.load();
+          const initialMd = generateGistMarkdown(state, ghUsername);
+          const created = createGist(
+            initialMd,
+            "catchem-collection.md",
+            `CatchEm Collection - @${ghUsername}`,
+          );
+          if (created) {
+            config.gist = { enabled: true, gistId: created, username: ghUsername };
+          }
+        }
+      }
+    }
+
     saveConfig(config);
     for (const p of detected) {
       if (enabledPlatforms.length === 0 || enabledPlatforms.includes(p.id)) {
@@ -543,6 +574,53 @@ export async function runSetup(auto: boolean = false): Promise<void> {
   }
 
   config.autoUpdate = autoUpdate;
+
+  // Gist sync detection (interactive mode)
+  if (isGhAvailable()) {
+    const ghUsername = getGhUsername();
+    let enableGist = false;
+    if (ghUsername && process.stdin.isTTY) {
+      const answer = await askQuestion(
+        `GitHub detected (@${ghUsername}). Enable gist sync? (Y/n): `,
+      );
+      enableGist = answer === "" || answer === "y" || answer === "yes";
+    } else if (ghUsername) {
+      enableGist = true;
+    }
+
+    if (enableGist && ghUsername) {
+      let gistId = (config.gist as any)?.gistId as string | undefined;
+      if (!gistId) {
+        // Check if one already exists
+        const existingId = findUserGist(ghUsername);
+        if (existingId) {
+          gistId = existingId;
+        } else {
+          const mgr = await import("../core/state.js").then((m) => new m.StateManager());
+          const state = mgr.load();
+          const initialMd = generateGistMarkdown(state, ghUsername);
+          const created = createGist(
+            initialMd,
+            "catchem-collection.md",
+            `CatchEm Collection - @${ghUsername}`,
+          );
+          if (created) {
+            gistId = created;
+          }
+        }
+      }
+
+      if (gistId) {
+        config.gist = { enabled: true, gistId, username: ghUsername };
+        console.log(`  ✅ Gist sync enabled — https://gist.github.com/${gistId}`);
+      } else {
+        console.log("  ⚠️  Gist sync: could not create gist. Skipping.");
+      }
+    } else if (!enableGist) {
+      config.gist = { enabled: false };
+    }
+  }
+
   saveConfig(config);
 
   const root = getCatchemRoot();

@@ -16,6 +16,8 @@ Usage:
   catchem collection       View your creature collection (TUI)
   catchem achievements     View achievements and progress
   catchem viewer           Open collection in browser
+  catchem pr-summary       Show rarest catch for PR description
+  catchem profile <user>   View a player's collection
   catchem help             Show this help message
 `);
 }
@@ -51,6 +53,21 @@ switch (command) {
   case "viewer":
     void viewer();
     break;
+  case "pr-summary": {
+    const { showPrSummary } = await import("./pr-summary.js");
+    showPrSummary();
+    break;
+  }
+  case "profile": {
+    const profileUser = args[1];
+    if (!profileUser) {
+      console.error("Usage: catchem profile <github-username>");
+      break;
+    }
+    const { showProfile } = await import("./profile.js");
+    showProfile(profileUser);
+    break;
+  }
   case "help":
   case undefined:
     printUsage();
