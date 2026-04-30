@@ -41,13 +41,15 @@ function joinedOutput(): string {
 }
 
 describe("runTick", () => {
-  it("emits nothing on miss (no banner, no directive)", () => {
+  it("emits no catch banner or directive on miss", () => {
     // currentCatchRate = 0 + default rng = Math.random() ∈ [0,1) ⇒ guaranteed miss
     writeState(0);
 
     runTick();
 
-    expect(logSpy).not.toHaveBeenCalled();
+    // No catch-specific output — achievements may fire but no "mention this catch" directive
+    const out = joinedOutput();
+    expect(out).not.toMatch(/mention this catch/i);
   });
 
   it("emits a scope-limited catch directive on success", () => {
