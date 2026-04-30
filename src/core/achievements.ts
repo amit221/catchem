@@ -23,13 +23,13 @@ export interface AchievementUnlock {
   tier?: string;
 }
 
-export function checkAchievements(state: GameState, now: Date = new Date()): AchievementUnlock[] {
+export function checkAchievements(state: GameState, now: Date = new Date(), hasCatch: boolean = false): AchievementUnlock[] {
   const defs = loadAchievementDefinitions();
   const newUnlocks: AchievementUnlock[] = [];
 
   for (const def of defs) {
     if (state.achievements[def.id]) continue;
-    if (isConditionMet(def, state, now)) {
+    if (isConditionMet(def, state, now, hasCatch)) {
       newUnlocks.push({ id: def.id, name: def.name, unlocks: def.unlocks, tier: def.tier });
     }
   }
@@ -37,7 +37,7 @@ export function checkAchievements(state: GameState, now: Date = new Date()): Ach
   return newUnlocks;
 }
 
-function isConditionMet(def: AchievementDefinition, state: GameState, now: Date): boolean {
+function isConditionMet(def: AchievementDefinition, state: GameState, now: Date, hasCatch: boolean = false): boolean {
   const { condition } = def;
   const tracking = state.achievementTracking;
 
@@ -100,18 +100,18 @@ function isConditionMet(def: AchievementDefinition, state: GameState, now: Date)
     }
 
     case "timeOfDay": {
-      if (!condition.timeRange || state.totalCatches === 0) return false;
+      if (!condition.timeRange || !hasCatch) return false;
       const hour = now.getHours();
       return hour >= condition.timeRange[0] && hour < condition.timeRange[1];
     }
 
     case "dayOfWeek": {
-      if (!condition.days || state.totalCatches === 0) return false;
+      if (!condition.days || !hasCatch) return false;
       return condition.days.includes(now.getDay());
     }
 
     case "newYear": {
-      if (state.totalCatches === 0) return false;
+      if (!hasCatch) return false;
       return now.getMonth() === 0 && now.getDate() === 1;
     }
 

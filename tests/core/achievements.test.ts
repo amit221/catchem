@@ -99,7 +99,7 @@ describe("checkAchievements", () => {
   it("unlocks night-owl at 2am", () => {
     const state = testState({ totalCatches: 1 });
     const nightTime = new Date("2026-04-30T02:00:00");
-    const result = checkAchievements(state, nightTime);
+    const result = checkAchievements(state, nightTime, true);
     expect(result.find(r => r.id === "night-owl")).toBeDefined();
   });
 

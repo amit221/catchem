@@ -105,6 +105,9 @@ function installClaudeCode(root: string, autoUpdate: boolean): void {
   // Auto-update hook in SessionStart
   if (autoUpdate) {
     if (!settings.hooks.SessionStart) settings.hooks.SessionStart = [];
+    settings.hooks.SessionStart = settings.hooks.SessionStart.filter(
+      (h: any) => !JSON.stringify(h).includes("catchem"),
+    );
     settings.hooks.SessionStart.push({
       hooks: [{ type: "command", command: getUpdateCommand() }],
     });
@@ -513,6 +516,7 @@ export async function runSetup(auto: boolean = false): Promise<void> {
           );
           if (created) {
             config.gist = { enabled: true, gistId: created, username: ghUsername };
+            saveConfig(config);
           }
         }
       }
@@ -612,6 +616,7 @@ export async function runSetup(auto: boolean = false): Promise<void> {
 
       if (gistId) {
         config.gist = { enabled: true, gistId, username: ghUsername };
+        saveConfig(config);
         console.log(`  ✅ Gist sync enabled — https://gist.github.com/${gistId}`);
 
         // Offer profile badge

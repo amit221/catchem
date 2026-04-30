@@ -7,7 +7,8 @@ import { formatCatchNotification, formatAchievementUnlock } from "../core/notifi
 import { getNextLevelThreshold } from "../core/leveling.js";
 import { updateTracking, TrackingInput } from "../core/achievement-tracker.js";
 import { checkAchievements, applyUnlocks } from "../core/achievements.js";
-import { syncGist, syncProfileReadme } from "../social/gist.js";
+import { generateGistMarkdown } from "../social/gist.js";
+import { spawn } from "child_process";
 
 export function runTick(toolName?: string): void {
   const mgr = new StateManager();
@@ -15,6 +16,12 @@ export function runTick(toolName?: string): void {
 
   const now = new Date();
   const today = `${now.getFullYear()}-${String(now.getMonth() + 1).padStart(2, "0")}-${String(now.getDate()).padStart(2, "0")}`;
+
+  // Track session stats
+  if (!state.stats.firstSession) {
+    state.stats.firstSession = now.toISOString();
+  }
+  state.stats.sessionsPlayed = (state.stats.sessionsPlayed ?? 0) + 1;
 
   // Build tracking input
   const trackingInput: TrackingInput = { today, isPrompt: !toolName };
@@ -40,7 +47,7 @@ export function runTick(toolName?: string): void {
   }
 
   // Check achievements
-  const newAchievements = checkAchievements(state, now);
+  const newAchievements = checkAchievements(state, now, !!result);
   if (newAchievements.length > 0) {
     applyUnlocks(state, newAchievements);
   }
@@ -63,7 +70,7 @@ export function runTick(toolName?: string): void {
     console.log(formatAchievementUnlock(achievement.name, achievement.unlocks));
   }
 
-  // Sync gist after a successful catch (fire-and-forget, errors are swallowed)
+  // Sync gist after a successful catch (fire-and-forget, non-blocking)
   if (result) {
     try {
       const configPath = path.join(os.homedir(), ".catchem", "config.json");
@@ -72,10 +79,17 @@ export function runTick(toolName?: string): void {
         profileBadge?: boolean;
       };
       if (config.gist?.enabled && config.gist.gistId && config.gist.username) {
-        syncGist(state, config.gist.gistId, config.gist.username);
-        if (config.profileBadge) {
-          syncProfileReadme(state, config.gist.gistId, config.gist.username);
-        }
+        // Generate markdown content in-process (CPU-only, fast)
+        const md = generateGistMarkdown(state, config.gist.username);
+        const tmpFile = path.join(os.tmpdir(), "catchem-gist-sync.md");
+        fs.writeFileSync(tmpFile, md, "utf8");
+        // Spawn gh gist edit as a detached background process — doesn't block
+        const child = spawn(
+          "gh",
+          ["gist", "edit", config.gist.gistId, "--add", tmpFile],
+          { detached: true, stdio: "ignore" },
+        );
+        child.unref();
       }
     } catch {
       /* gist sync failed silently */
