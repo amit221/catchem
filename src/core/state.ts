@@ -9,6 +9,7 @@ function defaultTracking(): AchievementTracking {
     repos: [],
     fixCommits: 0,
     refactorCommits: 0,
+    biggestDiff: 0,
     streakDays: 0,
     longestStreak: 0,
     lastActiveDate: "",

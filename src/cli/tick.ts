@@ -10,8 +10,8 @@ export function runTick(toolName?: string): void {
   const mgr = new StateManager();
   const state = mgr.load();
 
-  const today = new Date().toISOString().slice(0, 10);
   const now = new Date();
+  const today = `${now.getFullYear()}-${String(now.getMonth() + 1).padStart(2, "0")}-${String(now.getDate()).padStart(2, "0")}`;
 
   // Build tracking input
   const trackingInput: TrackingInput = { today, isPrompt: !toolName };

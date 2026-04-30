@@ -3,7 +3,7 @@ import { GameState, STARTER_BYTLINGS, AchievementTracking } from "../../src/core
 
 function emptyTracking(): AchievementTracking {
   return {
-    totalCommits: 0, repos: [], fixCommits: 0, refactorCommits: 0,
+    totalCommits: 0, repos: [], fixCommits: 0, refactorCommits: 0, biggestDiff: 0,
     streakDays: 0, longestStreak: 0, lastActiveDate: "",
     toolUsage: {}, promptCount: 0, prsMerged: 0, prsReviewed: 0,
   };

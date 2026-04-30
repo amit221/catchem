@@ -78,6 +78,7 @@ export interface AchievementTracking {
   repos: string[];
   fixCommits: number;
   refactorCommits: number;
+  biggestDiff: number;
   streakDays: number;
   longestStreak: number;
   lastActiveDate: string;

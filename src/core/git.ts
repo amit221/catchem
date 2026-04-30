@@ -38,19 +38,15 @@ export function getCommitStats(): { fixCommits: number; refactorCommits: number;
   const refactorLog = git('log --oneline --all --grep="refactor" -i');
   const refactorCommits = refactorLog ? refactorLog.split("\n").filter(Boolean).length : 0;
 
-  // Get biggest diff in recent commits (last 50)
-  const diffStats = git('log --pretty=format:"%H" -50');
+  // Get biggest diff using git log --shortstat (single command, no per-commit calls)
   let biggestDiff = 0;
-  if (diffStats) {
-    for (const sha of diffStats.split("\n").filter(Boolean)) {
-      const cleanSha = sha.replace(/"/g, "");
-      const stat = git(`diff --shortstat ${cleanSha}^..${cleanSha}`);
-      if (stat) {
-        const insertions = stat.match(/(\d+) insertion/);
-        const deletions = stat.match(/(\d+) deletion/);
-        const lines = (insertions ? parseInt(insertions[1], 10) : 0) + (deletions ? parseInt(deletions[1], 10) : 0);
-        biggestDiff = Math.max(biggestDiff, lines);
-      }
+  const logOutput = git('log --pretty=format:"---" --shortstat -50');
+  if (logOutput) {
+    for (const block of logOutput.split("---").filter(Boolean)) {
+      const insertions = block.match(/(\d+) insertion/);
+      const deletions = block.match(/(\d+) deletion/);
+      const lines = (insertions ? parseInt(insertions[1], 10) : 0) + (deletions ? parseInt(deletions[1], 10) : 0);
+      biggestDiff = Math.max(biggestDiff, lines);
     }
   }
 

@@ -84,14 +84,19 @@ function isConditionMet(def: AchievementDefinition, state: GameState, now: Date)
       return tracking.refactorCommits >= (condition.threshold ?? 0);
 
     case "bigDiff":
-      return false; // Tracked via git stats during tick — needs live data
+      return tracking.biggestDiff >= (condition.threshold ?? 0);
 
     case "repos":
       return tracking.repos.length >= (condition.threshold ?? 0);
 
     case "toolUsage": {
       const toolName = condition.toolName ?? "";
-      return (tracking.toolUsage[toolName] ?? 0) >= (condition.threshold ?? 0);
+      let count = tracking.toolUsage[toolName] ?? 0;
+      // WebFetch and WebSearch are interchangeable for web-explorer
+      if (toolName === "WebFetch") {
+        count += tracking.toolUsage["WebSearch"] ?? 0;
+      }
+      return count >= (condition.threshold ?? 0);
     }
 
     case "timeOfDay": {

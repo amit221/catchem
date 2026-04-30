@@ -44,6 +44,9 @@ export function updateTracking(tracking: AchievementTracking, input: TrackingInp
     }
     tracking.fixCommits = Math.max(tracking.fixCommits, fixCommits);
     tracking.refactorCommits = Math.max(tracking.refactorCommits, refactorCommits);
+    if (input.git.biggestDiff > 0) {
+      tracking.biggestDiff = Math.max(tracking.biggestDiff ?? 0, input.git.biggestDiff);
+    }
   }
 
   // Tool usage
