@@ -88,7 +88,10 @@ function installClaudeCode(root: string, autoUpdate: boolean): void {
 
   const tick = getTickCommand(root);
 
-  const events: Record<string, string> = { UserPromptSubmit: tick };
+  const events: Record<string, string> = {
+    UserPromptSubmit: tick,
+    PostToolUse: `${tick} --tool tool_use`,
+  };
 
   setHooks(settings, "hooks", events, true);
 
