@@ -1,6 +1,6 @@
 {
   "name": "catchem",
-  "version": "1.2.0",
+  "version": "1.3.0",
   "description": "Passive creature collection game — catch creatures as you code",
   "type": "module",
   "main": "dist/cli/index.js",
