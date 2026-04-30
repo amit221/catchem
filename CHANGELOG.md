@@ -1,5 +1,48 @@
 # Changelog
 
+## [1.3.0](https://github.com/amit221/catchem/compare/v1.2.0...v1.3.0) (2026-04-30)
+
+
+### Features
+
+* achievement condition checker and unlock logic ([5e908ba](https://github.com/amit221/catchem/commit/5e908ba93eeb6df314e01bbe1fa6a3d60a3cb680))
+* achievement tracker — streak, git stats, tool usage accumulation ([8726c78](https://github.com/amit221/catchem/commit/8726c783bf0cee21df3dd69130d0c66cc0df2c7c))
+* achievement unlock notification formatter ([0cc83d5](https://github.com/amit221/catchem/commit/0cc83d58200168a9432d0e336b86f487780fba14))
+* add 57 achievement definitions with bytling unlock mappings ([5db6710](https://github.com/amit221/catchem/commit/5db6710bf8bb0cfd14de12e8fe52ea49ccd5fb07))
+* add achievement and unlock types to GameState ([0fd99ae](https://github.com/amit221/catchem/commit/0fd99ae6a89954bb11cedf215fa1de0f1e993f1a))
+* add git CLI wrapper for achievement tracking ([963b81d](https://github.com/amit221/catchem/commit/963b81dad4226f79c498a11d7a7579cabf45e46f))
+* add PostToolUse hook for tool-based achievement tracking ([635aaf1](https://github.com/amit221/catchem/commit/635aaf1111711f4bfc275231fff67645b63506df))
+* **assets:** add main pipeline script with interactive/auto modes ([0350b35](https://github.com/amit221/catchem/commit/0350b35029f578f0e9abfcac82c0e5e6913bfc87))
+* **assets:** add OpenAI concept art generation client ([f862ff4](https://github.com/amit221/catchem/commit/f862ff4b17a0fd85f95711ab761ee0f4c0b335fc))
+* **assets:** add PixelLab MCP client for sprite and animation generation ([77640a7](https://github.com/amit221/catchem/commit/77640a7730bc86fec989be8ce616dc124f8b2b30))
+* **assets:** add types and manifest module with tests ([b6376a6](https://github.com/amit221/catchem/commit/b6376a62582212d18b1aaf4541c6acb0b3b6cce9))
+* catchem achievements CLI command ([6b86728](https://github.com/amit221/catchem/commit/6b867280b1b9149badb3ce31c6457698c8974f56))
+* engine passes unlocked pool to creature picker ([477d4f6](https://github.com/amit221/catchem/commit/477d4f628ff11e90c2ef6af32f75ea2e1795c8bf))
+* gist uses image grid layout instead of text tables ([54c1d04](https://github.com/amit221/catchem/commit/54c1d046f11e96ddf99715da09824ed52d892f4a))
+* GitHub profile badge — 1-liner with rarest catch, opt-in during setup ([b3f6315](https://github.com/amit221/catchem/commit/b3f631505a55fe9a7f8eee714c535807a17bc475))
+* HTML viewer — catchem viewer command with codex cards and platformer scene ([707d3e2](https://github.com/amit221/catchem/commit/707d3e2c633fe354f06ea2d62172a1fa00efe927))
+* HTML viewer generator with codex cards and platformer scene ([8df4492](https://github.com/amit221/catchem/commit/8df4492f08557f6f0bec6c75b68a8616f44c655a))
+* Phase 3 — gist sync, PR summary, profile viewer ([f6f4bd6](https://github.com/amit221/catchem/commit/f6f4bd6961fe6f08d1b8a91090f61fae274a594a))
+* pool filtering for pickRandomCreature ([4530c76](https://github.com/amit221/catchem/commit/4530c762c5f3ec66f64cbf97c6c33e2deb5bf1cf))
+* state migration v1→v2 with achievement tracking fields ([1bfd3de](https://github.com/amit221/catchem/commit/1bfd3debc29d4077f574c37fb4cc644d45e3a695))
+* tick runs achievement tracking and checking with unlock output ([cacaace](https://github.com/amit221/catchem/commit/cacaace2c69ab204cf70766e00cf7d0448406611))
+
+
+### Bug Fixes
+
+* **assets:** fix pipeline issues found during smoke testing ([1836992](https://github.com/amit221/catchem/commit/183699254feb78570bfc519afe97d0fca92b69a4))
+* gist ID parsing for gh gist create URL format (username/id) ([05a882a](https://github.com/amit221/catchem/commit/05a882af655fd94dfb6f0dcba0255dc11b75119b))
+* hide spawned gist sync window on Windows (windowsHide: true) ([c42d9cd](https://github.com/amit221/catchem/commit/c42d9cda2af4e71eed3b31dd4b4a9f258b1bff9d))
+* PostToolUse only tracks tools (no catch), gist syncs once per 4h, no spawn windows ([93c90ac](https://github.com/amit221/catchem/commit/93c90ac663f2924a395ae4db753b775581fd3fce))
+* session tracking, hook dedup, non-blocking gist sync, time-based achievement guards ([8bc45a1](https://github.com/amit221/catchem/commit/8bc45a1f4d44dcb8b25e8077c6a1bf28ce496e4c))
+* tool name from stdin, local timezone for streaks, WebSearch for web-explorer ([d3dee3b](https://github.com/amit221/catchem/commit/d3dee3b32aed1f62e8158f5dd2fb52487612e3f3))
+* use async exec instead of execSync for gist sync — never blocks prompt ([200b0da](https://github.com/amit221/catchem/commit/200b0da8da253dd182d57307f926d5fbf627f5ca))
+
+
+### Performance Improvements
+
+* move git stats from per-tick to on-demand (catchem achievements) ([45df348](https://github.com/amit221/catchem/commit/45df348f780706e7d0972f86aee3b1b9185887f4))
+
 ## [1.2.0](https://github.com/amit221/catchem/compare/v1.1.1...v1.2.0) (2026-04-29)
 
 
