@@ -1,7 +1,7 @@
 import fs from "fs";
 import path from "path";
 import os from "os";
-import { execSync } from "child_process";
+import { exec } from "child_process";
 import { StateManager } from "../core/state.js";
 import { tryCatch } from "../core/engine.js";
 import { formatCatchNotification, formatAchievementUnlock } from "../core/notification.js";
@@ -99,15 +99,15 @@ export function runTick(toolName?: string): void {
           const md = generateGistMarkdown(state, config.gist.username);
           const tmpFile = path.join(os.tmpdir(), "catchem-gist-sync.md");
           fs.writeFileSync(tmpFile, md, "utf8");
-          try {
-            execSync(`gh gist edit ${config.gist.gistId} --add "${tmpFile}"`, {
-              stdio: "ignore", timeout: 15000, windowsHide: true,
-            });
-            // Update last sync time
-            config.lastGistSync = now.toISOString();
-            fs.writeFileSync(configPath, JSON.stringify(config, null, 2));
-          } catch { /* gh failed — skip silently */ }
-          try { fs.unlinkSync(tmpFile); } catch {}
+          // Update last sync time immediately (prevents retries if gh is slow)
+          config.lastGistSync = now.toISOString();
+          fs.writeFileSync(configPath, JSON.stringify(config, null, 2));
+          // Fire-and-forget async — never blocks the prompt
+          exec(`gh gist edit ${config.gist.gistId} --add "${tmpFile}"`, {
+            timeout: 30000, windowsHide: true,
+          }, () => {
+            try { fs.unlinkSync(tmpFile); } catch {}
+          });
         }
       }
     } catch { /* gist sync failed silently */ }
