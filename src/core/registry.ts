@@ -19,12 +19,21 @@ export function getCreature(id: string): CreatureDefinition | undefined {
   return creatureMap.get(id);
 }
 
-export function pickRandomCreature(rng: () => number = Math.random): CreatureDefinition {
-  const totalWeight = creatures.reduce((sum, c) => sum + RARITY_WEIGHTS[c.rarity], 0);
+export function pickRandomCreature(
+  rng: () => number = Math.random,
+  pool?: string[],
+): CreatureDefinition {
+  const available = pool
+    ? pool.map((id) => creatureMap.get(id)).filter(Boolean) as CreatureDefinition[]
+    : creatures;
+
+  if (available.length === 0) return creatures[0]; // fallback safety
+
+  const totalWeight = available.reduce((sum, c) => sum + RARITY_WEIGHTS[c.rarity], 0);
   let roll = rng() * totalWeight;
-  for (const creature of creatures) {
+  for (const creature of available) {
     roll -= RARITY_WEIGHTS[creature.rarity];
     if (roll <= 0) return creature;
   }
-  return creatures[creatures.length - 1];
+  return available[available.length - 1];
 }
