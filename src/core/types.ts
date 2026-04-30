@@ -30,6 +30,10 @@ export interface GameState {
   totalCatches: number;
   currentCatchRate: number;
   stats: GameStats;
+  unlockedBytlings: string[];
+  achievements: Record<string, AchievementState>;
+  achievementTracking: AchievementTracking;
+  catchHistory: CatchHistoryEntry[];
 }
 
 export interface CatchResult {
@@ -44,6 +48,49 @@ export interface CatchResult {
 
 export interface CatchOptions {
   rng: () => number;
+}
+
+export interface AchievementDefinition {
+  id: string;
+  name: string;
+  category: string;
+  condition: {
+    type: string;
+    threshold?: number;
+    timeRange?: [number, number];
+    days?: number[];
+    toolName?: string;
+    creatureId?: string;
+  };
+  unlocks: string[];
+  tier?: "bronze" | "silver" | "gold" | "platinum" | "diamond";
+  hidden?: boolean;
+}
+
+export interface AchievementState {
+  tier?: "bronze" | "silver" | "gold" | "platinum" | "diamond";
+  unlockedAt: string;
+  bytlingsUnlocked: string[];
+}
+
+export interface AchievementTracking {
+  totalCommits: number;
+  repos: string[];
+  fixCommits: number;
+  refactorCommits: number;
+  streakDays: number;
+  longestStreak: number;
+  lastActiveDate: string;
+  toolUsage: Record<string, number>;
+  promptCount: number;
+  prsMerged: number;
+  prsReviewed: number;
+}
+
+export interface CatchHistoryEntry {
+  creatureId: string;
+  timestamp: string;
+  commitSha?: string;
 }
 
 export const RARITY_WEIGHTS: Record<Rarity, number> = {
@@ -71,3 +118,8 @@ export const RARITY_LABELS: Record<Rarity, string> = {
   legendary: "🟧 Legendary",
   mythic: "🟥 Mythic",
 };
+
+export const STARTER_BYTLINGS = [
+  "zappik", "bladewing", "thunderox", "shadowstep",
+  "hobbin", "cyclobyte", "scarabyte", "zombuild",
+];
