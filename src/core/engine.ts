@@ -1,4 +1,4 @@
-import { GameState, CatchOptions, CatchResult, INITIAL_CATCH_RATE, BASE_CATCH_RATE, CATCH_RATE_INCREMENT, LEVEL_THRESHOLDS, MAX_LEVEL } from "./types.js";
+import { GameState, CatchOptions, CatchResult, BASE_CATCH_RATE, CATCH_RATE_INCREMENT, LEVEL_THRESHOLDS, MAX_LEVEL } from "./types.js";
 import { pickRandomCreature } from "./registry.js";
 
 
@@ -20,7 +20,7 @@ export function tryCatch(
   // Successful catch — reset rate
   state.currentCatchRate = BASE_CATCH_RATE;
 
-  const creature = pickRandomCreature(rng);
+  const creature = pickRandomCreature(rng, state.unlockedBytlings);
   const isNew = !(creature.id in state.creatures);
   const now = new Date().toISOString();
 

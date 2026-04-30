@@ -1,13 +1,21 @@
 import { tryCatch } from "../../src/core/engine";
-import { GameState, INITIAL_CATCH_RATE, BASE_CATCH_RATE, CATCH_RATE_INCREMENT } from "../../src/core/types";
+import { GameState, INITIAL_CATCH_RATE, BASE_CATCH_RATE, CATCH_RATE_INCREMENT, STARTER_BYTLINGS } from "../../src/core/types";
 
 function emptyState(): GameState {
   return {
-    version: 1,
+    version: 2,
     creatures: {},
     totalCatches: 0,
     currentCatchRate: INITIAL_CATCH_RATE,
     stats: { sessionsPlayed: 0, firstSession: "" },
+    unlockedBytlings: [...STARTER_BYTLINGS],
+    achievements: {},
+    achievementTracking: {
+      totalCommits: 0, repos: [], fixCommits: 0, refactorCommits: 0,
+      streakDays: 0, longestStreak: 0, lastActiveDate: "",
+      toolUsage: {}, promptCount: 0, prsMerged: 0, prsReviewed: 0,
+    },
+    catchHistory: [],
   };
 }
 
@@ -116,5 +124,13 @@ describe("tryCatch", () => {
     // First catch should always succeed (rate = 1.0)
     const result = tryCatch(state);
     expect(result).not.toBeNull();
+  });
+
+  it("only catches from unlocked pool", () => {
+    const state = emptyState();
+    state.unlockedBytlings = ["zappik"];
+    const result = tryCatch(state, { rng: () => 0.01 });
+    expect(result).not.toBeNull();
+    expect(result!.creature.id).toBe("zappik");
   });
 });
