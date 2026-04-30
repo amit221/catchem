@@ -1,5 +1,5 @@
 import { CatchResult } from "./types.js";
-import { getAllCreatures } from "./registry.js";
+import { getAllCreatures, getCreature } from "./registry.js";
 import { getNextLevelThreshold } from "./leveling.js";
 
 export function formatCatchNotification(result: CatchResult, uniqueCount: number): string {
@@ -53,6 +53,18 @@ function formatLevelUp(result: CatchResult): string {
     border,
   ];
   return lines.join("\n");
+}
+
+export function formatAchievementUnlock(achievementName: string, unlockedCreatureIds: string[]): string {
+  const creatureNames = unlockedCreatureIds
+    .map((id) => {
+      const c = getCreature(id);
+      if (!c) return id;
+      return `${c.name} (${rarityTag(c.rarity)})`;
+    })
+    .join(" and ");
+
+  return `🏆 Achievement Unlocked: ${achievementName}!\n   🔓 ${creatureNames} can now be caught!`;
 }
 
 function rarityTag(rarity: string): string {
