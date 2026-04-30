@@ -48,7 +48,7 @@ export function createGist(
       fs.unlinkSync(tmpFile);
     } catch {}
     // Result is the gist URL
-    const match = result.match(/gist\.github\.com\/([a-f0-9]+)/);
+    const match = result.match(/gist\.github\.com\/[^/]+\/([a-f0-9]+)/);
     return match ? match[1] : result;
   } catch {
     return null;
