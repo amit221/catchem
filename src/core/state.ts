@@ -1,18 +1,51 @@
 import fs from "fs";
 import path from "path";
 import os from "os";
-import { GameState, INITIAL_CATCH_RATE } from "./types.js";
+import { GameState, INITIAL_CATCH_RATE, STARTER_BYTLINGS, AchievementTracking } from "./types.js";
+
+function defaultTracking(): AchievementTracking {
+  return {
+    totalCommits: 0,
+    repos: [],
+    fixCommits: 0,
+    refactorCommits: 0,
+    streakDays: 0,
+    longestStreak: 0,
+    lastActiveDate: "",
+    toolUsage: {},
+    promptCount: 0,
+    prsMerged: 0,
+    prsReviewed: 0,
+  };
+}
 
 function defaultState(): GameState {
   return {
-    version: 1,
+    version: 2,
     creatures: {},
     totalCatches: 0,
     currentCatchRate: INITIAL_CATCH_RATE,
-    stats: {
-      sessionsPlayed: 0,
-      firstSession: "",
-    },
+    stats: { sessionsPlayed: 0, firstSession: "" },
+    unlockedBytlings: [...STARTER_BYTLINGS],
+    achievements: {},
+    achievementTracking: defaultTracking(),
+    catchHistory: [],
+  };
+}
+
+export function migrateState(state: any): GameState {
+  if (state.version === 2) return state as GameState;
+
+  const caughtIds = Object.keys(state.creatures || {});
+  const unlocked = new Set([...STARTER_BYTLINGS, ...caughtIds]);
+
+  return {
+    ...state,
+    version: 2,
+    unlockedBytlings: [...unlocked],
+    achievements: {},
+    achievementTracking: defaultTracking(),
+    catchHistory: [],
   };
 }
 
@@ -30,7 +63,7 @@ export class StateManager {
       if (!data || typeof data !== "object" || !data.version) {
         return defaultState();
       }
-      return data as GameState;
+      return migrateState(data);
     } catch {
       return defaultState();
     }

@@ -1,8 +1,8 @@
 import fs from "fs";
 import path from "path";
 import os from "os";
-import { StateManager } from "../../src/core/state";
-import { INITIAL_CATCH_RATE } from "../../src/core/types";
+import { StateManager, migrateState } from "../../src/core/state";
+import { INITIAL_CATCH_RATE, STARTER_BYTLINGS } from "../../src/core/types";
 
 function tempStatePath(): string {
   return path.join(os.tmpdir(), `catchem-test-${Date.now()}-${Math.random().toString(36).slice(2)}.json`);
@@ -12,7 +12,7 @@ describe("StateManager", () => {
   it("returns default state when file does not exist", () => {
     const mgr = new StateManager(tempStatePath());
     const state = mgr.load();
-    expect(state.version).toBe(1);
+    expect(state.version).toBe(2);
     expect(state.totalCatches).toBe(0);
     expect(state.creatures).toEqual({});
     expect(state.currentCatchRate).toBe(INITIAL_CATCH_RATE);
@@ -47,7 +47,7 @@ describe("StateManager", () => {
     fs.writeFileSync(filePath, "not json at all");
     const mgr = new StateManager(filePath);
     const state = mgr.load();
-    expect(state.version).toBe(1);
+    expect(state.version).toBe(2);
     expect(state.totalCatches).toBe(0);
   });
 
@@ -66,7 +66,58 @@ describe("StateManager", () => {
     fs.writeFileSync(filePath, JSON.stringify({ foo: "bar" }));
     const mgr = new StateManager(filePath);
     const state = mgr.load();
-    expect(state.version).toBe(1);
+    expect(state.version).toBe(2);
     expect(state.totalCatches).toBe(0);
+  });
+});
+
+describe("migrateState", () => {
+  it("migrates v1 state to v2 with default fields", () => {
+    const v1: any = {
+      version: 1,
+      creatures: {},
+      totalCatches: 0,
+      currentCatchRate: 1.0,
+      stats: { sessionsPlayed: 0, firstSession: "" },
+    };
+    const v2 = migrateState(v1);
+    expect(v2.version).toBe(2);
+    expect(v2.unlockedBytlings).toEqual(STARTER_BYTLINGS);
+    expect(v2.achievements).toEqual({});
+    expect(v2.achievementTracking).toBeDefined();
+    expect(v2.achievementTracking.streakDays).toBe(0);
+    expect(v2.catchHistory).toEqual([]);
+  });
+
+  it("preserves existing creatures and adds them to unlocked pool", () => {
+    const v1: any = {
+      version: 1,
+      creatures: {
+        blazard: { name: "Blazard", catchCount: 5, levelCatches: 5, level: 2, firstCaught: "2026-01-01", lastCaught: "2026-01-05" },
+      },
+      totalCatches: 5,
+      currentCatchRate: 0.2,
+      stats: { sessionsPlayed: 5, firstSession: "2026-01-01" },
+    };
+    const v2 = migrateState(v1);
+    expect(v2.creatures.blazard.catchCount).toBe(5);
+    expect(v2.unlockedBytlings).toContain("blazard");
+    expect(v2.unlockedBytlings).toContain("zappik");
+  });
+
+  it("returns v2 state unchanged", () => {
+    const v2: any = {
+      version: 2,
+      creatures: {},
+      totalCatches: 0,
+      currentCatchRate: 1.0,
+      stats: { sessionsPlayed: 0, firstSession: "" },
+      unlockedBytlings: [...STARTER_BYTLINGS],
+      achievements: {},
+      achievementTracking: { totalCommits: 0, repos: [], fixCommits: 0, refactorCommits: 0, streakDays: 0, longestStreak: 0, lastActiveDate: "", toolUsage: {}, promptCount: 0, prsMerged: 0, prsReviewed: 0 },
+      catchHistory: [],
+    };
+    const result = migrateState(v2);
+    expect(result).toEqual(v2);
   });
 });
