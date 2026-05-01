@@ -2,9 +2,9 @@
 
 # CatchEm
 
-> I accidentally turned my coding sessions into a Pokémon game.
+**Catch Bytlings while you code.**
 
-Now every time you code... you might catch something.
+Every coding session has a chance to spawn a Bytling. No buttons, no menus — just code and they come to you.
 
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
 [![Node.js](https://img.shields.io/badge/node-%3E%3D20-brightgreen)](https://nodejs.org)
@@ -16,15 +16,30 @@ https://github.com/user-attachments/assets/597036c0-8a17-468e-b2ce-56aa5f556b22
 
 ---
 
-## What is this?
+## How It Works
 
-CatchEm is a tiny CLI game that runs while you code.
+1. **Install** — `npm install -g catchem`
+2. **Setup** — `catchem setup` detects your platform and installs hooks
+3. **Code** — Bytlings appear passively as you work
+4. **Collect** — browse your collection with an interactive terminal UI
 
-No UI.
-No distractions.
-Just vibes.
+That's it. No prompts, no menus, no energy systems. Just code and catch.
 
-And then suddenly:
+## Installation
+
+```bash
+npm install -g catchem
+```
+
+Setup runs automatically after install. To manually set up or reconfigure:
+
+```bash
+catchem setup
+```
+
+## Passive Catching
+
+At the end of each coding session, there's a chance a Bytling appears:
 
 ```
 ✨ You caught a Blazard! (x3)
@@ -35,62 +50,97 @@ And then suddenly:
   ╲ ── ╱═╗
    ╲══╱  ║
     ╚═╝~🔥╝
-"Overheats your CPU just by existing nearby."
+"A TOWN?! Finally, somewhere to overheat besides your CPU fan."
 ```
 
----
+## Bytlings
 
-## How it works
+**91 Bytlings** inspired by your favorite characters from:
 
-- You install it
-- You start coding like usual
-- Creatures randomly appear
-- You collect them over time
+| Theme | Inspired By |
+|-------|------------|
+| **Elemental Beasts** | Pokemon |
+| **Galactic Warriors** | Star Wars |
+| **Marvel Heroes** | Marvel |
+| **Legends Arena** | League of Legends |
+| **LOTR Legends** | Lord of the Rings |
+| **Greek Myths** | Greek Mythology |
+| **Egyptian Myths** | Egyptian Mythology |
+| **Undead Horror** | Horror |
 
-That's it.
+All Bytlings are original characters with unique ASCII art and coding-themed descriptions.
 
-It lives quietly in your terminal... until it doesn't.
+### Rarity System
 
----
+| Tier | Chance | Color |
+|------|--------|-------|
+| Common | 50% | ⬜ White |
+| Uncommon | 25% | 🟩 Green |
+| Rare | 12% | 🟦 Blue |
+| Epic | 7% | 🟪 Purple |
+| Legendary | 4% | 🟧 Orange |
+| Mythic | 2% | 🟥 Red |
 
-## Why it's weirdly addictive
+### Leveling
 
-- 90+ creatures to discover
-- Rare spawns (some are VERY hard to get)
-- Leveling system
-- Evolutions
-- Completely random — you never know what's next
+Catch duplicates to level up your Bytlings. 13 levels with escalating thresholds.
 
-You're basically farming creatures... by being productive.
+## Collection Viewer
 
----
+Browse your collection in an interactive terminal UI with:
 
-## Quick Start
+- Scrollable 3-column grid with windowed viewport
+- Animated ASCII art (idle blinking, breathing, energy pulses)
+- Rarity-colored borders and Bytling names
+- Undiscovered Bytlings shown as masked silhouettes
+- Detail view with full stats on Enter
+- Level progress bars
+- Discovery counter
+
+Run it with:
 
 ```bash
-npm install -g catchem
+catchem collection
 ```
 
-That's it. Start coding. They'll find you.
+Or use the `/catchem-collection` skill in Claude Code.
 
----
+### Supported Platforms
 
-## Platforms
+| Platform | Status | Tested |
+|----------|--------|--------|
+| Claude Code | Supported | ✅ |
+| Cursor | Supported | ❌ |
+| GitHub Copilot | Supported | ❌ |
+| Codex CLI | Supported | ❌ |
+| OpenCode | Supported | ❌ |
+| Gemini CLI | Supported | ❌ |
 
-Works with **Claude Code**. More platforms coming soon.
+## Commands
+
+| Command | What it does |
+|---------|-------------|
+| `catchem setup` | Detect platforms, install hooks and skills |
+| `catchem setup --auto` | Silent setup (used by postinstall) |
+| `catchem collection` | Open interactive TUI collection viewer |
+| `catchem help` | Show help message |
+
+## Auto-Updates
+
+During setup, you can opt in to daily auto-updates. When enabled, a background check runs once per day and updates CatchEm silently via `npm update -g catchem`.
 
 ## Contributing
 
-Got an idea for a new Bytling? A new realm? A new achievement? [Open an issue](https://github.com/amit221/catchem/issues).
+Found a bug? Have an idea for a new Bytling or theme? [Open an issue](https://github.com/amit221/catchem/issues).
 
 ---
 
 <div align="center">
 
-**Your terminal is full of Bytlings. You just haven't caught them yet.**
+**Start catching Bytlings today.**
 
 [Install](https://www.npmjs.com/package/catchem) | [Issues](https://github.com/amit221/catchem/issues) | [Changelog](https://github.com/amit221/catchem/blob/master/CHANGELOG.md)
 
-If you enjoy CatchEm, give us a ⭐
+If you enjoy CatchEm, give us a ⭐ — it helps more developers discover the project!
 
 </div>

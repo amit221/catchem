@@ -10,9 +10,9 @@ function printUsage(): void {
 CatchEm - Passive Creature Collection Game
 
 Usage:
-  catchem setup            Set up hooks for Claude Code
+  catchem setup            Set up hooks for your coding platform
   catchem setup --auto     Silent auto-setup (used by postinstall)
-  catchem uninstall        Remove all hooks & skills
+  catchem uninstall        Remove all hooks & skills from every platform
   catchem collection       View your creature collection (TUI)
   catchem help             Show this help message
 `);
