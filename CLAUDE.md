@@ -34,7 +34,7 @@ npx tsc --noEmit
   - `notification.ts` — Formats catch results into terminal-friendly strings (new creature / level up / normal catch)
   - `flavor-text.ts` — Random flavor text for catch notifications
 
-- **`src/adapters/`** — Platform integration (Claude Code hooks, future: Cursor, Copilot, Codex)
+- **`src/adapters/`** — Platform integration (Claude Code hooks)
   - `claude-code.ts` — Generates hooks.json and plugin.json for Claude Code integration
   - `detect.ts` — Platform detection (checks for `~/.claude` dir)
 
