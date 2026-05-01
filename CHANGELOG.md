@@ -1,5 +1,20 @@
 # Changelog
 
+## [1.3.0](https://github.com/amit221/catchem/compare/v1.2.0...v1.3.0) (2026-05-01)
+
+
+### Features
+
+* **assets:** add main pipeline script with interactive/auto modes ([0350b35](https://github.com/amit221/catchem/commit/0350b35029f578f0e9abfcac82c0e5e6913bfc87))
+* **assets:** add OpenAI concept art generation client ([f862ff4](https://github.com/amit221/catchem/commit/f862ff4b17a0fd85f95711ab761ee0f4c0b335fc))
+* **assets:** add PixelLab MCP client for sprite and animation generation ([77640a7](https://github.com/amit221/catchem/commit/77640a7730bc86fec989be8ce616dc124f8b2b30))
+* **assets:** add types and manifest module with tests ([b6376a6](https://github.com/amit221/catchem/commit/b6376a62582212d18b1aaf4541c6acb0b3b6cce9))
+
+
+### Bug Fixes
+
+* **assets:** fix pipeline issues found during smoke testing ([1836992](https://github.com/amit221/catchem/commit/183699254feb78570bfc519afe97d0fca92b69a4))
+
 ## [1.2.0](https://github.com/amit221/catchem/compare/v1.1.1...v1.2.0) (2026-04-29)
 
 
